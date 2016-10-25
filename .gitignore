@@ -1,0 +1,20 @@
+# patches, diffs, merges
+*.patch
+interdiff.txt
+*.orig
+*.bak
+
+# releases
+*.zip
+
+# PHPStorm
+.idea/*
+
+# Ignore library
+**/src
+
+# Shared files
+**/Siel/AcumulusMa2/changelog.txt
+**/Siel/AcumulusMa2/license.txt
+**/Siel/AcumulusMa2/licentie-nl.pdf
+**/Siel/AcumulusMa2/leesmij.txt

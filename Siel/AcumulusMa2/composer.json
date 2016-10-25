@@ -1,0 +1,18 @@
+{
+    "name": "siel/acumulus",
+    "description": "Siel Acumulus Web API integration",
+    "type": "magento2-module",
+    "version": "4.6.0-alpha1",
+    "license": [
+        "GPL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Siel\\AcumulusMa2\\": "",
+            "Siel\\Acumulus\\": "src/Siel/Acumulus"
+        }
+    }
+}
