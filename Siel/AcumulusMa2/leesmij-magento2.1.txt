@@ -1,0 +1,6 @@
+Opmerkingen specifiek voor Magento 2.1
+======================================
+
+De command line DI optie (php bin/magento setup:di:compile) werkt niet als deze
+module is geïnstalleerd.
+
