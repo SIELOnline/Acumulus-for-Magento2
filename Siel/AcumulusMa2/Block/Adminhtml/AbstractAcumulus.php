@@ -83,8 +83,6 @@ class AbstractAcumulus extends Generic
         $mapper = new FormMapper();
         $mapper->map($form, $this->getAcumulusForm()->getFields());
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        $form->setUseContainer(true);
         $this->setForm($form);
         return parent::_prepareForm();
     }
