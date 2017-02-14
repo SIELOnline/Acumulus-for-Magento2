@@ -83,6 +83,9 @@ class AbstractAcumulus extends Generic
         $mapper = new FormMapper();
         $mapper->map($form, $this->getAcumulusForm()->getFields());
 
+        // setUseContainer(true) makes the save button work ...
+        /** @noinspection PhpUndefinedMethodInspection */
+        $form->setUseContainer(true);
         $this->setForm($form);
         return parent::_prepareForm();
     }
