@@ -25,4 +25,5 @@ class Uninstall implements UninstallInterface
     ) {
         // @todo: Unconditionally or ask (if possible)?
         $setup->getConnection()->dropTable('acumulus_entry');
-    }}
+    }
+}

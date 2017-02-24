@@ -1,10 +1,12 @@
 <?php
 namespace Siel\AcumulusMa2\Model\ResourceModel;
 
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
 /**
  * Acumulus Entry resource model
  */
-class Entry extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+class Entry extends AbstractDb
 {
     /**
      * Define main table

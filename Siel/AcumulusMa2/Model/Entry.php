@@ -1,13 +1,11 @@
 <?php
 namespace Siel\AcumulusMa2\Model;
 
+use Magento\Framework\Model\AbstractModel;
+
 /**
  * Acumulus entry model.
  *
- * @method \Siel\AcumulusMa2\Model\ResourceModel\Entry getResource()
- * @method \Siel\AcumulusMa2\Model\ResourceModel\Entry\Collection getResourceCollection()
- * @method int getEntityId()
- * @method Entry setEntityId(int $value)
  * @method int getEntryId()
  * @method Entry setEntryId(int $value)
  * @method string getToken()
@@ -21,7 +19,7 @@ namespace Siel\AcumulusMa2\Model;
  * @method string getUpdated()
  * @method Entry setUpdated(string $value)
  */
-class Entry extends \Magento\Framework\Model\AbstractModel
+class Entry extends AbstractModel
 {
     /**
      * Initialize Acumulus Entry Model

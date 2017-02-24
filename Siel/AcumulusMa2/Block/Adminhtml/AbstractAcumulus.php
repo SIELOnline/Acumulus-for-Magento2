@@ -2,7 +2,7 @@
 namespace Siel\AcumulusMa2\Block\Adminhtml;
 
 use Magento\Backend\Block\Widget\Form\Generic;
-use Siel\Acumulus\Magento2\Helpers\FormMapper;
+use Siel\Acumulus\Magento\Magento2\Helpers\FormMapper;
 
 /**
  * Base block for rendering Acumulus forms.
@@ -87,6 +87,7 @@ class AbstractAcumulus extends Generic
         /** @noinspection PhpUndefinedMethodInspection */
         $form->setUseContainer(true);
         $this->setForm($form);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return parent::_prepareForm();
     }
 
@@ -98,6 +99,7 @@ class AbstractAcumulus extends Generic
     protected function _initFormValues()
     {
         $this->getForm()->addValues($this->getAcumulusForm()->getFormValues());
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return parent::_initFormValues();
     }
 

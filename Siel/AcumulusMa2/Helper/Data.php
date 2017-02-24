@@ -2,7 +2,7 @@
 namespace Siel\AcumulusMa2\Helper;
 
 use Magento\Framework\App\Helper\Context;
-use Siel\Acumulus\Magento2\Helpers\Registry;
+use Siel\Acumulus\Magento\Magento2\Helpers\Registry;
 use Siel\Acumulus\Shop\Config;
 
 /**
@@ -33,7 +33,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected function init()
     {
         if (static::$acumulusConfig === null) {
-            static::$acumulusConfig = new Config('Magento2', Registry::getInstance()->getLocale());
+            static::$acumulusConfig = new Config('Magento\\Magento2', Registry::getInstance()->getLocale());
         }
     }
 

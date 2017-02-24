@@ -1,7 +1,6 @@
 <?php
 namespace Siel\AcumulusMa2\Controller\Adminhtml\Config;
 
-use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Siel\AcumulusMa2\Controller\Adminhtml\AbstractAcumulus;

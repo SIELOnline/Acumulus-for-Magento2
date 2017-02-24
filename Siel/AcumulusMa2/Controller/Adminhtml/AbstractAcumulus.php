@@ -63,16 +63,16 @@ class AbstractAcumulus extends Action
             $form = $this->helper->getAcumulusConfig()->getForm($this->type);
             $form->process();
             foreach($form->getSuccessMessages() as $message) {
-                $this->messageManager->addSuccess($message);
+                $this->messageManager->addSuccessMessage($message);
             }
             foreach($form->getWarningMessages() as $message) {
-                $this->messageManager->addWarning($message);
+                $this->messageManager->addWarningMessage($message);
             }
             foreach($form->getErrorMessages() as $message) {
-                $this->messageManager->addError($message);
+                $this->messageManager->addErrorMessage($message);
             }
         } catch (\Exception $e) {
-            $this->messageManager->addException($e, $e->getMessage());
+            $this->messageManager->addExceptionMessage($e, $e->getMessage());
         }
         // To get the messages on the result page, I had to move these lines
         // to below of the form handling.
