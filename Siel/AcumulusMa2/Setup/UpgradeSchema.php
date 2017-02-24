@@ -19,6 +19,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $helper = Registry::getInstance()->get('Siel\AcumulusMa2\Helper\Data');
             $helper->getAcumulusConfig()->upgrade($context->getVersion());
         }
+
         $setup->endSetup();
     }
 }
