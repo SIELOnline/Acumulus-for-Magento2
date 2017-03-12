@@ -2,7 +2,7 @@
 namespace Siel\AcumulusMa2\Block\Adminhtml;
 
 use Magento\Backend\Block\Widget\Form\Generic;
-use Siel\Acumulus\Magento\Magento2\Helpers\FormMapper;
+use Siel\Acumulus\Magento\Helpers\FormMapper;
 
 /**
  * Base block for rendering Acumulus forms.
