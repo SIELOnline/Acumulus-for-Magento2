@@ -60,7 +60,7 @@ class AbstractAcumulus extends Action
     {
         try {
             // Create the form first: this will load the translations.
-            $form = $this->helper->getAcumulusConfig()->getForm($this->type);
+            $form = $this->helper->getAcumulusContainer()->getForm($this->type);
             $form->process();
             foreach($form->getSuccessMessages() as $message) {
                 $this->messageManager->addSuccessMessage($message);

@@ -39,7 +39,7 @@ class SalesOrderInvoiceSaveAfter implements ObserverInterface
         /** @var \Magento\Sales\Model\Order\Invoice $invoice */
         /** @noinspection PhpUndefinedMethodInspection */
         $invoice = $event->getInvoice();
-        $source = $this->helper->getAcumulusConfig()->getSource(Source::Order, $invoice->getOrderId());
-        $this->helper->getAcumulusConfig()->getManager()->invoiceCreate($source);
+        $source = $this->helper->getAcumulusContainer()->getSource(Source::Order, $invoice->getOrderId());
+        $this->helper->getAcumulusContainer()->getManager()->invoiceCreate($source);
     }
 }

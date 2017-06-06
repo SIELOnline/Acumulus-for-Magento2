@@ -39,7 +39,7 @@ class SalesOrderCreditmemoSaveAfter implements ObserverInterface
         /** @var \Magento\Sales\Model\Order\Creditmemo $creditMemo */
         /** @noinspection PhpUndefinedMethodInspection */
         $creditMemo = $event->getCreditmemo();
-        $source = $this->helper->getAcumulusConfig()->getSource(Source::CreditNote, $creditMemo);
-        $this->helper->getAcumulusConfig()->getManager()->sourceStatusChange($source);
+        $source = $this->helper->getAcumulusContainer()->getSource(Source::CreditNote, $creditMemo);
+        $this->helper->getAcumulusContainer()->getManager()->sourceStatusChange($source);
     }
 }

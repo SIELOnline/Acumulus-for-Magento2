@@ -2,7 +2,6 @@
 namespace Siel\AcumulusMa2\Block\Adminhtml;
 
 use Magento\Backend\Block\Widget\Form\Generic;
-use Siel\Acumulus\Magento\Helpers\FormMapper;
 
 /**
  * Base block for rendering Acumulus forms.
@@ -50,7 +49,7 @@ class AbstractAcumulus extends Generic
     public function getAcumulusForm()
     {
         if (!$this->acumulusForm) {
-            $this->acumulusForm = $this->helper->getAcumulusConfig()->getForm($this->type);
+            $this->acumulusForm = $this->helper->getAcumulusContainer()->getForm($this->type);
         }
         return $this->acumulusForm;
     }
@@ -80,8 +79,9 @@ class AbstractAcumulus extends Generic
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
         );
         // Populate the form using the FormMapper.
-        $mapper = new FormMapper();
-        $mapper->map($form, $this->getAcumulusForm()->getFields());
+        /** @var \siel\Acumulus\Magento\Helpers\FormMapper $mapper */
+        $mapper = $this->helper->getAcumulusContainer()->getFormMapper();
+        $mapper->setMagentoForm($form)->map($this->getAcumulusForm());
 
         // setUseContainer(true) makes the save button work ...
         /** @noinspection PhpUndefinedMethodInspection */

@@ -39,7 +39,7 @@ class SalesOrderSaveAfter implements ObserverInterface
         /** @var \Magento\Sales\Model\Order $order */
         /** @noinspection PhpUndefinedMethodInspection */
         $order = $event->getOrder();
-        $source = $this->helper->getAcumulusConfig()->getSource(Source::Order, $order);
-        $this->helper->getAcumulusConfig()->getManager()->sourceStatusChange($source);
+        $source = $this->helper->getAcumulusContainer()->getSource(Source::Order, $order);
+        $this->helper->getAcumulusContainer()->getManager()->sourceStatusChange($source);
     }
 }

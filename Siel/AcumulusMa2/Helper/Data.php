@@ -2,6 +2,7 @@
 namespace Siel\AcumulusMa2\Helper;
 
 use Magento\Framework\App\Helper\Context;
+use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Magento\Magento2\Helpers\Registry;
 use Siel\Acumulus\Shop\Config;
 
@@ -10,8 +11,8 @@ use Siel\Acumulus\Shop\Config;
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    /** @var \Siel\Acumulus\Shop\Config */
-    protected static $acumulusConfig = null;
+    /** @var \Siel\Acumulus\Helpers\ContainerInterface */
+    protected static $acumulusContainer = null;
 
     /**
      * Siel_Acumulus_Helper_Data constructor.
@@ -32,8 +33,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected function init()
     {
-        if (static::$acumulusConfig === null) {
-            static::$acumulusConfig = new Config('Magento\\Magento2', Registry::getInstance()->getLocale());
+        if (static::$acumulusContainer === null) {
+            static::$acumulusContainer = new Container('Magento\\Magento2', Registry::getInstance()->getLocale());
         }
     }
 
@@ -49,18 +50,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function t($key)
     {
-        return static::$acumulusConfig->getTranslator()->get($key);
+        return static::$acumulusContainer->getTranslator()->get($key);
     }
 
     /**
-     * Returns the configuration settings object central to this extension.
+     * Returns the container object central to this extension.
      *
-     * @return \Siel\Acumulus\Shop\Config
-     *   The Acumulus config.
+     * @return \Siel\Acumulus\Helpers\ContainerInterface
+     *   The Acumulus container.
      */
-    public function getAcumulusConfig()
+    public function getAcumulusContainer()
     {
         $this->init();
-        return static::$acumulusConfig;
+        return static::$acumulusContainer;
     }
 }

@@ -12,7 +12,7 @@ class Index extends AbstractAcumulus
 {
     public function __construct(Context $context, PageFactory $resultPageFactory)
     {
-        $this->type = 'config';
         parent::__construct($context, $resultPageFactory);
+        $this->type = 'config';
     }
 }

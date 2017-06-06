@@ -12,7 +12,7 @@ class Advanced extends AbstractAcumulus
 {
     public function __construct(Context $context, PageFactory $resultPageFactory)
     {
-        $this->type = 'advanced';
         parent::__construct($context, $resultPageFactory);
+        $this->type = 'advanced';
     }
 }
