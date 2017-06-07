@@ -1,15 +1,15 @@
 <?php
 namespace Siel\AcumulusMa2\Helper;
 
+use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Magento\Magento2\Helpers\Registry;
-use Siel\Acumulus\Shop\Config;
 
 /**
  * Acumulus helper
  */
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+class Data extends AbstractHelper
 {
     /** @var \Siel\Acumulus\Helpers\ContainerInterface */
     protected static $acumulusContainer = null;
