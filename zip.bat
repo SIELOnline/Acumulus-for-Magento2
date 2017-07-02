@@ -9,5 +9,5 @@ set version=%1
 del Magento-2.1.x-Acumulus-%version%.zip 2> nul
 
 rem zip package.
-"C:\Program Files\7-Zip\7z.exe" a -tzip Magento-2.1.x-Acumulus-%version%.zip Siel | findstr /i "Failed Error"
+"C:\Program Files\7-Zip\7z.exe" a -xr!psr4.php -xr!Joomla -xr!OpenCart -xr!PrestaShop -xr!WooCommerce -xr!Magento1 -tzip Magento-2.1.x-Acumulus-%version%.zip Siel | findstr /i "Failed Error"
 "C:\Program Files\7-Zip\7z.exe" t Magento-2.1.x-Acumulus-%version%.zip | findstr /i "Processing Everything Failed Error"

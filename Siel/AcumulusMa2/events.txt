@@ -47,9 +47,9 @@ acumulus_invoice_created
 
 Usage
 -----
-When the "acumulus_invoice_created" event is called, it is passed 2 arguments:
+When the "acumulus_invoice_created" event is called, it is passed 3 arguments:
 - invoice:
-  A keyed array - passed by refrence - containing the invoice that will be sent
+  A keyed array - passed by reference - containing the invoice that will be sent
   to Acumulus. The array structure is similar to the XML structure as defined on
   https://apidoc.sielsystems.nl/content/invoice-add, though at this stage, only
   the customer key will be present at the highest level. The line tag is
@@ -73,6 +73,8 @@ When the "acumulus_invoice_created" event is called, it is passed 2 arguments:
   - ['customer']['invoice']['line']['taxrate']
 - source: The Acumulus \Siel\Acumulus\Invoice\Source object that is the base of
   the invoice to be sent.
+- localResult: A \Siel\Acumulus\Invoice\Result object that at this stage can
+  only contain local warnings (and errors).
 
 
 acumulus_invoice_completed
@@ -80,7 +82,7 @@ acumulus_invoice_completed
 
 Usage
 -----
-When the "acumulus_invoice_completed" event is called, it is passed 2 arguments:
+When the "acumulus_invoice_completed" event is called, it is passed 3 arguments:
 - invoice:
   A keyed array - passed by reference - containing the invoice that will be sent
   to Acumulus. The array structure is similar to the XML structure as defined on
@@ -89,7 +91,8 @@ When the "acumulus_invoice_completed" event is called, it is passed 2 arguments:
   represented as a numeric array of lines, even if if there is only 1 line.
 - source: The Acumulus \Siel\Acumulus\Invoice\Source object that is the base of
   the invoice to be sent.
-
+- localResult: A \Siel\Acumulus\Invoice\Result object that at this stage can
+  only contain local warnings (and errors).
 
 Example
 -------
@@ -115,6 +118,16 @@ class VendorName\ModuleName\Observer\AcumulusInvoiceCompleted implements Observe
         /** @var \Siel\Acumulus\Invoice\Source $source */
         /** @noinspection PhpUndefinedMethodInspection */
         $source = $event->getSource();
+        /** @var \Siel\Acumulus\Invoice\Result $localResult */
+        /** @noinspection PhpUndefinedMethodInspection */
+        $localResult = $observer->getLocalResult();
+
+        if ($localResult->hasErrors() {
+            // Invoice will not be sent
+        }
+        elseif ($localResult->hasMessages() {
+            // Invoice will be sent but warnings will be issued.
+        }
 
         if ($source->getType() === Source::Order) {
             // Process order.
@@ -138,7 +151,6 @@ class VendorName\ModuleName\Observer\AcumulusInvoiceCompleted implements Observe
 }
 
 
-
 acumulus_invoice_sent
 ---------------------
 
@@ -152,9 +164,9 @@ When the "acumulus_invoice_sent" event is called, it is passed 3 arguments:
   as a numeric array of lines, even if if there is only 1 line.
 - source: The Acumulus \Siel\Acumulus\Invoice\Source object that was the base of
   the invoice that has been sent.
-- result: An array that contains the information as sent back by Acumulus, see
+- result: A \Siel\Acumulus\Invoice\Result object that contains a.o. any warnings,
+  errors and exceptions as well as the result as sent back by Acumulus, see
   https://apidoc.sielsystems.nl/content/invoice-add.
-
 
 Example
 -------
@@ -180,21 +192,27 @@ class VendorName\ModuleName\Observer\AcumulusInvoiceCompleted implements Observe
         /** @var \Siel\Acumulus\Invoice\Source $source */
         /** @noinspection PhpUndefinedMethodInspection */
         $source = $event->getSource();
-        /** @var array $result */
+        /** @var \Siel\Acumulus\Invoice\Result $result */
         /** @noinspection PhpUndefinedMethodInspection */
         $result = $observer->getResult();
 
-        if (!empty($result['invoice']['invoicenumber']) {
-            // Success.
-            $acumulusInvoiceNumber = $result['invoice']['invoicenumber'];
-            $acumulusEntryId = $result['invoice']['entryid'];
-            $acumulusToken = $result['invoice']['token'];
-            // Do something with this info.
-        }
-        else {
+        if ($result->hasErrors() {
             // Failure.
         }
-  }
+        else {
+            $acumulusInvoice = $result->getResult();
+            if (!empty($acumulusInvoice['invoicenumber']) {
+                // Success.
+                $acumulusInvoiceNumber = $acumulusInvoice['invoicenumber'];
+                $acumulusEntryId = $acumulusInvoice['entryid'];
+                $acumulusToken = $acumulusInvoice['token'];
+                // Do something with this info.
+            }
+            else {
+                // Sent in test mode or as concept
+            }
+        }
+    }
 }
 
 
