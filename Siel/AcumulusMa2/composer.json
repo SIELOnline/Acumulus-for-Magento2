@@ -1,18 +1,20 @@
 {
-    "name": "siel/acumulus",
-    "description": "Siel Acumulus Web API integration",
+    "name": "siel/acumulus-ma2",
+    "description": "Integrates with your Siel Acumulus online administration",
     "type": "magento2-module",
-    "version": "4.9.1",
+    "version": "5.0.0-alpha1",
     "license": [
         "GPL-3.0"
     ],
+    "require": {
+        "siel/acumulus": "^5@dev"
+    },
     "autoload": {
         "files": [
             "registration.php"
         ],
         "psr-4": {
-            "Siel\\AcumulusMa2\\": "",
-            "Siel\\Acumulus\\": "src/Siel/Acumulus"
+            "Siel\\AcumulusMa2\\": ""
         }
     }
 }
