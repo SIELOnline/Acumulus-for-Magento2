@@ -13,6 +13,9 @@ interdiff.txt
 # Ignore library
 **/src
 
+# ignore new git
+magento2-acumulus
+
 # Shared files
 **/Siel/AcumulusMa2/changelog.txt
 **/Siel/AcumulusMa2/license.txt
