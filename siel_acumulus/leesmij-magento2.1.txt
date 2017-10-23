@@ -1,7 +1,0 @@
-Opmerkingen specifiek voor Magento 2.1
-======================================
-
-Tot 4.8.1 werkte de command line DI optie (php bin/magento setup:di:compile)
-niet met deze module. Vanaf 4.8.1 worden niet alle bestanden van de library
-meer uitgeleverd waardoor de DI precompiler niet meer de fout in zal gaan.
-

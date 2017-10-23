@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Siel_Acumulus::acumulus_config" title="Acumulus Config" module="Siel_Acumulus" sortOrder="900" parent="Magento_Backend::other_settings" action="acumulus/config" resource="Siel_Acumulus::config"/>
-        <add id="Siel_Acumulus::acumulus_advanced_config" title="Acumulus Advanced Config" module="Siel_Acumulus" sortOrder="905" parent="Magento_Backend::other_settings" action="acumulus/config/advanced" resource="Siel_Acumulus::config"/>
-        <add id="Siel_Acumulus::acumulus_batch" title="Acumulus Batch verzending" module="Siel_Acumulus" sortOrder="910" parent="Magento_Backend::other_settings" action="acumulus/batch" resource="Siel_Acumulus::batch"/>
+        <add id="Siel_Acumulus::acumulus_config" title="Acumulus Config" module="Siel_AcumulusMa2" sortOrder="900" parent="Magento_Backend::other_settings" action="acumulus/config" resource="Siel_Acumulus::config"/>
+        <add id="Siel_Acumulus::acumulus_advanced_config" title="Acumulus Advanced Config" module="Siel_AcumulusMa2" sortOrder="905" parent="Magento_Backend::other_settings" action="acumulus/config/advanced" resource="Siel_Acumulus::config"/>
+        <add id="Siel_Acumulus::acumulus_batch" title="Acumulus Batch verzending" module="Siel_AcumulusMa2" sortOrder="910" parent="Magento_Backend::other_settings" action="acumulus/batch" resource="Siel_Acumulus::batch"/>
     </menu>
 </config>
