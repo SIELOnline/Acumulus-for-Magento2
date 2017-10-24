@@ -11,7 +11,7 @@ interdiff.txt
 .idea/*
 
 # Shared files
-**/Siel/AcumulusMa2/changelog.txt
-**/Siel/AcumulusMa2/license.txt
-**/Siel/AcumulusMa2/licentie-nl.pdf
-**/Siel/AcumulusMa2/leesmij.txt
+**/changelog.txt
+**/license.txt
+**/licentie-nl.pdf
+**/leesmij.txt
