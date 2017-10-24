@@ -37,8 +37,14 @@ abstract class AbstractAcumulus extends Generic
      * @param string $type
      * @param array $data
      */
-    public function __construct(Context $context, Registry $registry, FormFactory $formFactory, Data $helper, $type, array $data = [])
-    {
+    public function __construct(
+        Context $context,
+        Registry $registry,
+        FormFactory $formFactory,
+        Data $helper,
+        $type,
+        array $data = []
+    ) {
         $this->type = $type;
         $this->helper = $helper;
         parent::__construct($context, $registry, $formFactory, $data);

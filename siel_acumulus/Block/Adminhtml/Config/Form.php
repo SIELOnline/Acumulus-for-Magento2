@@ -21,8 +21,13 @@ class Form extends AbstractAcumulus
      * @param \Siel\AcumulusMa2\Helper\Data $helper
      * @param array $data
      */
-    public function __construct(Context $context, Registry $registry, FormFactory $formFactory, Data $helper, array $data = [])
-    {
+    public function __construct(
+        Context $context,
+        Registry $registry,
+        FormFactory $formFactory,
+        Data $helper,
+        array $data = []
+    ) {
         parent::__construct($context, $registry, $formFactory, $helper, 'config', $data);
     }
 }

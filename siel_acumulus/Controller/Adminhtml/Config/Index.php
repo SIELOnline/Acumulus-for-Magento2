@@ -20,6 +20,6 @@ class Index extends AbstractAcumulus
      */
     public function __construct(Context $context, PageFactory $resultPageFactory, Data $helper)
     {
-        parent::__construct($context, $resultPageFactory, $helper,'config');
+        parent::__construct($context, $resultPageFactory, $helper, 'config');
     }
 }
