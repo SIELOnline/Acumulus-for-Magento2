@@ -23,7 +23,7 @@ class Uninstall implements UninstallInterface
         SchemaSetupInterface $setup,
         ModuleContextInterface $context
     ) {
-        // @todo: Unconditionally or ask (if possible)?
+        // @todo: Unconditionally or can we ask for confirmation?
         $setup->getConnection()->dropTable('acumulus_entry');
     }
 }

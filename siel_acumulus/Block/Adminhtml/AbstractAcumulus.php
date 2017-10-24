@@ -1,22 +1,26 @@
 <?php
 namespace Siel\AcumulusMa2\Block\Adminhtml;
 
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\Registry;
+use Magento\Framework\Data\FormFactory;
+use Siel\AcumulusMa2\Helper\Data;
 use Magento\Backend\Block\Widget\Form\Generic;
 
 /**
  * Base block for rendering Acumulus forms.
  */
-class AbstractAcumulus extends Generic
+abstract class AbstractAcumulus extends Generic
 {
     /**
      * @var string
      */
-    protected $type = '';
+    private $type = '';
 
     /**
      * @var \Siel\AcumulusMa2\Helper\Data
      */
-    protected $helper;
+    private $helper;
 
     /**
      * @var \Siel\Acumulus\Helpers\Form
@@ -30,15 +34,12 @@ class AbstractAcumulus extends Generic
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Data\FormFactory $formFactory
      * @param \Siel\AcumulusMa2\Helper\Data $helper
+     * @param string $type
      * @param array $data
      */
-    public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Data\FormFactory $formFactory,
-        \Siel\AcumulusMa2\Helper\Data $helper,
-        array $data = []
-    ) {
+    public function __construct(Context $context, Registry $registry, FormFactory $formFactory, Data $helper, $type, array $data = [])
+    {
+        $this->type = $type;
         $this->helper = $helper;
         parent::__construct($context, $registry, $formFactory, $data);
     }
@@ -64,7 +65,8 @@ class AbstractAcumulus extends Generic
      *   The translation for the given key or the key itself if no translation
      *   could be found.
      */
-    protected function t($key) {
+    protected function t($key)
+    {
         return $this->helper->t($key);
     }
 
@@ -72,6 +74,8 @@ class AbstractAcumulus extends Generic
      * Adding product form elements for editing attribute
      *
      * @return $this
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareForm()
     {

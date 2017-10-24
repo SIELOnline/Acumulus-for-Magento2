@@ -14,7 +14,7 @@ class SalesOrderCreditmemoSaveAfter implements ObserverInterface
     /**
      * @var \Siel\AcumulusMa2\Helper\Data
      */
-    protected $helper;
+    private $helper;
 
     /**
      * SalesOrderSaveAfter constructor.

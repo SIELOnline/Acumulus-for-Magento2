@@ -13,7 +13,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
     {
         $setup->startSetup();
 
-        if($context->getVersion()) {
+        if ($context->getVersion()) {
             // Previous version found, this is an upgrade, not an installation.
             /** @var \Siel\AcumulusMa2\Helper\Data $helper */
             $helper = Registry::getInstance()->get('Siel\AcumulusMa2\Helper\Data');

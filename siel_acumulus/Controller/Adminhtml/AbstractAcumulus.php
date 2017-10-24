@@ -4,26 +4,28 @@ namespace Siel\AcumulusMa2\Controller\Adminhtml;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
+use Siel\AcumulusMa2\Helper\Data;
 
 /**
  * Base Acumulus config controller.
  */
-class AbstractAcumulus extends Action
+abstract class AbstractAcumulus extends Action
 {
     /** @var string */
-    protected $type = '';
+    private $type = '';
 
     /** @var PageFactory  */
-    protected $resultPageFactory;
+    private $resultPageFactory;
 
     /** @var \Siel\AcumulusMa2\Helper\Data */
-    protected $helper;
+    private $helper;
 
-    public function __construct(Context $context, PageFactory $resultPageFactory)
+    public function __construct(Context $context, PageFactory $resultPageFactory, Data $helper, $type)
     {
+        $this->type = $type;
+        $this->helper = $helper;
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
-        $this->helper = $this->_objectManager->get('Siel\AcumulusMa2\Helper\Data');
     }
 
     /**
@@ -36,7 +38,8 @@ class AbstractAcumulus extends Action
      *   The translation for the given key or the key itself if no translation
      *   could be found.
      */
-    protected function t($key) {
+    protected function t($key)
+    {
         return $this->helper->t($key);
     }
 
@@ -62,13 +65,13 @@ class AbstractAcumulus extends Action
             // Create the form first: this will load the translations.
             $form = $this->helper->getAcumulusContainer()->getForm($this->type);
             $form->process();
-            foreach($form->getSuccessMessages() as $message) {
+            foreach ($form->getSuccessMessages() as $message) {
                 $this->messageManager->addSuccessMessage($message);
             }
-            foreach($form->getWarningMessages() as $message) {
+            foreach ($form->getWarningMessages() as $message) {
                 $this->messageManager->addWarningMessage($message);
             }
-            foreach($form->getErrorMessages() as $message) {
+            foreach ($form->getErrorMessages() as $message) {
                 $this->messageManager->addErrorMessage($message);
             }
         } catch (\Exception $e) {
