@@ -1,0 +1,12 @@
+Acumulus extension events
+=========================
+
+The Acumulus extension defines 3 events:
+
+1) acumulus_invoice_created
+2) acumulus_invoice_send_before
+2) acumulus_invoice_send_after
+
+See the example extension AcumulusCustomiseInvoice for usage and documentation.
+You can download this example extension from the Acumulus forum at
+https://forum.acumulus.nl/index.php/topic,5590.0.html.

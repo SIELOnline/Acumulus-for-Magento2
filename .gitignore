@@ -14,4 +14,7 @@ interdiff.txt
 **/changelog.txt
 **/license.txt
 **/licentie-nl.pdf
-**/leesmij.txt
+*/leesmij.txt
+
+# Generated files
+**/user-guide.pdf

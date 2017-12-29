@@ -1,0 +1,12 @@
+<?xml version='1.0'?>
+<config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='../../../../../vendor/magento/framework/Event/etc/events.xsd'>
+    <event name="acumulus_invoice_created">
+        <observer name="siel_acumulus_customise_invoice_created_observer" instance="Siel\AcumulusCustomiseInvoice\Observer\AcumulusInvoiceCreated"/>
+    </event>
+    <event name="acumulus_invoice_send_before">
+        <observer name="siel_acumulus_customise_invoice_send_before_observer" instance="Siel\AcumulusCustomiseInvoice\Observer\AcumulusInvoiceSendBefore"/>
+    </event>
+    <event name="acumulus_invoice_send_after">
+        <observer name="siel_acumulus_customise_invoice_send_after_observer" instance="Siel\AcumulusCustomiseInvoice\Observer\AcumulusInvoiceSendAfter"/>
+    </event>
+</config>
