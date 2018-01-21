@@ -2,7 +2,6 @@
 namespace Siel\AcumulusMa2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Magento\Magento2\Helpers\Registry;
 
