@@ -9,12 +9,3 @@ interdiff.txt
 
 # PHPStorm
 .idea/*
-
-# Shared files
-**/license.txt
-**/licentie-nl.pdf
-*/leesmij.txt
-
-# Generated files
-**/user-guide.pdf
-report.html
