@@ -3,7 +3,7 @@ User Guide
 
 Introduction
 ------------
-This extension has been developed by Buro Rader (http://www.burorader.com/).
+This extension has been developed by [Buro Rader](http://www.burorader.com/).
 
 It has been tested in a standard installs of recent stable versions of the Magento 2.1 CE software.
 
@@ -24,11 +24,11 @@ Support
 -------
 If you have any questions you can:
 
-- Contact us by mail via magento@acumulus.nl
-- Contact us by phone, see our website https://www.siel.nl/contact/ for details.
-- Ask your question on our forum: https://forum.acumulus.nl/index.php?board=17.0.
+- Contact us by mail via [magento@acumulus.nl](mailto:magento@acumulus.nl)
+- Contact us by phone, see [our website](https://www.siel.nl/contact/) for details.
+- Ask your question on [our forum](https://forum.acumulus.nl/index.php?board=17.0).
   
-If you need support or have a (feature) request, you can mail to magento@acumulus.nl. This mail should contain:
+If you need support or have a (feature) request, you can mail to [magento@acumulus.nl](mailto:magento@acumulus.nl). This mail should contain:
 
 - The website address where your webshop can be found.
 - The info as can be found under the header "Information about your webshop and this module" on our settings form.
