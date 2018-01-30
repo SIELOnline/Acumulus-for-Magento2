@@ -9,4 +9,7 @@
     <event name="sales_order_creditmemo_save_after">
         <observer name="siel_acumulus_creditmemo_save_observer" instance="Siel\AcumulusMa2\Observer\SalesOrderCreditmemoSaveAfter"/>
     </event>
+    <event name="acumulus_invoice_created">
+        <observer name="siel_acumulus_acumulus_invoice_created" instance="Siel\AcumulusMa2\Observer\AcumulusInvoiceCreated"/>
+    </event>
 </config>
