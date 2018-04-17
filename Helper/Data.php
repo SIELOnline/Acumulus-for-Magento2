@@ -10,7 +10,7 @@ use Siel\Acumulus\Magento\Magento2\Helpers\Registry;
  */
 class Data extends AbstractHelper
 {
-    /** @var \Siel\Acumulus\Helpers\ContainerInterface */
+    /** @var \Siel\Acumulus\Helpers\Container */
     private static $acumulusContainer = null;
 
     /**
@@ -45,7 +45,7 @@ class Data extends AbstractHelper
     /**
      * Returns the container object central to this extension.
      *
-     * @return \Siel\Acumulus\Helpers\ContainerInterface
+     * @return \Siel\Acumulus\Helpers\Container
      *   The Acumulus container.
      */
     public function getAcumulusContainer()
