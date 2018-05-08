@@ -2,6 +2,7 @@
 namespace Siel\AcumulusMa2\Block\Adminhtml;
 
 use Magento\Backend\Block\Template\Context;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Siel\AcumulusMa2\Helper\Data;
@@ -34,7 +35,6 @@ abstract class AbstractAcumulus extends Generic
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Data\FormFactory $formFactory
      * @param \Siel\AcumulusMa2\Helper\Data $helper
-     * @param string $type
      * @param array $data
      */
     public function __construct(
@@ -42,11 +42,24 @@ abstract class AbstractAcumulus extends Generic
         Registry $registry,
         FormFactory $formFactory,
         Data $helper,
-        $type,
         array $data = []
     ) {
-        $this->type = $type;
         $this->helper = $helper;
+        $class = static::class;
+        switch ($class) {
+            case 'Siel\AcumulusMa2\Block\Adminhtml\Config\Form':
+                $this->type = 'config';
+                break;
+            case 'Siel\AcumulusMa2\Block\Adminhtml\Config\AdvancedForm':
+                $this->type = 'advanced';
+                break;
+            case 'Siel\AcumulusMa2\Block\Adminhtml\Batch\Form':
+                $this->type = 'batch';
+                break;
+            default:
+                $this->helper->getAcumulusContainer()->getLog()->error("Unknown block type $class");
+                break;
+        }
         parent::__construct($context, $registry, $formFactory, $data);
     }
 

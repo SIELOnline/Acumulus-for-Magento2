@@ -20,11 +20,28 @@ abstract class AbstractAcumulus extends Action
     /** @var \Siel\AcumulusMa2\Helper\Data */
     private $helper;
 
-    public function __construct(Context $context, PageFactory $resultPageFactory, Data $helper, $type)
+    public function __construct(Context $context, PageFactory $resultPageFactory, Data $helper)
     {
-        $this->type = $type;
         $this->helper = $helper;
         $this->resultPageFactory = $resultPageFactory;
+        $class = static::class;
+        if (strrpos($class, '\Interceptor') !== false) {
+            $class = substr($class, 0, -strlen('\Interceptor'));
+        }
+        switch ($class) {
+            case 'Siel\AcumulusMa2\Controller\Adminhtml\Config\Index':
+                $this->type = 'config';
+                break;
+            case 'Siel\AcumulusMa2\Controller\Adminhtml\Config\Advanced':
+                $this->type = 'advanced';
+                break;
+            case 'Siel\AcumulusMa2\Controller\Adminhtml\Batch\Index':
+                $this->type = 'batch';
+                break;
+            default:
+                $this->helper->getAcumulusContainer()->getLog()->error("Unknown controller type $class");
+                break;
+        }
         parent::__construct($context);
     }
 
@@ -65,6 +82,9 @@ abstract class AbstractAcumulus extends Action
             // Create the form first: this will load the translations.
             $form = $this->helper->getAcumulusContainer()->getForm($this->type);
             $form->process();
+            // Force the creation of the fields to get connection error messages
+            // added to the message manager.
+            $form->getFields();
             foreach ($form->getSuccessMessages() as $message) {
                 $this->messageManager->addSuccessMessage($message);
             }
