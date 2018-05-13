@@ -1,3 +1,11 @@
+.admin__collapsible-block-wrapper .admin__fieldset-wrapper-content {
+  display: none;
+}
+
+.admin__collapsible-block-wrapper.opened .admin__fieldset-wrapper-content.in {
+  display: block;
+}
+
 .admin__scope-old .form-inline .fieldset > .field > .label span {
   word-break: normal;
 }
