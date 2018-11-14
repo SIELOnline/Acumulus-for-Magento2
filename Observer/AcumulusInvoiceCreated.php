@@ -76,6 +76,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
 
         $this->supportPaycheckout($invoice, $invoiceSource);
         $this->supportSisow($invoice, $invoiceSource);
+        $this->supportMagecompPaymentfee($invoice, $invoiceSource);
 
         // Pass changes back to Acumulus.
         $observer->setData('invoice', $invoice);
@@ -181,6 +182,48 @@ class AcumulusInvoiceCreated implements ObserverInterface
                 $invoice['customer']['invoice'][Meta::InvoiceAmountInc] += $paymentInc;
                 $invoice['customer']['invoice'][Meta::InvoiceVatAmount] += $paymentVat;
             }
+        }
+    }
+
+    /**
+     * Adds support for the magecomp paymentfee module.
+     *
+     * The magecomp paymentfee module allows to add a payment fee to an order.
+     * If it does so, details are stored in columns/eav attributes:
+     * - base_mc_paymentfee_amount
+     * - base_mc_paymentfee_tax_amount
+     * - mc_paymentfee_description
+     * which the module adds to orders AND creditmemos.
+     *
+     * Looking at their code it seems that they do add their fee and tax to the
+     * totals, so code as in paycheckout and sisow support to change our invoice
+     * totals are not necessary. TBC!
+     *
+     * @see https://magecomp.com/magento-2-payment-fee.html
+     *
+     * @param array $invoice
+     * @param \Siel\Acumulus\Invoice\Source $invoiceSource
+     */
+    protected function supportMagecompPaymentfee(array &$invoice, Source $invoiceSource)
+    {
+        if ((float) $invoiceSource->getSource()->getBaseMcPaymentfeeAmount() !== 0.0) {
+            $sign = $invoiceSource->getType() === Source::CreditNote ? -1 : 1;
+            $paymentEx = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeAmount();
+            $paymentVat = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeTaxAmount();
+            $paymentInc = $paymentEx + $paymentVat;
+            $description = $invoiceSource->getSource()->getBaseMcPaymentfeeDescription();
+            $line = [
+                Tag::Product => $description ?: $this->helper->t('payment_costs'),
+                Tag::Quantity => 1,
+                Tag::UnitPrice => $paymentEx,
+                Meta::UnitPriceInc => $paymentInc,
+            ];
+            $line += Creator::getVatRangeTags($paymentVat, $paymentEx);
+            $line += [
+                Meta::FieldsCalculated => [Meta::UnitPriceInc],
+                Meta::LineType => Creator::LineType_PaymentFee,
+            ];
+            $invoice['customer']['invoice']['line'][] = $line;
         }
     }
 }
