@@ -2,12 +2,12 @@
     "name": "siel/acumulus-ma2",
     "description": "Integrates with your Siel Acumulus online administration",
     "type": "magento2-module",
-    "version": "5.5.0",
+    "version": "5.5.1",
     "license": [
         "GPL-3.0"
     ],
     "require": {
-        "siel/acumulus": "^5.5.0"
+        "siel/acumulus": "^5.5.1"
     },
     "autoload": {
         "files": [
