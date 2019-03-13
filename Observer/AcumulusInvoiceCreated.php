@@ -100,7 +100,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
     protected function supportPaycheckout(array &$invoice, Source $invoiceSource)
     {
         if ((float) $invoiceSource->getSource()->getBasePaycheckoutSurchargeAmount() !== 0.0) {
-            $sign = $invoiceSource->getType() === Source::CreditNote ? -1 : 1;
+            $sign = $invoiceSource->getSign();
             $paymentEx = (float) $sign * $invoiceSource->getSource()->getBasePaycheckoutSurchargeAmount();
             $paymentVat = (float) $sign * $invoiceSource->getSource()->getBasePaycheckoutSurchargeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
@@ -118,7 +118,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
             $invoice['customer']['invoice']['line'][] = $line;
 
             // Add these amounts to the invoice totals.
-            // @see \Siel\Acumulus\Magento\Invoice\Creator\getInvoiceTotals()
+            // @see \Siel\Acumulus\Magento\Invoice\Source\getAvailableTotals()
             $invoice['customer']['invoice'][Meta::InvoiceAmountInc] += $paymentInc;
             $invoice['customer']['invoice'][Meta::InvoiceVatAmount] += $paymentVat;
         }
@@ -207,7 +207,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
     protected function supportMagecompPaymentfee(array &$invoice, Source $invoiceSource)
     {
         if ((float) $invoiceSource->getSource()->getBaseMcPaymentfeeAmount() !== 0.0) {
-            $sign = $invoiceSource->getType() === Source::CreditNote ? -1 : 1;
+            $sign = $invoiceSource->getSign();
             $paymentEx = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeAmount();
             $paymentVat = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
