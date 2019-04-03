@@ -64,8 +64,6 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * @param \Magento\Framework\Event\Observer $observer
      *
      * @return void
-     *
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute(Observer $observer)
     {
@@ -141,8 +139,6 @@ class AcumulusInvoiceCreated implements ObserverInterface
      *
      * @param array $invoice
      * @param \Siel\Acumulus\Invoice\Source $invoiceSource
-     *
-     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function supportSisow(array &$invoice, Source $invoiceSource)
     {
