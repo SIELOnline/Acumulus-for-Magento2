@@ -2,22 +2,24 @@
 namespace Siel\AcumulusMa2\Observer;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Calculation;
+use Siel\Acumulus\Helpers\Number;
 use Siel\Acumulus\Invoice\Creator;
 use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Meta;
 use Siel\Acumulus\Tag;
 use Siel\AcumulusMa2\Helper\Data;
 
-/**
+/** @noinspection PhpUnused
+ *
  * Class AcumulusInvoiceCreated
  */
 class AcumulusInvoiceCreated implements ObserverInterface
 {
-
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -75,6 +77,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
         $this->supportPaycheckout($invoice, $invoiceSource);
         $this->supportSisow($invoice, $invoiceSource);
         $this->supportMagecompPaymentfee($invoice, $invoiceSource);
+        $this->supportFoomanSurchargePayment($invoice, $invoiceSource);
 
         // Pass changes back to Acumulus.
         $observer->setData('invoice', $invoice);
@@ -202,12 +205,66 @@ class AcumulusInvoiceCreated implements ObserverInterface
      */
     protected function supportMagecompPaymentfee(array &$invoice, Source $invoiceSource)
     {
-        if ((float) $invoiceSource->getSource()->getBaseMcPaymentfeeAmount() !== 0.0) {
+        if (!Number::isZero($invoiceSource->getSource()->getBaseMcPaymentfeeAmount())) {
             $sign = $invoiceSource->getSign();
             $paymentEx = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeAmount();
             $paymentVat = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $description = $invoiceSource->getSource()->getBaseMcPaymentfeeDescription();
+            $line = [
+                Tag::Product => $description ?: $this->helper->t('payment_costs'),
+                Tag::Quantity => 1,
+                Tag::UnitPrice => $paymentEx,
+                Meta::UnitPriceInc => $paymentInc,
+            ];
+            $line += Creator::getVatRangeTags($paymentVat, $paymentEx);
+            $line += [
+                Meta::FieldsCalculated => [Meta::UnitPriceInc],
+                Meta::LineType => Creator::LineType_PaymentFee,
+            ];
+            $invoice['customer']['invoice']['line'][] = $line;
+        }
+    }
+
+    /**
+     * Adds support for the Fooman surcharge payment module.
+     *
+     * The Fooman surcharge payment module allows to add a payment fee to an
+     * order and (a refund of it to) a credit memo.
+     * If it does so, details are stored in the table
+     * fooman_totals_quote_address, accessed via the
+     * Fooman\Totals\Model\ResourceModel\OrderTotal resource model.
+     *
+     * @see https://store.fooman.co.nz/magento-extension-payment-surcharge-m2.html
+     *
+     * @param array $invoice
+     * @param \Siel\Acumulus\Invoice\Source $invoiceSource
+     */
+    protected function supportFoomanSurchargePayment(array &$invoice, Source $invoiceSource)
+    {
+        // Is the module enabled?
+        if (!class_exists('Fooman\Totals\Model\OrderTotal')) {
+            return;
+        }
+
+        // Get the Fooman total object for the invoice source.
+        /** @var \Fooman\Totals\Model\OrderTotal $invoiceTotal */
+        if ($invoiceSource->getType() === Source::Order) {
+            /** @noinspection PhpFullyQualifiedNameUsageInspection */
+            $invoiceTotal = ObjectManager::getInstance()->create(\Fooman\Totals\Model\OrderTotal::class);
+        } else { //if ($invoiceSource->getType() === Source::CreditNote)
+            /** @noinspection PhpFullyQualifiedNameUsageInspection */
+            $invoiceTotal = ObjectManager::getInstance()->create(\Fooman\Totals\Model\CreditmemoTotal::class);
+        }
+        $invoiceTotal->getResource()->load($invoiceTotal, $invoiceSource->getId());
+
+        // Does the total object exist and does it contain a non-zero amount?
+        if (!Number::isZero($invoiceTotal->getBaseAmount())) {
+            $sign = $invoiceSource->getSign();
+            $paymentEx = (float) $sign * $invoiceTotal->getBaseAmount();
+            $paymentVat = (float) $sign * $invoiceTotal->getBaseTaxAmount();
+            $paymentInc = $paymentEx + $paymentVat;
+            $description = $invoiceTotal->getLabel();
             $line = [
                 Tag::Product => $description ?: $this->helper->t('payment_costs'),
                 Tag::Quantity => 1,
