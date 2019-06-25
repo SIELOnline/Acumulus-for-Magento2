@@ -252,11 +252,13 @@ class AcumulusInvoiceCreated implements ObserverInterface
         if ($invoiceSource->getType() === Source::Order) {
             /** @noinspection PhpFullyQualifiedNameUsageInspection */
             $invoiceTotal = ObjectManager::getInstance()->create(\Fooman\Totals\Model\OrderTotal::class);
+            $field = 'order_id';
         } else { //if ($invoiceSource->getType() === Source::CreditNote)
             /** @noinspection PhpFullyQualifiedNameUsageInspection */
             $invoiceTotal = ObjectManager::getInstance()->create(\Fooman\Totals\Model\CreditmemoTotal::class);
+            $field = 'creditmemo_id';
         }
-        $invoiceTotal->getResource()->load($invoiceTotal, $invoiceSource->getId());
+        $invoiceTotal->getResource()->load($invoiceTotal, $invoiceSource->getId(), $field);
 
         // Does the total object exist and does it contain a non-zero amount?
         if (!Number::isZero($invoiceTotal->getBaseAmount())) {
