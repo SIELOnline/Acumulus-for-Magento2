@@ -46,6 +46,9 @@ abstract class AbstractAcumulus extends Generic
     ) {
         $this->helper = $helper;
         $class = static::class;
+        if (strrpos($class, '\Interceptor') !== false) {
+            $class = substr($class, 0, -strlen('\Interceptor'));
+        }
         switch ($class) {
             case 'Siel\AcumulusMa2\Block\Adminhtml\Config\Form':
                 $this->type = 'config';
