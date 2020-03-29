@@ -2,31 +2,18 @@
 namespace Siel\AcumulusMa2\Block\Adminhtml;
 
 use Magento\Backend\Block\Template\Context;
-use Magento\Framework\Message\ManagerInterface;
+use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Siel\AcumulusMa2\Helper\Data;
-use Magento\Backend\Block\Widget\Form\Generic;
+use Siel\AcumulusMa2\Helper\HelperTrait;
 
 /**
  * Base block for rendering Acumulus forms.
  */
 abstract class AbstractAcumulus extends Generic
 {
-    /**
-     * @var string
-     */
-    private $type = '';
-
-    /**
-     * @var \Siel\AcumulusMa2\Helper\Data
-     */
-    private $helper;
-
-    /**
-     * @var \Siel\Acumulus\Helpers\Form
-     */
-    private $acumulusForm;
+    use HelperTrait;
 
     /**
      * Form constructor.
@@ -45,51 +32,8 @@ abstract class AbstractAcumulus extends Generic
         array $data = []
     ) {
         $this->helper = $helper;
-        $class = static::class;
-        if (strrpos($class, '\Interceptor') !== false) {
-            $class = substr($class, 0, -strlen('\Interceptor'));
-        }
-        switch ($class) {
-            case 'Siel\AcumulusMa2\Block\Adminhtml\Config\Form':
-                $this->type = 'config';
-                break;
-            case 'Siel\AcumulusMa2\Block\Adminhtml\Config\AdvancedForm':
-                $this->type = 'advanced';
-                break;
-            case 'Siel\AcumulusMa2\Block\Adminhtml\Batch\Form':
-                $this->type = 'batch';
-                break;
-            default:
-                $this->helper->getAcumulusContainer()->getLog()->error("Unknown block type $class");
-                break;
-        }
+        $this->setFormType();
         parent::__construct($context, $registry, $formFactory, $data);
-    }
-
-    /**
-     * @return \Siel\Acumulus\Helpers\Form
-     */
-    public function getAcumulusForm()
-    {
-        if (!$this->acumulusForm) {
-            $this->acumulusForm = $this->helper->getAcumulusContainer()->getForm($this->type);
-        }
-        return $this->acumulusForm;
-    }
-
-    /**
-     * Helper method to translate strings.
-     *
-     * @param string $key
-     *  The key to get a translation for.
-     *
-     * @return string
-     *   The translation for the given key or the key itself if no translation
-     *   could be found.
-     */
-    protected function t($key)
-    {
-        return $this->helper->t($key);
     }
 
     /**
@@ -106,14 +50,13 @@ abstract class AbstractAcumulus extends Generic
         );
         // Populate the form using the FormMapper.
         /** @var \siel\Acumulus\Magento\Helpers\FormMapper $mapper */
-        $mapper = $this->helper->getAcumulusContainer()->getFormMapper();
+        $mapper = $this->getAcumulusContainer()->getFormMapper();
         $mapper->setMagentoForm($form)->map($this->getAcumulusForm());
 
         // setUseContainer(true) makes the save button work ...
         /** @noinspection PhpUndefinedMethodInspection */
         $form->setUseContainer(true);
         $this->setForm($form);
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return parent::_prepareForm();
     }
 
@@ -125,7 +68,6 @@ abstract class AbstractAcumulus extends Generic
     protected function _initFormValues()
     {
         $this->getForm()->addValues($this->getAcumulusForm()->getFormValues());
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return parent::_initFormValues();
     }
 
@@ -137,7 +79,6 @@ abstract class AbstractAcumulus extends Generic
         // Ensure translations are loaded.
         $this->getAcumulusForm();
 
-        /** @noinspection PhpUndefinedMethodInspection */
         $this->getToolbar()->addChild(
             'back_button',
             'Magento\Backend\Block\Widget\Button',
@@ -147,7 +88,6 @@ abstract class AbstractAcumulus extends Generic
                 'class' => 'action-back'
             ]
         );
-        /** @noinspection PhpUndefinedMethodInspection */
         $this->getToolbar()->addChild(
             'save_button',
             'Magento\Backend\Block\Widget\Button',
