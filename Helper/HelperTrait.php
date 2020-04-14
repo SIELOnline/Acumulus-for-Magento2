@@ -91,7 +91,7 @@ trait HelperTrait
         if (end($classParts) === 'Index' || end($classParts) === 'Form') {
             array_pop($classParts);
         } elseif (substr(end($classParts), -strlen('Form')) === 'Form') {
-            array_push($classParts, substr(array_pop($classParts), -strlen('Form')));
+            array_push($classParts, substr(array_pop($classParts), 0, -strlen('Form')));
         }
 
         $class = implode('\\', $classParts);
