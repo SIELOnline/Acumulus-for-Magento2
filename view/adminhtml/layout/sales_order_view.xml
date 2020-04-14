@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+  <head>
+    <css src="Siel_AcumulusMa2::css/acumulus-status-overview.css"/>
+    <script src="Siel_AcumulusMa2::js/acumulus-ajax-bootstrap.js"/>
+  </head>
+  <body>
+    <referenceContainer name="left">
+      <referenceBlock name="sales_order_tabs">
+        <action method="addTab">
+          <argument name="name" xsi:type="string">Acumulus</argument>
+          <argument name="block" xsi:type="string">Siel\AcumulusMa2\Block\Adminhtml\Order\Status</argument>
+        </action>
+      </referenceBlock>
+    </referenceContainer>
+  </body>
+</page>

@@ -106,8 +106,7 @@ trait HelperTrait
                 $this->formType = 'batch';
                 break;
             case 'Order\Status':
-                // @todo: this is temporary.
-                $this->formType = 'batch';
+                $this->formType = 'invoice';
                 break;
             default:
                 $this->getAcumulusContainer()->getLog()->error("Unknown $classType type $class");

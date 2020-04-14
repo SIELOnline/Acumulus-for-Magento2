@@ -51,7 +51,7 @@ abstract class AbstractAcumulus extends Action
     {
         try {
             // Create the form first: this will load the translations.
-            $form = $this->getAcumulusContainer()->getForm($this->getFormType() === 'invoice' ? 'batch' : $this->getFormType());
+            $form = $this->getAcumulusForm();
             $form->process();
             // Force the creation of the fields to get connection error messages
             // added to the message manager.
