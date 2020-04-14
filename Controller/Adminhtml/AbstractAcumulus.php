@@ -10,6 +10,9 @@ use Siel\AcumulusMa2\Helper\HelperTrait;
 
 /**
  * Base Acumulus config controller.
+ *
+ * Note that the Siel\AcumulusMa2\Controller\Adminhtml\Order\Status controller
+ * does not derive from this base class, as that handles a tab, not a full page.
  */
 abstract class AbstractAcumulus extends Action
 {
@@ -71,8 +74,8 @@ abstract class AbstractAcumulus extends Action
 
         // To get the messages on the result page, I had to move these lines
         // below the form handling.
-        $this->_setActiveMenu('Siel_Acumulus::acumulus_' . $this->getFormType());
         $page = $this->resultPageFactory->create();
+        $this->_setActiveMenu('Siel_Acumulus::acumulus_' . $this->getFormType());
         $page->getConfig()->getTitle()->prepend($this->t($this->getFormType() . '_form_header'));
 
         return $page;
