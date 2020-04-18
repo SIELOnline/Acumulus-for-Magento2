@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
   <head>
-    <css src="Siel_AcumulusMa2::css/acumulus-status-overview.css"/>
+    <css src="Siel_AcumulusMa2::css/acumulus.css"/>
     <script src="Siel_AcumulusMa2::js/acumulus-ajax-bootstrap.js"/>
   </head>
   <body>
