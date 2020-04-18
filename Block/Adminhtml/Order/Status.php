@@ -2,25 +2,16 @@
 
 namespace Siel\AcumulusMa2\Block\Adminhtml\Order;
 
-use Magento\Backend\Block\Template;
+use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Framework\Data\FormFactory;
-use Magento\Framework\Registry;
-use Siel\Acumulus\Invoice\Source;
 use Siel\AcumulusMa2\Helper\Data;
 use Siel\AcumulusMa2\Helper\HelperTrait;
 
-class Status extends Template implements TabInterface
+class Status extends AbstractBlock implements TabInterface
 {
     use HelperTrait;
-
-    /**
-     * Core registry.
-     *
-     * @var \Magento\Framework\Registry
-     */
-    protected $coreRegistry = null;
 
     /**
      * @var \Magento\Framework\Data\FormFactory
@@ -34,19 +25,16 @@ class Status extends Template implements TabInterface
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
-     * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Data\FormFactory $formFactory
      * @param \Siel\AcumulusMa2\Helper\Data $helper
      * @param array $data
      */
     public function __construct(
         Context $context,
-        Registry $registry,
         FormFactory $formFactory,
         Data $helper,
         array $data = []
     ) {
-        $this->coreRegistry = $registry;
         $this->formFactory = $formFactory;
         $this->helper = $helper;
         $this->setFormType();
@@ -56,16 +44,6 @@ class Status extends Template implements TabInterface
         $this->acumulusForm = $this->getAcumulusForm();
 
         parent::__construct($context, $data);
-    }
-
-    /**
-     * Retrieve order model instance.
-     *
-     * @return \Magento\Sales\Model\Order
-     */
-    public function getOrder()
-    {
-        return $this->coreRegistry->registry('current_order');
     }
 
     /**
@@ -175,7 +153,7 @@ class Status extends Template implements TabInterface
      *
      * @return string
      */
-    public function showNotices($form) {
+    private function showNotices($form) {
         $output = '';
         if (isset($form)) {
             foreach ($form->getErrorMessages() as $message) {

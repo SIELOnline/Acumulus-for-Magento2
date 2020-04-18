@@ -11,7 +11,7 @@ use Siel\AcumulusMa2\Helper\HelperTrait;
 /**
  * Base block for rendering Acumulus forms.
  */
-abstract class AbstractAcumulus extends Generic
+abstract class AbstractAcumulusPage extends Generic
 {
     use HelperTrait;
 
