@@ -5,16 +5,14 @@ use Magento\Backend\App\Action;
 use Magento\Framework\Controller\Result\RawFactory;
 use Magento\Framework\View\LayoutFactory as ViewLayoutFactory;
 use Siel\Acumulus\Invoice\Source;
+use Siel\AcumulusMa2\Controller\Adminhtml\AbstractAcumulus;
 use Siel\AcumulusMa2\Helper\Data;
-use Siel\AcumulusMa2\Helper\HelperTrait;
 
 /**
  * Acumulus order/status controller.
  */
-class Status extends Action
+class Status extends AbstractAcumulus
 {
-    use HelperTrait;
-
     /**
      * @var \Magento\Framework\View\LayoutFactory
      */
@@ -30,9 +28,6 @@ class Status extends Action
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Framework\View\LayoutFactory $layoutFactory
      * @param \Siel\AcumulusMa2\Helper\Data $helper
-     *
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
-     * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
      */
     public function __construct(
         Action\Context $context,
@@ -42,9 +37,7 @@ class Status extends Action
     ) {
         $this->layoutFactory = $layoutFactory;
         $this->resultRawFactory = $resultRawFactory;
-        $this->helper = $helper;
-        $this->setFormType();
-        parent::__construct($context);
+        parent::__construct($context, $helper);
     }
 
     /**
@@ -71,7 +64,6 @@ class Status extends Action
         $source = $this->getAcumulusContainer()->getSource(Source::Order, $id);
         $acumulusForm->setSource($source);
         $acumulusForm->process();
-        // Yes, this is the same block class that we defined in sales_order_view.xml
         $html = $this->layoutFactory->create()->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Order\Status')->toHtml();
         $resultRaw = $this->resultRawFactory->create();
         $resultRaw->setContents($html);

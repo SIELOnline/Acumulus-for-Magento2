@@ -1,11 +1,11 @@
 <?php
 namespace Siel\AcumulusMa2\Controller\Adminhtml\Batch;
 
-use Siel\AcumulusMa2\Controller\Adminhtml\AbstractAcumulus;
+use Siel\AcumulusMa2\Controller\Adminhtml\AbstractAcumulusPage;
 
 /**
  * Acumulus batch controller.
  */
-class Index extends AbstractAcumulus
+class Index extends AbstractAcumulusPage
 {
 }
