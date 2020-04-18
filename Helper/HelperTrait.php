@@ -108,6 +108,9 @@ trait HelperTrait
             case 'Order\Status':
                 $this->formType = 'invoice';
                 break;
+            case 'Plugin\Rate':
+                $this->formType = 'rate';
+                break;
             default:
                 $this->getAcumulusContainer()->getLog()->error("Unknown $classType type $class");
                 break;

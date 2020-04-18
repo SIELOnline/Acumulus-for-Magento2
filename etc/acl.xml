@@ -6,7 +6,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_other_settings">
                         <resource id="Siel_Acumulus::config" title="Acumulus Config" sortOrder="900" />
-                        <resource id="Siel_Acumulus::batch" title="Acumulus Send Batch" sortOrder="910" />
+                        <resource id="Siel_Acumulus::batch" title="Acumulus Send (Single or Batch)" sortOrder="910" />
                     </resource>
                 </resource>
             </resource>
