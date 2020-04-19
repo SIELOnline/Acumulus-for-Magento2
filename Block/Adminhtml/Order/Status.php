@@ -24,6 +24,11 @@ class Status extends AbstractBlock implements TabInterface
     protected $_formKeyValidator;
 
     /**
+     * @var bool
+     */
+    protected $hasAuthorization;
+
+    /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Data\FormFactory $formFactory
      * @param \Siel\AcumulusMa2\Helper\Data $helper
@@ -36,9 +41,9 @@ class Status extends AbstractBlock implements TabInterface
         array $data = []
     ) {
         $this->formFactory = $formFactory;
+        $this->hasAuthorization = $context->getAuthorization()->isAllowed('Siel_Acumulus::batch');
         $this->helper = $helper;
         $this->setFormType();
-
         // Create the form first: this will load the translations.
         /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
         $this->acumulusForm = $this->getAcumulusForm();
@@ -67,8 +72,7 @@ class Status extends AbstractBlock implements TabInterface
      */
     public function canShowTab()
     {
-        // @nth: We could use ACL settings to selectively show later.
-        return true;
+        return $this->hasAuthorization && $this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus'];
     }
 
     /**
@@ -76,8 +80,7 @@ class Status extends AbstractBlock implements TabInterface
      */
     public function isHidden()
     {
-        // Always show the tab.
-        return false;
+        return !$this->canShowTab();
     }
 
     /**
@@ -117,31 +120,35 @@ class Status extends AbstractBlock implements TabInterface
      */
     protected function _toHtml()
     {
-        // Create the form first: this will load the translations.
-        /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
-        $acumulusForm = $this->getAcumulusForm();
         $output = '';
-        if ($acumulusForm->hasSource()) {
-            $form = $this->formFactory->create(
-                ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
-            );
-            // Populate the form using the FormMapper.
-            /** @var \siel\Acumulus\Magento\Helpers\FormMapper $mapper */
-            $mapper = $this->getAcumulusContainer()->getFormMapper();
-            $mapper->setMagentoForm($form)->map($acumulusForm);
-            /** @noinspection PhpUndefinedMethodInspection */
-            $form->setUseContainer(false);
-            $form->addValues($this->getAcumulusForm()->getFormValues());
-            $url = $this->getUrl('acumulus/order/status', ['_current' => true]);
-            $wait = $this->t('wait');
-            $output .= '<div id="acumulus-invoice-status-overview" class="acumulus-area" data-acumulus-wait="' . $wait . '" data-acumulus-url="' . $url . '">';
-            $output .= $this->showNotices($acumulusForm);
-            $output .= '<div class="admin__page-section-title"><span class="title">' . $this->getTabTitle() . '</span></div>';
-            $output .= $form->getHtml();
-            $output .= '</div>';
-            $output .= '';
+        if ($this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
+            // Create the form first: this will load the translations.
+            /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
+            $acumulusForm = $this->getAcumulusForm();
+            if ($acumulusForm->hasSource()) {
+                $form = $this->formFactory->create(
+                    ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
+                );
+                // Populate the form using the FormMapper.
+                /** @var \siel\Acumulus\Magento\Helpers\FormMapper $mapper */
+                $mapper = $this->getAcumulusContainer()->getFormMapper();
+                $mapper->setMagentoForm($form)->map($acumulusForm);
+                /** @noinspection PhpUndefinedMethodInspection */
+                $form->setUseContainer(false);
+                $form->addValues($this->getAcumulusForm()->getFormValues());
+                $url = $this->getUrl('acumulus/order/status', ['_current' => true]);
+                $wait = $this->t('wait');
+                $output .= '<div id="acumulus-invoice-status-overview" class="acumulus-area" data-acumulus-wait="' . $wait . '" data-acumulus-url="' . $url . '">';
+                $output .= $this->showNotices($acumulusForm);
+                $output .= '<div class="admin__page-section-title"><span class="title">' . $this->getTabTitle() . '</span></div>';
+                $output .= $form->getHtml();
+                $output .= '</div>';
+                $output .= '';
+            } else {
+                $output .= '<div>Unknown source</div>';
+            }
         } else {
-            $output .= '<div>Unknown source</div>';
+            $output .= '<div>Not enabled</div>';
         }
         return $output;
     }

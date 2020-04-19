@@ -57,17 +57,21 @@ class Status extends AbstractAcumulus
      */
     public function execute()
     {
-        // Create the form first: this will load the translations.
-        /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
-        $acumulusForm = $this->getAcumulusForm();
-        $id = $this->getRequest()->getParam('order_id');
-        $source = $this->getAcumulusContainer()->getSource(Source::Order, $id);
-        $acumulusForm->setSource($source);
-        $acumulusForm->process();
-        $html = $this->layoutFactory->create()->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Order\Status')->toHtml();
+        if ($this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
+            // Create the form first: this will load the translations.
+            /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
+            $acumulusForm = $this->getAcumulusForm();
+            $id = $this->getRequest()->getParam('order_id');
+            $source = $this->getAcumulusContainer()->getSource(Source::Order, $id);
+            $acumulusForm->setSource($source);
+            $acumulusForm->process();
+            $html = $this->layoutFactory->create()->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Order\Status')->toHtml();
+        } else {
+            $html = '<div>Not enabled</div>';
+        }
+
         $resultRaw = $this->resultRawFactory->create();
         $resultRaw->setContents($html);
-
         return $resultRaw;
     }
 }
