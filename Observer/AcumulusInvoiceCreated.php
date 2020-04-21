@@ -1,4 +1,5 @@
 <?php
+
 namespace Siel\AcumulusMa2\Observer;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -16,10 +17,19 @@ use Siel\AcumulusMa2\Helper\Data;
 
 /** @noinspection PhpUnused
  *
- * Class AcumulusInvoiceCreated
+ * Siel Acumulus invoice created observer reacts on our own "invoice create"
+ * event to add support for specific modules that we do not want in our base
+ * code.
+ *
+ * Modules supported:
+ * - Pay Checkout
+ * - Sisow
+ * - Magecomp Payment Fee
+ * - Fooman Surcharge
  */
 class AcumulusInvoiceCreated implements ObserverInterface
 {
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -106,16 +116,16 @@ class AcumulusInvoiceCreated implements ObserverInterface
             $paymentVat = (float) $sign * $invoiceSource->getSource()->getBasePaycheckoutSurchargeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $line = [
-                        Tag::Product => $this->helper->t('payment_costs'),
-                        Tag::Quantity => 1,
-                        Tag::UnitPrice => $paymentEx,
-                        Meta::UnitPriceInc => $paymentInc,
-                    ];
+                Tag::Product => $this->helper->t('payment_costs'),
+                Tag::Quantity => 1,
+                Tag::UnitPrice => $paymentEx,
+                Meta::UnitPriceInc => $paymentInc,
+            ];
             $line += Creator::getVatRangeTags($paymentVat, $paymentEx);
             $line += [
-                        Meta::FieldsCalculated => [Meta::UnitPriceInc],
-                        Meta::LineType => Creator::LineType_PaymentFee,
-                     ];
+                Meta::FieldsCalculated => [Meta::UnitPriceInc],
+                Meta::LineType => Creator::LineType_PaymentFee,
+            ];
             $invoice['customer']['invoice']['line'][] = $line;
 
             // Add these amounts to the invoice totals.
@@ -156,7 +166,12 @@ class AcumulusInvoiceCreated implements ObserverInterface
                 // Get vat.
                 // @todo: $order->getCustomerClassId() can that be set?
                 /** @noinspection PhpUndefinedMethodInspection */
-                $request = $this->taxCalculation->getRateRequest($order->getShippingAddress(), $order->getBillingAddress(), $order->getCustomerClassId(), null, $order->getCustomerId());
+                $request = $this->taxCalculation->getRateRequest(
+                    $order->getShippingAddress(),
+                    $order->getBillingAddress(),
+                    $order->getCustomerClassId(),
+                    null,
+                    $order->getCustomerId());
                 /** @noinspection PhpUndefinedMethodInspection */
                 $request->setProductClassId($this->scopeConfig->getValue('sisow/general/feetaxclass', ScopeInterface::SCOPE_STORE));
                 $paymentVatRate = $this->taxCalculation->getRate($request);

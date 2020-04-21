@@ -72,7 +72,8 @@ class Status extends AbstractBlock implements TabInterface
      */
     public function canShowTab()
     {
-        return $this->hasAuthorization && $this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus'];
+        return $this->hasAuthorization
+               && $this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus'];
     }
 
     /**
@@ -160,7 +161,8 @@ class Status extends AbstractBlock implements TabInterface
      *
      * @return string
      */
-    private function showNotices($form) {
+    private function showNotices($form)
+    {
         $output = '';
         if (isset($form)) {
             foreach ($form->getErrorMessages() as $message) {

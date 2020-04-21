@@ -67,7 +67,7 @@ trait HelperTrait
      * - Forms may end with a non-descript 'Form' or the last part may end with.
      *   'Form'.
      */
-    protected function setFormType(): void
+    protected function setFormType()
     {
         $classType = 'class';
         $class = static::class;
@@ -122,7 +122,7 @@ trait HelperTrait
      *
      * @return string
      */
-    public function getFormType(): string
+    public function getFormType()
     {
         return $this->formType;
     }

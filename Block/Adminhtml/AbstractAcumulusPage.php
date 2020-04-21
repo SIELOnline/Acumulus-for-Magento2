@@ -2,6 +2,7 @@
 namespace Siel\AcumulusMa2\Block\Adminhtml;
 
 use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Block\Widget\Button as Button;
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
@@ -81,7 +82,7 @@ abstract class AbstractAcumulusPage extends Generic
 
         $this->getToolbar()->addChild(
             'back_button',
-            'Magento\Backend\Block\Widget\Button',
+            Button::class,
             [
                 'label' => $this->t('button_cancel'),
                 'onclick' => "window.location.href = '" . $this->getUrl('admin/dashboard') . "'",
@@ -90,7 +91,7 @@ abstract class AbstractAcumulusPage extends Generic
         );
         $this->getToolbar()->addChild(
             'save_button',
-            'Magento\Backend\Block\Widget\Button',
+            Button::class,
             [
                 'label' => $this->t('button_save'),
                 'class' => 'save primary',

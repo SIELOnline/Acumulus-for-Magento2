@@ -58,7 +58,6 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
                 $this->messageManager->addComplexNoticeMessage('rate_plugin', ['message' => $html]);
             }
 
-
             // Create the form first: this will load the translations.
             $form = $this->getAcumulusForm();
             $form->process();

@@ -7,7 +7,7 @@ use Siel\Acumulus\Invoice\Source;
 use Siel\AcumulusMa2\Helper\Data;
 
 /**
- * Siel Acumulus save order observer
+ * Siel Acumulus save order observer.
  */
 class SalesOrderCreditmemoSaveAfter implements ObserverInterface
 {
