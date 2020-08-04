@@ -17,13 +17,51 @@
   display: none;
 }
 
-#acumulus-invoice-status-overview fieldset {
-  border: none;
+.admin__fieldset legend {
+  margin-top: 1em;
+}
+
+.admin__fieldset details {
+  border: solid 1px #adadad;
+  padding: 1em;
+  margin: 0.5em 0 1em 0;
+}
+
+.admin__fieldset details summary {
+  font-weight: bold;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.admin__fieldset details summary:after {
+  position: absolute;
+  right: 1.3rem;
+  top: 0.3rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  /*noinspection CssNoGenericFontName*/
+  font-family: 'Admin Icons';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+}
+
+.admin__fieldset details[open] summary:after {
+  content: '\e615';
+}
+
+.admin__fieldset details:not([open]) summary:after {
+  content: '\e616';
 }
 
 /*
  * Acumulus invoice status tab.
  */
+#acumulus-invoice-status-overview fieldset {
+  border: none;
+}
+
 #acumulus-invoice-status-overview .notice {
   border-style: solid;
   border-width: 1px 1px 1px 4px;
@@ -155,4 +193,41 @@ label[for$="_payment_date"] span::after {
 
 #acumulus-rate-plugin input {
   margin: 0 1em;
+}
+
+/*
+ * Acumulus info block
+ */
+[id$="Information"] h3 {
+  font-size: 1.8rem;
+  margin-top: -18px;
+  margin-bottom: 0;
+}
+
+[id$="Information"] ul {
+  list-style-position: outside;
+  list-style-type: initial;
+  margin: 0.8em 0 0 1em;
+}
+
+[id$="Information"] ul li {
+  margin-left: 1em;
+  margin-bottom: 0.33em;
+}
+
+/*
+ * Acumulus registration form
+ */
+#introHeader .admin__field-control {
+  min-width: 810px;
+}
+
+label[for=intro] {
+  float: left;
+  width: 150px;
+}
+
+#intro {
+  display: inline;
+  margin: 1em;
 }

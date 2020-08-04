@@ -5,6 +5,8 @@ use Exception;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\LayoutFactory as ViewLayoutFactory;
 use Magento\Framework\View\Result\PageFactory;
+use Siel\Acumulus\Helpers\Message;
+use Siel\Acumulus\Helpers\Severity;
 use Siel\AcumulusMa2\Helper\Data;
 
 /**
@@ -51,11 +53,13 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
     {
         try {
             // Notice about rating our plugin.
-            $value = $this->getAcumulusContainer()->getConfig()->getShowRatePluginMessage();
-            $time = time();
-            if ($time >= $value) {
-                $html = $this->layoutFactory->create()->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Plugin\Rate')->toHtml();
-                $this->messageManager->addComplexNoticeMessage('rate_plugin', ['message' => $html]);
+            if ($this->getFormType() !== 'registration') {
+                $value = $this->getAcumulusContainer()->getConfig()->getShowRatePluginMessage();
+                $time = time();
+                if ($time >= $value) {
+                    $html = $this->layoutFactory->create()->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Plugin\Rate')->toHtml();
+                    $this->messageManager->addComplexNoticeMessage('rate_plugin', ['message' => $html]);
+                }
             }
 
             // Create the form first: this will load the translations.
@@ -64,23 +68,38 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
             // Force the creation of the fields to get connection error messages
             // added to the message manager.
             $form->getFields();
-            foreach ($form->getSuccessMessages() as $message) {
-                $this->messageManager->addSuccessMessage($message);
-            }
-            foreach ($form->getWarningMessages() as $message) {
-                $this->messageManager->addWarningMessage($message);
-            }
-            foreach ($form->getErrorMessages() as $message) {
-                $this->messageManager->addErrorMessage($message);
+            foreach ($form->getMessages(Severity::RealMessages) as $message) {
+                switch ($message->getSeverity()) {
+                    case Severity::Success:
+                        $this->messageManager->addSuccessMessage($message->format(Message::Format_PlainWithSeverity));
+                        break;
+                    case Severity::Info:
+                    case Severity::Notice:
+                        $this->messageManager->addNoticeMessage($message->format(Message::Format_PlainWithSeverity));
+                        break;
+                    case Severity::Warning:
+                        $this->messageManager->addWarningMessage($message->format(Message::Format_PlainWithSeverity));
+                        break;
+                    case Severity::Error:
+                        $this->messageManager->addErrorMessage($message->format(Message::Format_PlainWithSeverity));
+                        break;
+                    case Severity::Exception:
+                        $this->messageManager->addExceptionMessage($message->getException());
+                        break;
+                    default:
+                        break;
+                }
             }
         } catch (Exception $e) {
-            $this->messageManager->addExceptionMessage($e, $e->getMessage());
+            $this->messageManager->addExceptionMessage($e);
         }
 
         // To get the messages on the result page, I had to move these lines
         // below the form handling.
         $page = $this->resultPageFactory->create();
-        $this->_setActiveMenu('Siel_Acumulus::acumulus_' . $this->getFormType());
+        if ($this->getFormType() !== 'registration') {
+            $this->_setActiveMenu('Siel_Acumulus::acumulus_' . $this->getFormType());
+        }
         $page->getConfig()->getTitle()->prepend($this->t($this->getFormType() . '_form_header'));
 
         return $page;

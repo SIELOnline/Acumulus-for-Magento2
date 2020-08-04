@@ -6,6 +6,8 @@ use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Framework\Data\FormFactory;
+use Siel\Acumulus\Helpers\Message;
+use Siel\Acumulus\Helpers\Severity;
 use Siel\AcumulusMa2\Helper\Data;
 use Siel\AcumulusMa2\Helper\HelperTrait;
 
@@ -165,17 +167,42 @@ class Status extends AbstractBlock implements TabInterface
     {
         $output = '';
         if (isset($form)) {
-            foreach ($form->getErrorMessages() as $message) {
-                $output .= $this->renderNotice($message, 'error');
-            }
-            foreach ($form->getWarningMessages() as $message) {
-                $output .= $this->renderNotice($message, 'warning');
-            }
-            foreach ($form->getSuccessMessages() as $message) {
-                $output .= $this->renderNotice($message, 'success');
+            foreach ($form->getMessages() as $message) {
+                $output .= $this->renderNotice($message->format(Message::Format_PlainWithSeverity), $this->SeverityToNoticeClass($message->getSeverity()));
             }
         }
         return $output;
+    }
+
+    /**
+     * Converts a Severity constant into a notice class.
+     *
+     * @param int $severity
+     *
+     * @return string
+     *
+     */
+    private function SeverityToNoticeClass($severity) {
+        switch ($severity) {
+            case Severity::Success:
+                $class = 'success';
+                break;
+            case Severity::Info:
+            case Severity::Notice:
+                $class = 'info';
+                break;
+            case Severity::Warning:
+                $class = 'warning';
+                break;
+            case Severity::Error:
+            case Severity::Exception:
+                $class = 'error';
+                break;
+            default:
+                $class = '';
+                break;
+        }
+        return $class;
     }
 
     /**

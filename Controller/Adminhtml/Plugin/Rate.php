@@ -40,16 +40,6 @@ class Rate extends AbstractAcumulus
     }
 
     /**
-     * @return bool
-     */
-    protected function isValidPostRequest()
-    {
-        $formKeyIsValid = $this->_formKeyValidator->validate($this->getRequest());
-        $isPost = $this->getRequest()->isPost();
-        return ($formKeyIsValid && $isPost);
-    }
-
-    /**
      * Generate order status overview for ajax request.
      *
      * @return \Magento\Framework\Controller\Result\Raw

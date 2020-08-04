@@ -96,6 +96,9 @@ trait HelperTrait
 
         $class = implode('\\', $classParts);
         switch ($class) {
+            case 'Registration':
+                $this->formType = 'registration';
+                break;
             case 'Config':
                 $this->formType = 'config';
                 break;
