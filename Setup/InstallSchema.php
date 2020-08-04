@@ -60,7 +60,6 @@ class InstallSchema implements InstallSchemaInterface
                 ['unsigned' => true, 'nullable' => false],
                 'Magento invoice source id'
             )->addColumn(
-
                 'created',
                 Table::TYPE_TIMESTAMP,
                 null,
@@ -75,7 +74,7 @@ class InstallSchema implements InstallSchemaInterface
             )->addIndex(
                 'siel_acumulus_entry_id',
                 'entry_id',
-                ['type' => AdapterInterface::INDEX_TYPE_UNIQUE]
+                ['type' => AdapterInterface::INDEX_TYPE_INDEX]
             )->addIndex(
                 'siel_acumulus_source',
                 ['source_type', 'source_id'],
