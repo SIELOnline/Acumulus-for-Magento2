@@ -26,7 +26,6 @@ class SalesOrderCreditmemoSaveAfter implements ObserverInterface
         $this->helper = $helper;
     }
 
-    /** @noinspection PhpDocMissingThrowsInspection */
     /**
      * Forwards the Magento save order event to the Acumulus Invoice Manager.
      *
@@ -39,7 +38,6 @@ class SalesOrderCreditmemoSaveAfter implements ObserverInterface
         $event = $observer->getEvent();
         /** @var \Magento\Sales\Model\Order\Creditmemo $creditMemo */
         /** @noinspection PhpUndefinedMethodInspection */
-        /** @noinspection PhpUnhandledExceptionInspection */
         $creditMemo = $event->getCreditmemo();
         $source = $this->helper->getAcumulusContainer()->getSource(Source::CreditNote, $creditMemo);
         $this->helper->getAcumulusContainer()->getInvoiceManager()->sourceStatusChange($source);

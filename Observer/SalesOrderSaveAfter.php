@@ -26,7 +26,6 @@ class SalesOrderSaveAfter implements ObserverInterface
         $this->helper = $helper;
     }
 
-    /** @noinspection PhpDocMissingThrowsInspection */
     /**
      * Forwards the Magento save order event to the Acumulus Invoice Manager.
      *
@@ -39,7 +38,6 @@ class SalesOrderSaveAfter implements ObserverInterface
         $event = $observer->getEvent();
         /** @var \Magento\Sales\Model\Order $order */
         /** @noinspection PhpUndefinedMethodInspection */
-        /** @noinspection PhpUnhandledExceptionInspection */
         $order = $event->getOrder();
         $source = $this->helper->getAcumulusContainer()->getSource(Source::Order, $order);
         $this->helper->getAcumulusContainer()->getInvoiceManager()->sourceStatusChange($source);

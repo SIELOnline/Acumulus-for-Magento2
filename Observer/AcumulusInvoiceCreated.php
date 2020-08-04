@@ -226,18 +226,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
             $paymentVat = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $description = $invoiceSource->getSource()->getBaseMcPaymentfeeDescription();
-            $line = [
-                Tag::Product => $description ?: $this->helper->t('payment_costs'),
-                Tag::Quantity => 1,
-                Tag::UnitPrice => $paymentEx,
-                Meta::UnitPriceInc => $paymentInc,
-            ];
-            $line += Creator::getVatRangeTags($paymentVat, $paymentEx);
-            $line += [
-                Meta::FieldsCalculated => [Meta::UnitPriceInc],
-                Meta::LineType => Creator::LineType_PaymentFee,
-            ];
-            $invoice['customer']['invoice']['line'][] = $line;
+            $invoice['customer']['invoice']['line'][] = $this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description);
         }
     }
 
@@ -282,18 +271,34 @@ class AcumulusInvoiceCreated implements ObserverInterface
             $paymentVat = (float) $sign * $invoiceTotal->getBaseTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $description = $invoiceTotal->getLabel();
-            $line = [
-                Tag::Product => $description ?: $this->helper->t('payment_costs'),
-                Tag::Quantity => 1,
-                Tag::UnitPrice => $paymentEx,
-                Meta::UnitPriceInc => $paymentInc,
-            ];
-            $line += Creator::getVatRangeTags($paymentVat, $paymentEx);
-            $line += [
-                Meta::FieldsCalculated => [Meta::UnitPriceInc],
-                Meta::LineType => Creator::LineType_PaymentFee,
-            ];
-            $invoice['customer']['invoice']['line'][] = $line;
+            $invoice['customer']['invoice']['line'][] = $this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description);
         }
+    }
+
+    /**
+     * Creates a payment fee line with the given details.
+     *
+     * @param float $paymentEx
+     * @param float $paymentInc
+     * @param float $paymentVat
+     * @param string $description
+     *
+     * @return array
+     */
+    protected function getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description)
+    {
+        $line = [
+            Tag::Product => $description ?: $this->helper->t('payment_costs'),
+            Tag::Quantity => 1,
+            Tag::UnitPrice => $paymentEx,
+            Meta::UnitPriceInc => $paymentInc,
+        ];
+        $line += Creator::getVatRangeTags($paymentVat, $paymentEx);
+        $line += [
+            Meta::FieldsCalculated => [Meta::UnitPriceInc],
+            Meta::LineType => Creator::LineType_PaymentFee,
+        ];
+
+        return $line;
     }
 }
