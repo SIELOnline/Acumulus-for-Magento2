@@ -78,27 +78,27 @@ abstract class AbstractAcumulusPage extends Generic
     public function _prepareLayout()
     {
         // Ensure translations are loaded.
-        $this->getAcumulusForm();
-
-        $this->getToolbar()->addChild(
-            'back_button',
-            Button::class,
-            [
-                'label' => $this->t('button_cancel'),
-                'onclick' => "window.location.href = '" . $this->getUrl('admin/dashboard') . "'",
-                'class' => 'action-back'
-            ]
-        );
-        $this->getToolbar()->addChild(
-            'save_button',
-            Button::class,
-            [
-                'label' => $this->t('button_save'),
-                'class' => 'save primary',
-                'onclick' => 'document.getElementById("edit_form").submit()',
-            ]
-        );
-
+        $acumulusForm = $this->getAcumulusForm();
+        if ($acumulusForm->needsFormAndSubmitButton()) {
+            $this->getToolbar()->addChild(
+                'back_button',
+                Button::class,
+                [
+                    'label' => $this->t('button_cancel'),
+                    'onclick' => "window.location.href = '" . $this->getUrl('admin/dashboard') . "'",
+                    'class' => 'action-back'
+                ]
+            );
+            $this->getToolbar()->addChild(
+                'save_button',
+                Button::class,
+                [
+                    'label' => $this->t('button_submit_' . $this->formType),
+                    'class' => 'save primary',
+                    'onclick' => 'document.getElementById("edit_form").submit()',
+                ]
+            );
+        }
         return parent::_prepareLayout();
     }
 }
