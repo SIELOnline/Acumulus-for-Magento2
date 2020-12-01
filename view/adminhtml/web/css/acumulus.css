@@ -58,47 +58,47 @@
 /*
  * Acumulus invoice status tab.
  */
-#acumulus-invoice-status-overview fieldset {
+#acumulus-invoice fieldset {
   border: none;
 }
 
-#acumulus-invoice-status-overview .notice {
+#acumulus-invoice .notice {
   border-style: solid;
   border-width: 1px 1px 1px 4px;
   padding: 4px 0 4px 1em;
 }
 
-#acumulus-invoice-status-overview .notice label {
+#acumulus-invoice .notice label {
   color: inherit;
   min-width: calc(8em - 4px);
   padding-bottom: 0.7rem;
 }
 
-#acumulus-invoice-status-overview .notice-info {
+#acumulus-invoice .notice-info {
   color: #00a0d2;
   border-left-color: #00a0d2;
 }
 
-#acumulus-invoice-status-overview .notice-error {
+#acumulus-invoice .notice-error {
   color: #bc3232;
   border-left-color: #dc3232;
 }
 
-#acumulus-invoice-status-overview .notice-success {
+#acumulus-invoice .notice-success {
   color: #46b450;
   border-left-color: #46b450;
 }
 
-#acumulus-invoice-status-overview .notice-warning {
+#acumulus-invoice .notice-warning {
   color: #ffb900;
   border-left-color: #ffb900;
 }
 
-#acumulus-invoice-status-overview .notice-warning label {
+#acumulus-invoice .notice-warning label {
   font-weight: 900;
 }
 
-#acumulus-invoice-status-overview label {
+#acumulus-invoice label {
   text-align: left;
   vertical-align: top;
   font-weight: normal;
@@ -109,7 +109,7 @@
   line-height: inherit;
 }
 
-#acumulus-invoice-status-overview .admin__field:not(:first-of-type) {
+#acumulus-invoice .admin__field:not(:first-of-type) {
   margin-top: 1.5em;
 }
 
@@ -146,7 +146,7 @@ label[for$="_payment_date"] span::after {
   width: 0.25em;
 }
 
-#acumulus-invoice-status-overview .pdf {
+#acumulus-invoice .pdf {
   display: inline-block;
   padding-left: 15px;
   margin: 0.1em 1.5em 0.2em 0;
@@ -157,41 +157,41 @@ label[for$="_payment_date"] span::after {
 }
 
 /* Refund overview title */
-#acumulus-invoice-status-overview > div + div > .fieldset-legend {
+#acumulus-invoice > div + div > .fieldset-legend {
   margin-top: 2em;
   padding-top: 1em;
   border-top: 1px solid #35302c;
 }
 
-#acumulus-invoice-status-overview fieldset > legend {
+#acumulus-invoice fieldset > legend {
   display: none;
 }
 
 /*
  * Acumulus rate plugin message.
  */
-#acumulus-rate-plugin {
+#acumulus-rate {
   border: none;
 }
 
-#acumulus-rate-plugin > .admin__field {
+#acumulus-rate > .admin__field {
   float: left;
 }
 
-#acumulus-rate-plugin > .admin__field:nth-child(2) {
+#acumulus-rate > .admin__field:nth-child(2) {
   margin-top: 1.9em;
 }
 
-#acumulus-rate-plugin > .admin__field:nth-child(3) {
+#acumulus-rate > .admin__field:nth-child(3) {
   clear: left;
   margin-top: 0;
 }
 
-#acumulus-rate-plugin > .admin__field:nth-child(4) {
+#acumulus-rate > .admin__field:nth-child(4) {
   margin-top: 0;
 }
 
-#acumulus-rate-plugin input {
+#acumulus-rate input {
   margin: 0 1em;
 }
 
