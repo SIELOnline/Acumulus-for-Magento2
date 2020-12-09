@@ -79,7 +79,7 @@ abstract class AbstractAcumulusPage extends Generic
     {
         // Ensure translations are loaded.
         $acumulusForm = $this->getAcumulusForm();
-        if ($acumulusForm->needsFormAndSubmitButton()) {
+        if ($acumulusForm->isFullPage()) {
             $this->getToolbar()->addChild(
                 'back_button',
                 Button::class,

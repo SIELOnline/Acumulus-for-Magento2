@@ -8,6 +8,7 @@ use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Framework\Data\FormFactory;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
+use Siel\Acumulus\Invoice\Source;
 use Siel\AcumulusMa2\Helper\Data;
 use Siel\AcumulusMa2\Helper\HelperTrait;
 
@@ -47,7 +48,6 @@ class Status extends AbstractBlock implements TabInterface
         $this->helper = $helper;
         $this->setFormType();
         // Create the form first: this will load the translations.
-        /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
         $this->acumulusForm = $this->getAcumulusForm();
 
         parent::__construct($context, $data);
@@ -58,7 +58,7 @@ class Status extends AbstractBlock implements TabInterface
      */
     public function getTabLabel()
     {
-        return $this->t('acumulus_invoice_title');
+        return $this->t('invoice_form_title');
     }
 
     /**
@@ -66,7 +66,7 @@ class Status extends AbstractBlock implements TabInterface
      */
     public function getTabTitle()
     {
-        return $this->t('acumulus_invoice_header');
+        return $this->t('invoice_form_header');
     }
 
     /**
@@ -87,33 +87,15 @@ class Status extends AbstractBlock implements TabInterface
     }
 
     /**
-     * Get Tab Class
-     *
-     * @return string
+     * Retrieve order
      */
-    public function getTabClass()
+    public function setSource()
     {
-        return 'ajax';
-    }
-
-    /**
-     * Get Class.
-     *
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->getTabClass();
-    }
-
-    /**
-     * Get Tab Url.
-     *
-     * @return string
-     */
-    public function getTabUrl()
-    {
-        return $this->getUrl('acumulus/order/status', ['_current' => true]);
+        $id = $this->getRequest()->getParam('order_id');
+        if (!empty($id)) {
+            $source = $this->getAcumulusContainer()->getSource(Source::Order, $id);
+            $this->getAcumulusForm()->setSource($source);
+        }
     }
 
     /**
@@ -128,20 +110,24 @@ class Status extends AbstractBlock implements TabInterface
             // Create the form first: this will load the translations.
             /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
             $acumulusForm = $this->getAcumulusForm();
+            if (!$acumulusForm->hasSource()) {
+                $this->setSource();
+            }
             if ($acumulusForm->hasSource()) {
                 $form = $this->formFactory->create(
                     ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
                 );
+
                 // Populate the form using the FormMapper.
                 /** @var \siel\Acumulus\Magento\Helpers\FormMapper $mapper */
                 $mapper = $this->getAcumulusContainer()->getFormMapper();
                 $mapper->setMagentoForm($form)->map($acumulusForm);
                 /** @noinspection PhpUndefinedMethodInspection */
                 $form->setUseContainer(false);
-                $form->addValues($this->getAcumulusForm()->getFormValues());
+                $form->addValues($acumulusForm->getFormValues());
                 $url = $this->getUrl('acumulus/order/status', ['_current' => true]);
                 $wait = $this->t('wait');
-                $output .= '<div id="acumulus-invoice-status-overview" class="acumulus-area" data-acumulus-wait="' . $wait . '" data-acumulus-url="' . $url . '">';
+                $output .= '<div id="acumulus-invoice" class="acumulus-area" data-acumulus-wait="' . $wait . '" data-acumulus-url="' . $url . '">';
                 $output .= $this->showNotices($acumulusForm);
                 $output .= '<div class="admin__page-section-title"><span class="title">' . $this->getTabTitle() . '</span></div>';
                 $output .= $form->getHtml();

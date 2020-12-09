@@ -21,20 +21,27 @@
   margin-top: 1em;
 }
 
-.admin__fieldset details {
+details {
   border: solid 1px #adadad;
   padding: 1em;
   margin: 0.5em 0 1em 0;
 }
 
-.admin__fieldset details summary {
+details summary {
   font-weight: bold;
   font-size: 1.5rem;
   cursor: pointer;
   position: relative;
+  margin-bottom: 0.5em;
 }
 
-.admin__fieldset details summary:after {
+details summary span {
+  display: inline-block;
+  font-size: smaller;
+  padding-left: 1em;
+}
+
+details summary:after {
   position: absolute;
   right: 1.3rem;
   top: 0.3rem;
@@ -47,12 +54,16 @@
   line-height: 1;
 }
 
-.admin__fieldset details[open] summary:after {
+details[open] summary:after {
   content: '\e615';
 }
 
-.admin__fieldset details:not([open]) summary:after {
+details:not([open]) summary:after {
   content: '\e616';
+}
+
+#contractInformation {
+  padding-top: 1.7rem;
 }
 
 /*

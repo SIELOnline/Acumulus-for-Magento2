@@ -3,15 +3,10 @@
 /**
  * Handles the ajax request for an Acumulus form/widget.
  *
- * - The Acumulus form/widget may get loaded dynamically by Magento on
- *   activating the tab in which it resides.
+ * - The Acumulus form/widget gets loaded dynamically by Magento on activating
+ *   the tab in which it resides.
  * - When an element in an Acumulus form or widget that can initiate an ajax
- *   request to the server gets clicked, this function should be called.
- * - Therefore, a call to this function should be added to the onclick attribute
- *   (onclick="acumulusAjaxHandling(this)"). Thus there is no automatic binding
- *   to this function as in the WordPress variant. This is due to not having
- *   (not knowing) the event to listen to upon loading this area after it gets
- *   loaded for the 1st time.
+ *   request to the server gets clicked, this function should be executed.
  * - The clicked element should be part of an Acumulus form or widget, contained
  *   in a wrapping element having a class acumulus-area.
  * - That wrapping element should have 2 data attributes:
@@ -25,11 +20,9 @@
  *   the area with.
  * - This js does not depend on jQuery, however, it does depend on Prototype js
  *   (the Ajax object).
- *
- * @param {HTMLInputElement} clickedElt
- *   The element that got clicked to initiate an ajax request.
  */
-function acumulusAjaxHandling(clickedElt) {
+function acumulusAjaxSubmit(event) {
+  const clickedElt = this;
   clickedElt.disabled = true;
 
   // Area is the element that is going to be replaced and serves as the
@@ -39,11 +32,11 @@ function acumulusAjaxHandling(clickedElt) {
     clickedElt.value = area.getAttribute('data-acumulus-wait');
 
     // The data we are going to send consists of:
-    // - clicked: the name of the element that was clicked, the name should
-    //   make clear what action is requested on the server and, optionally,
-    // on what object. - {values}: values of all form elements in area:
-    // input, select and textarea, except buttons (inputs with
-    // type="button"). noinspection JSUnresolvedVariable
+    // - clicked: the name of the element that was clicked, the name should make
+    //   clear what action is requested on the server and, optionally, on what
+    //   object.
+    // - {values}: values of all form elements in area: input, select and
+    //   textarea, except buttons (inputs with type="button").
     const data = {
       clicked: clickedElt.name,
     };
@@ -59,7 +52,7 @@ function acumulusAjaxHandling(clickedElt) {
 
     let url = area.getAttribute('data-acumulus-url');
     url += url.match(new RegExp('\\?')) ? '&isAjax=true' : '?isAjax=true';
-    new Ajax.Request(url, {
+    new Ajax.Request(url, { // Prototype
       parameters: data,
       loaderArea: area,
       onSuccess: function (transport) {
@@ -77,5 +70,25 @@ function acumulusAjaxHandling(clickedElt) {
   }
   else {
     clickedElt.value = "Error: no area";
+  }
+}
+
+/**
+ * Binds the ajax submit handler to the click events on the designated elements.
+ */
+function acumulusAjaxHandling() {
+  const elements = document.getElementsByClassName("acumulus-ajax");
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].onclick = acumulusAjaxSubmit;
+  }
+}
+
+/**
+ * Triggers a click() on load for designated elements.
+ */
+function acumulusAutoClick() {
+  const elements = document.getElementsByClassName("acumulus-auto-click");
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].click();
   }
 }
