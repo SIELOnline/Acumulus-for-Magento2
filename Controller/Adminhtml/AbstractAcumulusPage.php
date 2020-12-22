@@ -53,7 +53,7 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
     {
         try {
             // Notice about rating our plugin.
-            if ($this->getFormType() !== 'registration') {
+            if ($this->getFormType() !== 'register') {
                 $value = $this->getAcumulusContainer()->getConfig()->getShowRatePluginMessage();
                 $time = time();
                 if ($time >= $value) {
@@ -97,7 +97,7 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
         // To get the messages on the result page, I had to move these lines
         // below the form handling.
         $page = $this->resultPageFactory->create();
-        if ($this->getFormType() !== 'registration') {
+        if ($this->getFormType() !== 'register') {
             $this->_setActiveMenu('Siel_Acumulus::acumulus_' . $this->getFormType());
         }
         $page->getConfig()->getTitle()->prepend($this->t($this->getFormType() . '_form_header'));

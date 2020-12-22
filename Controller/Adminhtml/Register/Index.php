@@ -1,5 +1,5 @@
 <?php
-namespace Siel\AcumulusMa2\Controller\Adminhtml\Registration;
+namespace Siel\AcumulusMa2\Controller\Adminhtml\Register;
 
 use Siel\AcumulusMa2\Controller\Adminhtml\AbstractAcumulusPage;
 

@@ -31,7 +31,7 @@ abstract class AbstractAcumulus extends Action
     protected function _isAllowed()
     {
         $resource = [
-            'registration' => 'config',
+            'register' => 'config',
             'config' => 'config',
             'advanced' => 'config',
             'batch' => 'batch',

@@ -5,7 +5,7 @@
   </head>
   <body>
     <referenceContainer name="content">
-      <block name="form" class="Siel\AcumulusMa2\Block\Adminhtml\Registration\Form"/>
+      <block name="form" class="Siel\AcumulusMa2\Block\Adminhtml\Register\Form"/>
     </referenceContainer>
   </body>
 </page>
