@@ -227,6 +227,10 @@ label[for$="_payment_date"] span::after {
 }
 
 /* EU Commerce threshold progress bar */
+#euCommerce p {
+  margin-top: 0.8em;
+}
+
 .acumulus-progressbar, .acumulus-progress, .acumulus-threshold {
   display: inline-block;
 }
