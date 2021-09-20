@@ -58,7 +58,9 @@ function acumulusAjaxSubmit(event) {
       onSuccess: function (transport) {
         if (transport.responseText) {
           area.insertAdjacentHTML('beforebegin', transport.responseText);
+          const newArea = area.previousElementSibling;
           area.parentNode.removeChild(area);
+          acumulusAjaxHandling(newArea);
         } else {
           clickedElt.parentNode.insertAdjacentHTML(
             'beforebegin',
@@ -76,8 +78,8 @@ function acumulusAjaxSubmit(event) {
 /**
  * Binds the ajax submit handler to the click events on the designated elements.
  */
-function acumulusAjaxHandling() {
-  const elements = document.getElementsByClassName("acumulus-ajax");
+function acumulusAjaxHandling(elt) {
+  const elements = elt.getElementsByClassName("acumulus-ajax");
   for (let i = 0; i < elements.length; i++) {
     elements[i].onclick = acumulusAjaxSubmit;
   }

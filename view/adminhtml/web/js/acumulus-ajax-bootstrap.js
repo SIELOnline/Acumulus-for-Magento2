@@ -10,7 +10,7 @@ require([
     "mage/calendar"
   ],
   function() {
-    acumulusAjaxHandling();
+    acumulusAjaxHandling(document);
     acumulusAutoClick();
   }
 );
