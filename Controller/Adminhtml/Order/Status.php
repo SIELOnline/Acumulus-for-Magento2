@@ -55,7 +55,10 @@ class Status extends AbstractAcumulus
             $source = $this->getAcumulusContainer()->getSource(Source::Order, $id);
             $acumulusForm->setSource($source);
             $acumulusForm->process();
-            $html = $this->layoutFactory->create()->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Order\Status')->toHtml();
+            $html = $this->layoutFactory
+                ->create()
+                ->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Order\Status')
+                ->toHtml();
         } else {
             $html = '<div>Not enabled</div>';
         }

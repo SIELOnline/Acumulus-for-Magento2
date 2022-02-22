@@ -54,7 +54,7 @@ class Status extends AbstractBlock implements TabInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getTabLabel()
     {
@@ -62,7 +62,7 @@ class Status extends AbstractBlock implements TabInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getTabTitle()
     {
@@ -70,7 +70,7 @@ class Status extends AbstractBlock implements TabInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function canShowTab()
     {
@@ -79,7 +79,7 @@ class Status extends AbstractBlock implements TabInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function isHidden()
     {
@@ -99,7 +99,7 @@ class Status extends AbstractBlock implements TabInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -127,9 +127,12 @@ class Status extends AbstractBlock implements TabInterface
                 $form->addValues($acumulusForm->getFormValues());
                 $url = $this->getUrl('acumulus/order/status', ['_current' => true]);
                 $wait = $this->t('wait');
-                $output .= '<div id="acumulus-invoice" class="acumulus-area" data-acumulus-wait="' . $wait . '" data-acumulus-url="' . $url . '">';
+                $output .= '<div id="acumulus-invoice" class="acumulus-area" data-acumulus-wait="'
+                           . $wait . '" data-acumulus-url="' . $url . '">';
                 $output .= $this->showNotices($acumulusForm);
-                $output .= '<div class="admin__page-section-title"><span class="title">' . $this->getTabTitle() . '</span></div>';
+                $output .= '<div class="admin__page-section-title"><span class="title">'
+                           . $this->getTabTitle()
+                           . '</span></div>';
                 $output .= $form->getHtml();
                 $output .= '</div>';
                 $output .= '';
@@ -154,7 +157,10 @@ class Status extends AbstractBlock implements TabInterface
         $output = '';
         if (isset($form)) {
             foreach ($form->getMessages() as $message) {
-                $output .= $this->renderNotice($message->format(Message::Format_PlainWithSeverity), $this->SeverityToNoticeClass($message->getSeverity()));
+                $output .= $this->renderNotice(
+                    $message->format(Message::Format_PlainWithSeverity),
+                    $this->severityToNoticeClass($message->getSeverity())
+                );
             }
         }
         return $output;
@@ -166,9 +172,9 @@ class Status extends AbstractBlock implements TabInterface
      * @param int $severity
      *
      * @return string
-     *
      */
-    private function SeverityToNoticeClass($severity) {
+    private function severityToNoticeClass($severity)
+    {
         switch ($severity) {
             case Severity::Success:
                 $class = 'success';
@@ -210,7 +216,8 @@ class Status extends AbstractBlock implements TabInterface
      * @return string
      *   The rendered notice.
      */
-    private function renderNotice($message, $type, $id = '', $class = '', $isHtml = false) {
+    private function renderNotice($message, $type, $id = '', $class = '', $isHtml = false)
+    {
         if (!empty($id)) {
             $id = ' id="' . $id . '"';
         }

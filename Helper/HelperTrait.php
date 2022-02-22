@@ -22,6 +22,8 @@ trait HelperTrait
     private $acumulusForm;
 
     /**
+     * Returns the Acumulus container.
+     *
      * @return \Siel\Acumulus\Helpers\Container
      */
     public function getAcumulusContainer()
@@ -30,6 +32,8 @@ trait HelperTrait
     }
 
     /**
+     * Returns an Acumulus form.
+     *
      * @return \Siel\Acumulus\Helpers\Form
      */
     public function getAcumulusForm()
@@ -59,12 +63,12 @@ trait HelperTrait
      * Determines and sets the form type based on the FQ class name.
      *
      * This can be called for controller or block form classes. So we do away
-     * with the common parts and then we will see what remains
+     * with the common parts, and then we will see what remains:
      * - All class names should start with:
      *   Siel\AcumulusMa2\(Controller|Block)\Adminhtml
      * - And may end with: Interceptor.
-     * - Controllers may end with a non-descript 'Index'.
-     * - Forms may end with a non-descript 'Form' or the last part may end with.
+     * - Controllers may end with a nondescript 'Index'.
+     * - Forms may end with a nondescript 'Form' or the last part may end with.
      *   'Form'.
      */
     protected function setFormType()

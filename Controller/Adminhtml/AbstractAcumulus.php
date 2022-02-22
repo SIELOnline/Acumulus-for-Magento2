@@ -16,6 +16,12 @@ abstract class AbstractAcumulus extends Action
 {
     use HelperTrait;
 
+    /**
+     * Constructor
+     *
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Siel\AcumulusMa2\Helper\Data $helper
+     */
     public function __construct(Context $context, Data $helper)
     {
         $this->helper = $helper;

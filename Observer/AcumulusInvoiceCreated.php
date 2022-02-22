@@ -171,9 +171,11 @@ class AcumulusInvoiceCreated implements ObserverInterface
                     $order->getBillingAddress(),
                     $order->getCustomerClassId(),
                     null,
-                    $order->getCustomerId());
+                    $order->getCustomerId()
+                );
                 /** @noinspection PhpUndefinedMethodInspection */
-                $request->setProductClassId($this->scopeConfig->getValue('sisow/general/feetaxclass', ScopeInterface::SCOPE_STORE));
+                $taxClass = $this->scopeConfig->getValue('sisow/general/feetaxclass', ScopeInterface::SCOPE_STORE);
+                $request->setProductClassId($taxClass);
                 $paymentVatRate = $this->taxCalculation->getRate($request);
                 $paymentVat = $paymentEx * ($paymentVatRate / 100.0);
 
@@ -226,7 +228,8 @@ class AcumulusInvoiceCreated implements ObserverInterface
             $paymentVat = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $description = $invoiceSource->getSource()->getBaseMcPaymentfeeDescription();
-            $invoice['customer']['invoice']['line'][] = $this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description);
+            $invoice['customer']['invoice']['line'][] =
+                $this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description);
         }
     }
 
@@ -271,7 +274,8 @@ class AcumulusInvoiceCreated implements ObserverInterface
             $paymentVat = (float) $sign * $invoiceTotal->getBaseTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $description = $invoiceTotal->getLabel();
-            $invoice['customer']['invoice']['line'][] = $this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description);
+            $invoice['customer']['invoice']['line'][] =
+                $this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description);
         }
     }
 

@@ -73,7 +73,7 @@ abstract class AbstractAcumulusPage extends Generic
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function _prepareLayout()
     {

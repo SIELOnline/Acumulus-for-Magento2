@@ -46,7 +46,7 @@ class Rate extends Template
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
@@ -68,7 +68,8 @@ class Rate extends Template
         $form->addValues($this->getAcumulusForm()->getFormValues());
         $url = $this->getUrl('acumulus/plugin/rate');
         $wait = $this->t('wait');
-        $output .= '<div id="acumulus-rate-plugin-message" class="acumulus-area" data-acumulus-wait="' . $wait . '" data-acumulus-url="' . $url . '">';
+        $output .= '<div id="acumulus-rate-plugin-message" class="acumulus-area" data-acumulus-wait="'
+                   . $wait . '" data-acumulus-url="' . $url . '">';
         $output .= $form->getHtml();
         $output .= '</div>';
         $output .= '';

@@ -57,7 +57,10 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
                 $value = $this->getAcumulusContainer()->getConfig()->getShowRatePluginMessage();
                 $time = time();
                 if ($time >= $value) {
-                    $html = $this->layoutFactory->create()->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Plugin\Rate')->toHtml();
+                    $html = $this->layoutFactory
+                        ->create()
+                        ->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Plugin\Rate')
+                        ->toHtml();
                     $this->messageManager->addComplexNoticeMessage('rate_plugin', ['message' => $html]);
                 }
             }
@@ -96,9 +99,10 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
 
         // To get the messages on the result page, I had to move these lines
         // below the form handling.
+        /** @var \Magento\Backend\Model\View\Result\Page $page */
         $page = $this->resultPageFactory->create();
         if ($this->getFormType() !== 'register') {
-            $this->_setActiveMenu('Siel_Acumulus::acumulus_' . $this->getFormType());
+            $page->setActiveMenu('Siel_Acumulus::acumulus_' . $this->getFormType());
         }
         $page->getConfig()->getTitle()->prepend($this->t($this->getFormType() . '_form_header'));
 
