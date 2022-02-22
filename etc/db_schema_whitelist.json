@@ -1,0 +1,20 @@
+{
+    "acumulus_entry": {
+        "column": {
+            "entity_id": true,
+            "entry_id": true,
+            "token": true,
+            "source_type": true,
+            "source_id": true,
+            "created": true,
+            "updated": true
+        },
+        "index": {
+            "ACUMULUS_ENTRY_ENTRY_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "ACUMULUS_ENTRY_SOURCE_TYPE_SOURCE_ID": true
+        }
+    }
+}
