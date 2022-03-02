@@ -6,7 +6,12 @@ use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Siel\Acumulus\Magento\Magento2\Helpers\Registry;
 
 /**
- * Class Acumulus641Patch
+ * Class Acumulus641Patch ensures that the configVersion value gets an initial
+ * value. After that, upgrading config values will be done automatically in the
+ * Config class itself.
+ *
+ * Patches, like this one, get executed on install, so also on installation the
+ * configVersion will be set.
  */
 class Acumulus641Patch implements DataPatchInterface
 {
@@ -48,7 +53,7 @@ class Acumulus641Patch implements DataPatchInterface
 
         /** @var \Siel\AcumulusMa2\Helper\Data $helper */
         $helper = Registry::getInstance()->get('Siel\AcumulusMa2\Helper\Data');
-        $helper->getAcumulusContainer()->getConfig()->upgrade('');
+        $helper->getAcumulusContainer()->getConfigUpgrade()->upgrade('');
 
         $this->moduleDataSetup->getConnection()->endSetup();
         return $this;
