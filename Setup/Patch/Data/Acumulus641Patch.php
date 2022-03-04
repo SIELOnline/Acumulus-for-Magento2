@@ -3,7 +3,7 @@ namespace Siel\AcumulusMa2\Setup\Patch\Data;
 
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
-use Siel\Acumulus\Magento\Magento2\Helpers\Registry;
+use Siel\Acumulus\Magento\Helpers\Registry;
 
 /**
  * Class Acumulus641Patch ensures that the configVersion value gets an initial

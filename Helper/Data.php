@@ -3,7 +3,7 @@ namespace Siel\AcumulusMa2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Siel\Acumulus\Helpers\Container;
-use Siel\Acumulus\Magento\Magento2\Helpers\Registry;
+use Siel\Acumulus\Magento\Helpers\Registry;
 
 /**
  * Acumulus helper
