@@ -2,10 +2,12 @@
 
 namespace Siel\AcumulusMa2\Block\Adminhtml\Order;
 
+use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Framework\Data\FormFactory;
+use Siel\Acumulus\Helpers\Form;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
 use Siel\Acumulus\Invoice\Source;
@@ -16,20 +18,11 @@ class Status extends AbstractBlock implements TabInterface
 {
     use HelperTrait;
 
-    /**
-     * @var \Magento\Framework\Data\FormFactory
-     */
-    protected $formFactory;
+    protected FormFactory $formFactory;
+    protected Validator $_formKeyValidator;
+    protected bool $hasAuthorization;
 
-    /**
-     * @var \Magento\Framework\Data\Form\FormKey\Validator
-     */
-    protected $_formKeyValidator;
-
-    /**
-     * @var bool
-     */
-    protected $hasAuthorization;
+    protected \Magento\Framework\Data\Form $form;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
@@ -56,7 +49,7 @@ class Status extends AbstractBlock implements TabInterface
     /**
      * @inheritdoc
      */
-    public function getTabLabel()
+    public function getTabLabel(): string
     {
         return $this->t('invoice_form_title');
     }
@@ -64,7 +57,7 @@ class Status extends AbstractBlock implements TabInterface
     /**
      * @inheritdoc
      */
-    public function getTabTitle()
+    public function getTabTitle(): string
     {
         return $this->t('invoice_form_header');
     }
@@ -72,7 +65,7 @@ class Status extends AbstractBlock implements TabInterface
     /**
      * @inheritdoc
      */
-    public function canShowTab()
+    public function canShowTab(): bool
     {
         return $this->hasAuthorization
                && $this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus'];
@@ -81,7 +74,7 @@ class Status extends AbstractBlock implements TabInterface
     /**
      * @inheritdoc
      */
-    public function isHidden()
+    public function isHidden(): bool
     {
         return !$this->canShowTab();
     }
@@ -93,47 +86,61 @@ class Status extends AbstractBlock implements TabInterface
     {
         $id = $this->getRequest()->getParam('order_id');
         if (!empty($id)) {
-            $source = $this->getAcumulusContainer()->getSource(Source::Order, $id);
+            $source = $this->getAcumulusContainer()->createSource(Source::Order, $id);
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
             $this->getAcumulusForm()->setSource($source);
         }
     }
 
     /**
-     * @inheritdoc
+     * Prepares the Magento form based on interaction with the Acumulus form.
+     *
+     * This functionality is extracted from _toHtml() to place it within the
+     * "exception catching at the highest level".
      *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function _toHtml()
+    public function prepareForm(): Status
+    {
+        $this->form = $this->formFactory->create(
+            ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
+        );
+        if ($this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
+            // Create the form first: this will load the translations.
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            if (!$this->acumulusForm->hasSource()) {
+                $this->setSource();
+            }
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            if ($this->acumulusForm->hasSource()) {
+                // Populate the form using the FormMapper.
+                /** @var \siel\Acumulus\Magento\Helpers\FormMapper $mapper */
+                $mapper = $this->getAcumulusContainer()->getFormMapper();
+                $mapper->setMagentoForm($this->form)->map($this->acumulusForm);
+                /** @noinspection PhpUndefinedMethodInspection */
+                $this->form->setUseContainer(false);
+                $this->form->addValues($this->acumulusForm->getFormValues());
+            }
+        }
+        return $this;
+    }
+
+    protected function _toHtml(): string
     {
         $output = '';
         if ($this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
             // Create the form first: this will load the translations.
-            /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
-            $acumulusForm = $this->getAcumulusForm();
-            if (!$acumulusForm->hasSource()) {
-                $this->setSource();
-            }
-            if ($acumulusForm->hasSource()) {
-                $form = $this->formFactory->create(
-                    ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
-                );
-
-                // Populate the form using the FormMapper.
-                /** @var \siel\Acumulus\Magento\Helpers\FormMapper $mapper */
-                $mapper = $this->getAcumulusContainer()->getFormMapper();
-                $mapper->setMagentoForm($form)->map($acumulusForm);
-                /** @noinspection PhpUndefinedMethodInspection */
-                $form->setUseContainer(false);
-                $form->addValues($acumulusForm->getFormValues());
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            if ($this->acumulusForm->hasSource()) {
                 $url = $this->getUrl('acumulus/order/status', ['_current' => true]);
                 $wait = $this->t('wait');
                 $output .= '<div id="acumulus-invoice" class="acumulus-area" data-acumulus-wait="'
                            . $wait . '" data-acumulus-url="' . $url . '">';
-                $output .= $this->showNotices($acumulusForm);
+                $output .= $this->showNotices($this->acumulusForm);
                 $output .= '<div class="admin__page-section-title"><span class="title">'
                            . $this->getTabTitle()
                            . '</span></div>';
-                $output .= $form->getHtml();
+                $output .= $this->form->getHtml();
                 $output .= '</div>';
                 $output .= '';
             } else {
@@ -148,20 +155,18 @@ class Status extends AbstractBlock implements TabInterface
     /**
      * Action method that renders any notices coming from the form(s).
      *
-     * @param \Siel\Acumulus\Helpers\Form $form
+     * @param \Siel\Acumulus\Helpers\Form $acumulusForm
      *
      * @return string
      */
-    private function showNotices($form)
+    private function showNotices(Form $acumulusForm): string
     {
         $output = '';
-        if (isset($form)) {
-            foreach ($form->getMessages() as $message) {
-                $output .= $this->renderNotice(
-                    $message->format(Message::Format_PlainWithSeverity),
-                    $this->severityToNoticeClass($message->getSeverity())
-                );
-            }
+        foreach ($acumulusForm->getMessages() as $message) {
+            $output .= $this->renderNotice(
+                $message->format(Message::Format_PlainWithSeverity),
+                $this->severityToNoticeClass($message->getSeverity())
+            );
         }
         return $output;
     }
@@ -173,7 +178,7 @@ class Status extends AbstractBlock implements TabInterface
      *
      * @return string
      */
-    private function severityToNoticeClass($severity)
+    private function severityToNoticeClass(int $severity): string
     {
         switch ($severity) {
             case Severity::Success:
@@ -207,8 +212,7 @@ class Status extends AbstractBlock implements TabInterface
      * @param string $id
      *   An optional id to use for the outer tag.
      * @param string $class
-     *   Optional css classes to add (besides those that are already added to
-     *   get a (dismissible) notice in WP style.
+     *   Optional css classes to add.
      * @param bool $isHtml
      *   Indicates whether $message is html or plain text. plain text will be
      *   embedded in a <p>.
@@ -216,7 +220,13 @@ class Status extends AbstractBlock implements TabInterface
      * @return string
      *   The rendered notice.
      */
-    private function renderNotice($message, $type, $id = '', $class = '', $isHtml = false)
+    private function renderNotice(
+        string $message,
+        string $type,
+        string $id = '',
+        string $class = '',
+        bool $isHtml = false
+    ): string
     {
         if (!empty($id)) {
             $id = ' id="' . $id . '"';

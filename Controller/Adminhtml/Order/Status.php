@@ -1,27 +1,27 @@
 <?php
+/**
+ * @noinspection PhpMultipleClassDeclarationsInspection
+ */
+
 namespace Siel\AcumulusMa2\Controller\Adminhtml\Order;
 
 use Magento\Backend\App\Action;
+use Magento\Framework\Controller\Result\Raw;
 use Magento\Framework\Controller\Result\RawFactory;
 use Magento\Framework\View\LayoutFactory as ViewLayoutFactory;
+use Siel\Acumulus\Helpers\Severity;
 use Siel\Acumulus\Invoice\Source;
 use Siel\AcumulusMa2\Controller\Adminhtml\AbstractAcumulus;
 use Siel\AcumulusMa2\Helper\Data;
+use Throwable;
 
 /**
  * Acumulus order/status controller.
  */
 class Status extends AbstractAcumulus
 {
-    /**
-     * @var \Magento\Framework\View\LayoutFactory
-     */
-    protected $layoutFactory;
-
-    /**
-     * @var \Magento\Framework\Controller\Result\RawFactory
-     */
-    protected $resultRawFactory;
+    protected ViewLayoutFactory $layoutFactory;
+    protected RawFactory $resultRawFactory;
 
     /**
      * @param Action\Context $context
@@ -44,21 +44,47 @@ class Status extends AbstractAcumulus
      * Generate order status overview for ajax request.
      *
      * @return \Magento\Framework\Controller\Result\Raw
+     *
+     * @throws \Throwable
      */
-    public function execute()
+    public function execute(): Raw
     {
+        // See the documentation in the
+        // {@see \Siel\AcumulusMa2\Controller\Adminhtml\AbstractAcumulusPage::execute}
+        // method. This method is an override and thus should copy the exception
+        // handling from that method.
+
+        /** @var \Siel\AcumulusMa2\Block\Adminhtml\Order\Status $block */
+        $block = $this->layoutFactory
+            ->create()
+            ->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Order\Status');
+
         if ($this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
-            // Create the form first: this will load the translations.
-            /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
-            $acumulusForm = $this->getAcumulusForm();
-            $id = $this->getRequest()->getParam('order_id');
-            $source = $this->getAcumulusContainer()->getSource(Source::Order, $id);
-            $acumulusForm->setSource($source);
-            $acumulusForm->process();
-            $html = $this->layoutFactory
-                ->create()
-                ->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Order\Status')
-                ->toHtml();
+            try {
+                // Create the form first: this will load the translations.
+                /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
+                $acumulusForm = $this->getAcumulusForm();
+                $id = $this->getRequest()->getParam('order_id');
+                $source = $this->getAcumulusContainer()->createSource(Source::Order, $id);
+                $acumulusForm->setSource($source);
+                $acumulusForm->process();
+                $block->prepareForm();
+            } catch (Throwable $e) {
+                // We handle our "own" exceptions but only when we can process them
+                // as we want, i.e. show it as an error at the beginning of the
+                // form. That's why we start catching only after we have a form, and
+                // stop catching just before postRenderForm().
+                try {
+                    $crashReporter = $this->getAcumulusContainer()->getCrashReporter();
+                    $message = $crashReporter->logAndMail($e);
+                    $acumulusForm->createAndAddMessage($message, Severity::Exception);
+                } catch (Throwable $inner) {
+                    // We do not know if we have informed the user per mail or
+                    // screen, so assume not, and rethrow the original exception.
+                    throw $e;
+                }
+            }
+            $html = $block->toHtml();
         } else {
             $html = '<div>Not enabled</div>';
         }
