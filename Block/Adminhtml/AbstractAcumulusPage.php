@@ -1,4 +1,10 @@
 <?php
+/**
+ * @noinspection PhpDeprecationInspection
+ *    \Magento\Backend\Block\Widget\Form\Generic has been deprecated in favour
+ *    of UI component implementation.
+ */
+
 namespace Siel\AcumulusMa2\Block\Adminhtml;
 
 use Magento\Backend\Block\Template\Context;
