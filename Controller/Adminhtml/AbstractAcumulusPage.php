@@ -1,13 +1,17 @@
 <?php
+/**
+ * @noinspection PhpMultipleClassDeclarationsInspection
+ */
+
 namespace Siel\AcumulusMa2\Controller\Adminhtml;
 
-use Exception;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\LayoutFactory as ViewLayoutFactory;
 use Magento\Framework\View\Result\PageFactory;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
 use Siel\AcumulusMa2\Helper\Data;
+use Throwable;
 
 /**
  * Base Acumulus page controller.
@@ -17,13 +21,8 @@ use Siel\AcumulusMa2\Helper\Data;
  */
 abstract class AbstractAcumulusPage extends AbstractAcumulus
 {
-    /**
-     * @var \Magento\Framework\View\LayoutFactory
-     */
-    protected $layoutFactory;
-
-    /** @var PageFactory  */
-    private $resultPageFactory;
+    protected ViewLayoutFactory $layoutFactory;
+    private PageFactory $resultPageFactory;
 
     /**
      * AbstractAcumulusPage constructor.
@@ -48,15 +47,22 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
      * Load the page defined in view/adminhtml/layout/acumulus_config_index.xml.
      *
      * @return \Magento\Framework\View\Result\Page
+     *
+     * @throws \Throwable
      */
     public function execute()
     {
+        // The execute method of our controller is the highest level from where
+        // our code executes: e.g. all code in Block is executed when this
+        // method is active, i.e. is on the execution stack. As the rate plugin
+        // is only shown on our own pages, all that code is also only executed
+        // while this method is on the execution stack.
+        // So this method is a good place for our high level exception catching.
         try {
             // Notice about rating our plugin.
             if ($this->getFormType() !== 'register') {
                 $value = $this->getAcumulusContainer()->getConfig()->getShowRatePluginMessage();
-                $time = time();
-                if ($time >= $value) {
+                if (time() >= $value) {
                     $html = $this->layoutFactory
                         ->create()
                         ->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Plugin\Rate')
@@ -87,14 +93,27 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
                         $this->messageManager->addErrorMessage($message->format(Message::Format_PlainWithSeverity));
                         break;
                     case Severity::Exception:
+                        /** @noinspection PhpParamsInspection  Will be an \Exception, will not be null. */
                         $this->messageManager->addExceptionMessage($message->getException());
                         break;
                     default:
                         break;
                 }
             }
-        } catch (Exception $e) {
-            $this->messageManager->addExceptionMessage($e);
+        } catch (Throwable $e) {
+            // We handle our "own" exceptions but only when we can process them
+            // as we want, i.e. show it as an error at the beginning of the
+            // form. That's why we start catching only after we have a form, and
+            // stop catching just before postRenderForm().
+            try {
+                $crashReporter = $this->getAcumulusContainer()->getCrashReporter();
+                $message = $crashReporter->logAndMail($e);
+                $this->messageManager->addErrorMessage($message);
+            } catch (Throwable $inner) {
+                // We do not know if we have informed the user per mail or
+                // screen, so assume not, and rethrow the original exception.
+                throw $e;
+            }
         }
 
         // To get the messages on the result page, I had to move these lines
