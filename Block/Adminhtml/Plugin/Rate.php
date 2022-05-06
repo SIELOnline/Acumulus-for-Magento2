@@ -4,6 +4,7 @@ namespace Siel\AcumulusMa2\Block\Adminhtml\Plugin;
 
 use Magento\Backend\Block\Template;
 use Magento\Backend\Block\Template\Context;
+use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Data\FormFactory;
 use Siel\AcumulusMa2\Helper\Data;
 use Siel\AcumulusMa2\Helper\HelperTrait;
@@ -12,15 +13,8 @@ class Rate extends Template
 {
     use HelperTrait;
 
-    /**
-     * @var \Magento\Framework\Data\FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @var \Magento\Framework\Data\Form\FormKey\Validator
-     */
-    protected $_formKeyValidator;
+    protected FormFactory $formFactory;
+    protected Validator $_formKeyValidator;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
