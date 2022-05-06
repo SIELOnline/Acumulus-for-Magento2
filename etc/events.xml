@@ -1,13 +1,13 @@
 <?xml version='1.0'?>
 <config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="sales_order_save_after">
-        <observer name="siel_acumulus_order_save_observer" instance="Siel\AcumulusMa2\Observer\SalesOrderSaveAfter"/>
+        <observer name="siel_acumulus_source_save_observer" instance="Siel\AcumulusMa2\Observer\SourceSaveAfter"/>
     </event>
     <event name="sales_order_invoice_save_after">
-        <observer name="siel_acumulus_invoice_save_observer" instance="Siel\AcumulusMa2\Observer\SalesOrderInvoiceSaveAfter"/>
+        <observer name="siel_acumulus_source_save_observer" instance="Siel\AcumulusMa2\Observer\SourceSaveAfter"/>
     </event>
     <event name="sales_order_creditmemo_save_after">
-        <observer name="siel_acumulus_creditmemo_save_observer" instance="Siel\AcumulusMa2\Observer\SalesOrderCreditmemoSaveAfter"/>
+        <observer name="siel_acumulus_source_save_observer" instance="Siel\AcumulusMa2\Observer\SourceSaveAfter"/>
     </event>
     <event name="acumulus_invoice_created">
         <observer name="siel_acumulus_acumulus_invoice_created" instance="Siel\AcumulusMa2\Observer\AcumulusInvoiceCreated"/>
