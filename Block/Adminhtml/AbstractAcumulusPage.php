@@ -44,7 +44,7 @@ abstract class AbstractAcumulusPage extends Generic
      *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function _prepareForm()
+    protected function _prepareForm(): AbstractAcumulusPage
     {
         $form = $this->_formFactory->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
@@ -66,7 +66,7 @@ abstract class AbstractAcumulusPage extends Generic
      *
      * @return $this
      */
-    protected function _initFormValues()
+    protected function _initFormValues(): AbstractAcumulusPage
     {
         $this->getForm()->addValues($this->getAcumulusForm()->getFormValues());
         return parent::_initFormValues();
@@ -80,6 +80,7 @@ abstract class AbstractAcumulusPage extends Generic
         // Ensure translations are loaded.
         $acumulusForm = $this->getAcumulusForm();
         if ($acumulusForm->isFullPage()) {
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
             $this->getToolbar()->addChild(
                 'back_button',
                 Button::class,
@@ -89,6 +90,7 @@ abstract class AbstractAcumulusPage extends Generic
                     'class' => 'action-back'
                 ]
             );
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
             $this->getToolbar()->addChild(
                 'save_button',
                 Button::class,

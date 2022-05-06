@@ -29,21 +29,9 @@ use Siel\AcumulusMa2\Helper\Data;
  */
 class AcumulusInvoiceCreated implements ObserverInterface
 {
-
-    /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    protected $scopeConfig;
-
-    /**
-     * @var \Magento\Tax\Model\Calculation
-     */
-    protected $taxCalculation;
-
-    /**
-     * @var \Siel\AcumulusMa2\Helper\Data
-     */
-    private $helper;
+    protected ScopeConfigInterface $scopeConfig;
+    protected Calculation $taxCalculation;
+    private Data $helper;
 
     /**
      * SalesOrderSaveAfter constructor.
@@ -110,10 +98,11 @@ class AcumulusInvoiceCreated implements ObserverInterface
      */
     protected function supportPaycheckout(array &$invoice, Source $invoiceSource)
     {
-        if ((float) $invoiceSource->getSource()->getBasePaycheckoutSurchargeAmount() !== 0.0) {
+        $basePayCheckoutSurchargeAmount = $invoiceSource->getSource()->getBasePaycheckoutSurchargeAmount();
+        if (!empty($basePayCheckoutSurchargeAmount) && !Number::isZero($basePayCheckoutSurchargeAmount)) {
             $sign = $invoiceSource->getSign();
-            $paymentEx = (float) $sign * $invoiceSource->getSource()->getBasePaycheckoutSurchargeAmount();
-            $paymentVat = (float) $sign * $invoiceSource->getSource()->getBasePaycheckoutSurchargeTaxAmount();
+            $paymentEx = $sign * $invoiceSource->getSource()->getBasePaycheckoutSurchargeAmount();
+            $paymentVat = $sign * $invoiceSource->getSource()->getBasePaycheckoutSurchargeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $line = [
                 Tag::Product => $this->helper->t('payment_costs'),
@@ -160,7 +149,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
             $order = $invoiceSource->getSource();
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
-            if (array_key_exists('sisow', $additionalInfo) && (float) $additionalInfo['sisow'] != 0.0) {
+            if (array_key_exists('sisow', $additionalInfo) && !Number::isZero($additionalInfo['sisow'])) {
                 $paymentEx = (float) $additionalInfo['sisow'];
 
                 // Get vat.
@@ -175,6 +164,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
                 );
                 /** @noinspection PhpUndefinedMethodInspection */
                 $taxClass = $this->scopeConfig->getValue('sisow/general/feetaxclass', ScopeInterface::SCOPE_STORE);
+                /** @noinspection PhpUndefinedMethodInspection */
                 $request->setProductClassId($taxClass);
                 $paymentVatRate = $this->taxCalculation->getRate($request);
                 $paymentVat = $paymentEx * ($paymentVatRate / 100.0);
@@ -209,7 +199,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * - base_mc_paymentfee_amount
      * - base_mc_paymentfee_tax_amount
      * - mc_paymentfee_description
-     * which the module adds to orders AND creditmemos.
+     * The module adds these to orders AND credit-memos.
      *
      * Looking at their code it seems that they do add their fee and tax to the
      * totals, so code as in paycheckout and sisow support to change our invoice
@@ -222,10 +212,11 @@ class AcumulusInvoiceCreated implements ObserverInterface
      */
     protected function supportMagecompPaymentfee(array &$invoice, Source $invoiceSource)
     {
-        if (!Number::isZero($invoiceSource->getSource()->getBaseMcPaymentfeeAmount())) {
+        $baseMcPaymentFeeAmount = $invoiceSource->getSource()->getBaseMcPaymentfeeAmount();
+        if (!empty($baseMcPaymentFeeAmount) && !Number::isZero($baseMcPaymentFeeAmount)) {
             $sign = $invoiceSource->getSign();
-            $paymentEx = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeAmount();
-            $paymentVat = (float) $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeTaxAmount();
+            $paymentEx = $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeAmount();
+            $paymentVat = $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $description = $invoiceSource->getSource()->getBaseMcPaymentfeeDescription();
             $invoice['customer']['invoice']['line'][] =
@@ -268,10 +259,11 @@ class AcumulusInvoiceCreated implements ObserverInterface
         $invoiceTotal->getResource()->load($invoiceTotal, $invoiceSource->getId(), $field);
 
         // Does the total object exist and does it contain a non-zero amount?
-        if (!Number::isZero($invoiceTotal->getBaseAmount())) {
+        $baseAmount = $invoiceTotal->getBaseAmount();
+        if (!empty($baseAmount) && !Number::isZero($baseAmount)) {
             $sign = $invoiceSource->getSign();
-            $paymentEx = (float) $sign * $invoiceTotal->getBaseAmount();
-            $paymentVat = (float) $sign * $invoiceTotal->getBaseTaxAmount();
+            $paymentEx = $sign * $invoiceTotal->getBaseAmount();
+            $paymentVat = $sign * $invoiceTotal->getBaseTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $description = $invoiceTotal->getLabel();
             $invoice['customer']['invoice']['line'][] =
@@ -289,7 +281,12 @@ class AcumulusInvoiceCreated implements ObserverInterface
      *
      * @return array
      */
-    protected function getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description)
+    protected function getPaymentFeeLine(
+        float $paymentEx,
+        float $paymentInc,
+        float $paymentVat,
+        string $description
+    ): array
     {
         $line = [
             Tag::Product => $description ?: $this->helper->t('payment_costs'),

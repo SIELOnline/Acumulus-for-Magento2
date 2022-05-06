@@ -1,32 +1,24 @@
 <?php
 namespace Siel\AcumulusMa2\Helper;
 
+use Siel\Acumulus\Helpers\Container;
+use Siel\Acumulus\Helpers\Form;
+
 /**
  * Trait for accessing the Acumulus helper (form (type), container, translations)
  */
 trait HelperTrait
 {
-    /**
-     * @var \Siel\AcumulusMa2\Helper\Data
-     */
-    private $helper;
-
-    /**
-     * @var string
-     */
-    private $formType = '';
-
-    /**
-     * @var \Siel\Acumulus\Helpers\Form
-     */
-    private $acumulusForm;
+    private Data $helper;
+    private string $formType = '';
+    private ?Form $acumulusForm = null;
 
     /**
      * Returns the Acumulus container.
      *
      * @return \Siel\Acumulus\Helpers\Container
      */
-    public function getAcumulusContainer()
+    public function getAcumulusContainer(): Container
     {
         return $this->helper->getAcumulusContainer();
     }
@@ -36,9 +28,9 @@ trait HelperTrait
      *
      * @return \Siel\Acumulus\Helpers\Form
      */
-    public function getAcumulusForm()
+    public function getAcumulusForm(): Form
     {
-        if (!$this->acumulusForm) {
+        if ($this->acumulusForm === null) {
             $this->acumulusForm = $this->getAcumulusContainer()->getForm($this->getFormType());
         }
         return $this->acumulusForm;
@@ -54,7 +46,7 @@ trait HelperTrait
      *   The translation for the given key or the key itself if no translation
      *   could be found.
      */
-    protected function t($key)
+    protected function t(string $key): string
     {
         return $this->helper->t($key);
     }
@@ -95,7 +87,7 @@ trait HelperTrait
         if (end($classParts) === 'Index' || end($classParts) === 'Form') {
             array_pop($classParts);
         } elseif (substr(end($classParts), -strlen('Form')) === 'Form') {
-            array_push($classParts, substr(array_pop($classParts), 0, -strlen('Form')));
+            $classParts[] = substr(array_pop($classParts), 0, -strlen('Form'));
         }
 
         $class = implode('\\', $classParts);
@@ -129,7 +121,7 @@ trait HelperTrait
      *
      * @return string
      */
-    public function getFormType()
+    public function getFormType(): string
     {
         return $this->formType;
     }

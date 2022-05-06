@@ -10,8 +10,7 @@ use Siel\Acumulus\Magento\Helpers\Registry;
  */
 class Data extends AbstractHelper
 {
-    /** @var \Siel\Acumulus\Helpers\Container */
-    private static $acumulusContainer = null;
+    private static ?Container $acumulusContainer = null;
 
     /**
      * Helper method that initializes our environment:
@@ -22,7 +21,7 @@ class Data extends AbstractHelper
     private function init()
     {
         if (static::$acumulusContainer === null) {
-            static::$acumulusContainer = new Container('Magento\\Magento2', Registry::getInstance()->getLocale());
+            static::$acumulusContainer = new Container('Magento', Registry::getInstance()->getLocale());
         }
     }
 
@@ -36,7 +35,7 @@ class Data extends AbstractHelper
      *   The translation for the given key or the key itself if no translation
      *   could be found.
      */
-    public function t($key)
+    public function t(string $key): string
     {
         $this->init();
         return static::$acumulusContainer->getTranslator()->get($key);
@@ -48,7 +47,7 @@ class Data extends AbstractHelper
      * @return \Siel\Acumulus\Helpers\Container
      *   The Acumulus container.
      */
-    public function getAcumulusContainer()
+    public function getAcumulusContainer(): Container
     {
         $this->init();
         return static::$acumulusContainer;

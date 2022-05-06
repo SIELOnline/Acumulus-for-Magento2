@@ -15,10 +15,7 @@ use Siel\Acumulus\Magento\Helpers\Registry;
  */
 class Acumulus641Patch implements DataPatchInterface
 {
-    /**
-     * @var \Magento\Framework\Setup\ModuleDataSetupInterface
-     */
-    private $moduleDataSetup;
+    private ModuleDataSetupInterface $moduleDataSetup;
 
     /**
      * @param \Magento\Framework\Setup\ModuleDataSetupInterface $moduleDataSetup
