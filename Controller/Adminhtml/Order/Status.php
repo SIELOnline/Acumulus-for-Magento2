@@ -58,22 +58,21 @@ class Status extends AbstractAcumulus
         $block = $this->layoutFactory
             ->create()
             ->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Order\Status');
+        /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
+        $acumulusForm = $this->getAcumulusForm();
 
         if ($this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
             try {
                 // Create the form first: this will load the translations.
-                /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
-                $acumulusForm = $this->getAcumulusForm();
                 $id = $this->getRequest()->getParam('order_id');
                 $source = $this->getAcumulusContainer()->createSource(Source::Order, $id);
                 $acumulusForm->setSource($source);
                 $acumulusForm->process();
-                $block->prepareForm();
             } catch (Throwable $e) {
-                // We handle our "own" exceptions but only when we can process them
-                // as we want, i.e. show it as an error at the beginning of the
-                // form. That's why we start catching only after we have a form, and
-                // stop catching just before postRenderForm().
+                // We handle our "own" exceptions but only when we can process
+                // them as we want, i.e. show it as an error at the beginning of
+                // the form. That's why we start catching only after we have a
+                // form, and stop catching just before $block->toHtml().
                 try {
                     $crashReporter = $this->getAcumulusContainer()->getCrashReporter();
                     $message = $crashReporter->logAndMail($e);

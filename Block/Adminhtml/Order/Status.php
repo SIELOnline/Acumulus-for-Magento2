@@ -1,4 +1,7 @@
 <?php
+/**
+ * @noinspection PhpMultipleClassDeclarationsInspection
+ */
 
 namespace Siel\AcumulusMa2\Block\Adminhtml\Order;
 
@@ -13,12 +16,12 @@ use Siel\Acumulus\Helpers\Severity;
 use Siel\Acumulus\Invoice\Source;
 use Siel\AcumulusMa2\Helper\Data;
 use Siel\AcumulusMa2\Helper\HelperTrait;
+use Throwable;
 
 class Status extends AbstractBlock implements TabInterface
 {
     use HelperTrait;
 
-    protected FormFactory $formFactory;
     protected Validator $_formKeyValidator;
     protected bool $hasAuthorization;
 
@@ -29,6 +32,8 @@ class Status extends AbstractBlock implements TabInterface
      * @param \Magento\Framework\Data\FormFactory $formFactory
      * @param \Siel\AcumulusMa2\Helper\Data $helper
      * @param array $data
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function __construct(
         Context $context,
@@ -36,12 +41,14 @@ class Status extends AbstractBlock implements TabInterface
         Data $helper,
         array $data = []
     ) {
-        $this->formFactory = $formFactory;
         $this->hasAuthorization = $context->getAuthorization()->isAllowed('Siel_Acumulus::batch');
         $this->helper = $helper;
+        $this->form = $formFactory->create(
+            ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
+        );
         $this->setFormType();
         // Create the form first: this will load the translations.
-        $this->acumulusForm = $this->getAcumulusForm();
+        $this->getAcumulusForm();
 
         parent::__construct($context, $data);
     }
@@ -91,55 +98,52 @@ class Status extends AbstractBlock implements TabInterface
             $this->getAcumulusForm()->setSource($source);
         }
     }
-
     /**
-     * Prepares the Magento form based on interaction with the Acumulus form.
-     *
-     * This functionality is extracted from _toHtml() to place it within the
-     * "exception catching at the highest level".
-     *
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Throwable
      */
-    public function prepareForm(): Status
-    {
-        $this->form = $this->formFactory->create(
-            ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
-        );
-        if ($this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
-            // Create the form first: this will load the translations.
-            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            if (!$this->acumulusForm->hasSource()) {
-                $this->setSource();
-            }
-            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            if ($this->acumulusForm->hasSource()) {
-                // Populate the form using the FormMapper.
-                /** @var \siel\Acumulus\Magento\Helpers\FormMapper $mapper */
-                $mapper = $this->getAcumulusContainer()->getFormMapper();
-                $mapper->setMagentoForm($this->form)->map($this->acumulusForm);
-                /** @noinspection PhpUndefinedMethodInspection */
-                $this->form->setUseContainer(false);
-                $this->form->addValues($this->acumulusForm->getFormValues());
-            }
-        }
-        return $this;
-    }
-
     protected function _toHtml(): string
     {
         $output = '';
         if ($this->getAcumulusContainer()->getConfig()->getInvoiceStatusSettings()['showInvoiceStatus']) {
             // Create the form first: this will load the translations.
-            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            if ($this->acumulusForm->hasSource()) {
-                $url = $this->getUrl('acumulus/order/status', ['_current' => true]);
-                $wait = $this->t('wait');
-                $output .= '<div id="acumulus-invoice" class="acumulus-area" data-acumulus-wait="'
-                           . $wait . '" data-acumulus-url="' . $url . '">';
-                $output .= $this->showNotices($this->acumulusForm);
+            /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
+            $acumulusForm = $this->getAcumulusForm();
+            if (!$acumulusForm->hasSource()) {
+                $this->setSource();
+            }
+            if ($acumulusForm->hasSource()) {
+                try {
+                    // Populate the form using the FormMapper.
+                    /** @var \siel\Acumulus\Magento\Helpers\FormMapper $mapper */
+                    $mapper = $this->getAcumulusContainer()->getFormMapper();
+                    $mapper->setMagentoForm($this->form)->map($acumulusForm);
+                    /** @noinspection PhpUndefinedMethodInspection */
+                    $this->form->setUseContainer(false);
+                    $this->form->addValues($acumulusForm->getFormValues());
+                    $url = $this->getUrl('acumulus/order/status', ['_current' => true]);
+                    $wait = $this->t('wait');
+                    $output .= '<div id="acumulus-invoice" class="acumulus-area" data-acumulus-wait="'
+                        . $wait . '" data-acumulus-url="' . $url . '">';
+                } catch (Throwable $e) {
+                    // We handle our "own" exceptions but only when we can
+                    // process them as we want, i.e. show it as an error at the
+                    // beginning of the form. That's why we start catching only
+                    // after we have a form, and stop catching just before
+                    // $this->showNotices().
+                    try {
+                        $crashReporter = $this->getAcumulusContainer()->getCrashReporter();
+                        $message = $crashReporter->logAndMail($e);
+                        $acumulusForm->createAndAddMessage($message, Severity::Exception);
+                    } catch (Throwable $inner) {
+                        // We do not know if we have informed the user per mail or
+                        // screen, so assume not, and rethrow the original exception.
+                        throw $e;
+                    }
+                }
+                $output .= $this->showNotices($acumulusForm);
                 $output .= '<div class="admin__page-section-title"><span class="title">'
-                           . $this->getTabTitle()
-                           . '</span></div>';
+                    . $this->getTabTitle()
+                    . '</span></div>';
                 $output .= $this->form->getHtml();
                 $output .= '</div>';
                 $output .= '';
