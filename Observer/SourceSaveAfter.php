@@ -5,6 +5,7 @@
 
 namespace Siel\AcumulusMa2\Observer;
 
+use http\Exception\RuntimeException;
 use Magento\Framework\Event\Observer as EventObserver;
 use Magento\Framework\Event\ObserverInterface;
 use Siel\Acumulus\Invoice\Source;
@@ -60,7 +61,7 @@ class SourceSaveAfter implements ObserverInterface
                     $invoiceSourceOrId = $event->getCreditmemo();
                     break;
                 default:
-                    assert(false, __METHOD__ . ': we do not handle event ' . $event->getName());
+                    throw new RuntimeException('We do not handle event ' . $event->getName());
             }
             $source = $this->helper->getAcumulusContainer()->createSource($invoiceSourceType, $invoiceSourceOrId);
             $this->helper->getAcumulusContainer()->getInvoiceManager()->sourceStatusChange($source);
