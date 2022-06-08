@@ -207,18 +207,27 @@ label[for$="_payment_date"] span::after {
 }
 
 /*
- * Acumulus info block
+ * Acumulus About block
  */
+.admin__field[data-ui-id$='header'] {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.admin__field[data-ui-id$='information'] {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
 [id$="Information"] h3 {
   font-size: 1.8rem;
-  margin-top: -18px;
   margin-bottom: 0;
 }
 
 [id$="Information"] ul {
   list-style-position: outside;
   list-style-type: initial;
-  margin: 0.8em 0 0 1em;
+  margin: 0 0 0 1em;
 }
 
 [id$="Information"] ul li {
@@ -270,6 +279,29 @@ label[for$="_payment_date"] span::after {
   padding-left: 0.3em;
   width: 24%;
   height: 2em;
+}
+.acumulus-blue {
+  color: #01a6d4;
+}
+
+.acumulus-light-green {
+  color: #f0fff0;
+}
+
+.button-pro-support {
+  display: inline-block;
+  transition: background-color 0.5s ease;
+  background-color: #f0fff0;
+  border-color: #000000;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 12px;
+  padding: 6px 20px;
+  margin-top: 5px;
+}
+
+.button-pro-support:hover {
+  background: #01a6d4;
 }
 
 /*
