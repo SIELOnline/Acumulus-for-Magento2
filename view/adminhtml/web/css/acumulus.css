@@ -22,14 +22,22 @@
 }
 
 details {
-  border: solid 1px #adadad;
   padding: 1em;
   margin: 0.5em 0 1em 0;
 }
 
+details, fieldset.fieldset {
+  border: none;
+  border-bottom: 1px solid #cccccc;
+}
+
+details:last-child, fieldset.fieldset:last-child {
+  border: none;
+}
+
 details summary {
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   cursor: pointer;
   position: relative;
   margin-bottom: 0.5em;
