@@ -165,16 +165,6 @@ label[for$="_payment_date"] span::after {
   width: 0.25em;
 }
 
-#acumulus-invoice .pdf {
-  display: inline-block;
-  padding-left: 15px;
-  margin: 0.1em 1.5em 0.2em 0;
-  background-image: url('../images/icon-pdf.svg');
-  background-size: 12px 16px;
-  background-repeat: no-repeat;
-  background-position: left center;
-}
-
 /* Refund overview title */
 #acumulus-invoice > div + div > .fieldset-legend {
   margin-top: 2em;
@@ -184,6 +174,41 @@ label[for$="_payment_date"] span::after {
 
 #acumulus-invoice fieldset > legend {
   display: none;
+}
+
+
+/*
+ * Acumulus icons for invoice and packing slip showing or mailing,
+ * on both the order list and detail page.
+ */
+[class*="acumulus-document"] {
+  display: inline-block;
+}
+
+#acumulus-invoice [class*="acumulus-document"] {
+  position: relative;
+  box-sizing: border-box;
+  height: 30px;
+  min-width: 148px;
+  margin-top: 5px;
+  margin-right: 10px;
+  padding-left: 34px;
+  padding-right: 0;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-position-x: 6px;
+}
+
+#acumulus-invoice [class*="acumulus-document"]:last-of-type {
+  margin-right: 0;
+}
+
+#acumulus-invoice [class*="acumulus-document-invoice"] {
+  background-image: url("../images/acumulus-invoice.png");
+}
+
+#acumulus-invoice [class*="acumulus-document-packing-slip"] {
+  background-image: url("../images/acumulus-packing-slip.png");
 }
 
 /*

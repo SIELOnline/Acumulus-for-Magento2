@@ -5,7 +5,7 @@
 
 namespace Siel\AcumulusMa2\Observer;
 
-use http\Exception\RuntimeException;
+use RuntimeException;
 use Magento\Framework\Event\Observer as EventObserver;
 use Magento\Framework\Event\ObserverInterface;
 use Siel\Acumulus\Invoice\Source;
@@ -45,17 +45,20 @@ class SourceSaveAfter implements ObserverInterface
         try {
             switch ($event->getName()) {
                 case 'sales_order_save_after':
+                    $method = 'sourceStatusChange';
                     $invoiceSourceType = Source::Order;
                     /** @noinspection PhpUndefinedMethodInspection */
                     $invoiceSourceOrId = $event->getOrder();
                     break;
                 case 'sales_order_invoice_save_after':
+                    $method = 'invoiceCreate';
                     $invoiceSourceType = Source::Order;
                     /** @noinspection PhpUndefinedMethodInspection */
                     $invoice = $event->getInvoice();
                     $invoiceSourceOrId = $invoice->getOrderId();
                     break;
                 case 'sales_order_creditmemo_save_after':
+                    $method = 'sourceStatusChange';
                     $invoiceSourceType = Source::CreditNote;
                     /** @noinspection PhpUndefinedMethodInspection */
                     $invoiceSourceOrId = $event->getCreditmemo();
@@ -64,7 +67,7 @@ class SourceSaveAfter implements ObserverInterface
                     throw new RuntimeException('We do not handle event ' . $event->getName());
             }
             $source = $this->helper->getAcumulusContainer()->createSource($invoiceSourceType, $invoiceSourceOrId);
-            $this->helper->getAcumulusContainer()->getInvoiceManager()->sourceStatusChange($source);
+            $this->helper->getAcumulusContainer()->getInvoiceManager()->$method($source);
         } catch (Throwable $e) {
             try {
                 $crashReporter = $this->helper->getAcumulusContainer()->getCrashReporter();
