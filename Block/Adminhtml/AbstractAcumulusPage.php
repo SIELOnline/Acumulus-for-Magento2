@@ -5,10 +5,12 @@
  *    of UI component implementation.
  */
 
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Block\Adminhtml;
 
 use Magento\Backend\Block\Template\Context;
-use Magento\Backend\Block\Widget\Button as Button;
+use Magento\Backend\Block\Widget\Button;
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
@@ -38,7 +40,7 @@ abstract class AbstractAcumulusPage extends Generic
         Data $helper,
         array $data = []
     ) {
-        $this->helper = $helper;
+        $this->setHelper($helper);
         $this->setFormType();
         parent::__construct($context, $registry, $formFactory, $data);
     }
@@ -81,7 +83,7 @@ abstract class AbstractAcumulusPage extends Generic
     /**
      * @inheritdoc
      */
-    public function _prepareLayout()
+    protected function _prepareLayout()
     {
         // Ensure translations are loaded.
         $acumulusForm = $this->getAcumulusForm();

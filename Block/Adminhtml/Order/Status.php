@@ -1,7 +1,6 @@
 <?php
-/**
- * @noinspection PhpMultipleClassDeclarationsInspection
- */
+
+declare(strict_types=1);
 
 namespace Siel\AcumulusMa2\Block\Adminhtml\Order;
 
@@ -18,6 +17,9 @@ use Siel\AcumulusMa2\Helper\Data;
 use Siel\AcumulusMa2\Helper\HelperTrait;
 use Throwable;
 
+/**
+ * Block for rendering the Acumulus invoice status overview.
+ */
 class Status extends AbstractBlock implements TabInterface
 {
     use HelperTrait;
@@ -42,7 +44,7 @@ class Status extends AbstractBlock implements TabInterface
         array $data = []
     ) {
         $this->hasAuthorization = $context->getAuthorization()->isAllowed('Siel_Acumulus::batch');
-        $this->helper = $helper;
+        $this->setHelper($helper);
         $this->form = $formFactory->create(
             ['data' => ['id' => 'edit_form', 'action' => $this->getData('action'), 'method' => 'post']]
         );
@@ -89,7 +91,7 @@ class Status extends AbstractBlock implements TabInterface
     /**
      * Retrieve order
      */
-    public function setSource()
+    public function setSource(): void
     {
         $id = $this->getRequest()->getParam('order_id');
         if (!empty($id)) {

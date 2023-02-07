@@ -1,7 +1,6 @@
 <?php
-/**
- * @noinspection PhpMultipleClassDeclarationsInspection
- */
+
+declare(strict_types=1);
 
 namespace Siel\AcumulusMa2\Controller\Adminhtml\Order;
 
@@ -57,7 +56,7 @@ class Status extends AbstractAcumulus
         /** @var \Siel\AcumulusMa2\Block\Adminhtml\Order\Status $block */
         $block = $this->layoutFactory
             ->create()
-            ->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Order\Status');
+            ->createBlock(\Siel\AcumulusMa2\Block\Adminhtml\Order\Status::class);
         /** @var \Siel\Acumulus\Shop\InvoiceStatusForm $acumulusForm */
         $acumulusForm = $this->getAcumulusForm();
 

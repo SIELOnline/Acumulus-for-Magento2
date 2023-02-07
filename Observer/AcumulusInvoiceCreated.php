@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Observer;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -14,6 +16,8 @@ use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Meta;
 use Siel\Acumulus\Tag;
 use Siel\AcumulusMa2\Helper\Data;
+
+use function array_key_exists;
 
 /** @noinspection PhpUnused
  *
@@ -65,7 +69,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
      *
      * @return void
      */
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         /** @var array $invoice */
         $invoice = $observer->getDataByKey('invoice');
@@ -96,7 +100,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * @param array $invoice
      * @param \Siel\Acumulus\Invoice\Source $invoiceSource
      */
-    protected function supportPaycheckout(array &$invoice, Source $invoiceSource)
+    protected function supportPaycheckout(array &$invoice, Source $invoiceSource): void
     {
         $basePayCheckoutSurchargeAmount = $invoiceSource->getSource()->getBasePaycheckoutSurchargeAmount();
         if (!empty($basePayCheckoutSurchargeAmount) && !Number::isZero($basePayCheckoutSurchargeAmount)) {
@@ -142,7 +146,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * @param array $invoice
      * @param \Siel\Acumulus\Invoice\Source $invoiceSource
      */
-    protected function supportSisow(array &$invoice, Source $invoiceSource)
+    protected function supportSisow(array &$invoice, Source $invoiceSource): void
     {
         if ($invoiceSource->getType() === Source::Order) {
             /** @var \Magento\Sales\Model\Order $order */
@@ -210,7 +214,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * @param array $invoice
      * @param \Siel\Acumulus\Invoice\Source $invoiceSource
      */
-    protected function supportMagecompPaymentfee(array &$invoice, Source $invoiceSource)
+    protected function supportMagecompPaymentfee(array &$invoice, Source $invoiceSource): void
     {
         $baseMcPaymentFeeAmount = $invoiceSource->getSource()->getBaseMcPaymentfeeAmount();
         if (!empty($baseMcPaymentFeeAmount) && !Number::isZero($baseMcPaymentFeeAmount)) {
@@ -238,7 +242,7 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * @param array $invoice
      * @param \Siel\Acumulus\Invoice\Source $invoiceSource
      */
-    protected function supportFoomanSurchargePayment(array &$invoice, Source $invoiceSource)
+    protected function supportFoomanSurchargePayment(array &$invoice, Source $invoiceSource): void
     {
         // Is the module enabled?
         if (!class_exists('Fooman\Totals\Model\OrderTotal')) {

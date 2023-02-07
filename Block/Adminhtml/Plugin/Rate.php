@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Block\Adminhtml\Plugin;
 
 use Magento\Backend\Block\Template;
@@ -9,6 +11,9 @@ use Magento\Framework\Data\FormFactory;
 use Siel\AcumulusMa2\Helper\Data;
 use Siel\AcumulusMa2\Helper\HelperTrait;
 
+/**
+ * Block for rendering the "Rate Acumulus module" question.
+ */
 class Rate extends Template
 {
     use HelperTrait;
@@ -29,7 +34,7 @@ class Rate extends Template
         array $data = []
     ) {
         $this->formFactory = $formFactory;
-        $this->helper = $helper;
+        $this->setHelper($helper);
         $this->setFormType();
 
         // Create the form first: this will load the translations.
@@ -44,7 +49,7 @@ class Rate extends Template
      *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function _toHtml()
+    protected function _toHtml(): string
     {
         // Create the form first: this will load the translations.
         /** @var \Siel\Acumulus\Shop\RatePluginForm $acumulusForm */

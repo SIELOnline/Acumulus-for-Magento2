@@ -1,30 +1,30 @@
 <?xml version='1.0'?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-  <table name="acumulus_entry" resource="default" engine="innodb" comment="Acumulus entry table">
-    <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
-        comment="Technical key"/>
-    <column xsi:type="int" name="entry_id" unsigned="true" nullable="true" default="null"
-        comment="Acumulus entry id"/>
-    <column xsi:type="varchar" name="token" nullable="true" length="32" default="null"
-        comment="Acumulus invoice token"/>
-    <column xsi:type="varchar" name="source_type" nullable="false" length="20"
-        comment="Invoice source type"/>
-    <column xsi:type="int" name="source_id" padding="6" unsigned="true" nullable="false"
-        comment="Magento invoice source id"/>
-    <column xsi:type="timestamp" name="created" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
-        comment="Timestamp created"/>
-    <column xsi:type="timestamp" name="updated" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
-        comment="Timestamp updated"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="entity_id"/>
-    </constraint>
-    <index referenceId="ACUMULUS_ENTRY_ENTRY_ID" indexType="btree">
-      <column name="entry_id"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="ACUMULUS_ENTRY_SOURCE_TYPE_SOURCE_ID">
-      <column name="source_type"/>
-      <column name="source_id"/>
-    </constraint>
-  </table>
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="acumulus_entry" resource="default" engine="innodb" comment="Acumulus entry table">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Technical key"/>
+        <column xsi:type="int" name="entry_id" unsigned="true" nullable="true" default="null"
+                comment="Acumulus entry id"/>
+        <column xsi:type="varchar" name="token" nullable="true" length="32" default="null"
+                comment="Acumulus invoice token"/>
+        <column xsi:type="varchar" name="source_type" nullable="false" length="20"
+                comment="Invoice source type"/>
+        <column xsi:type="int" name="source_id" padding="6" unsigned="true" nullable="false"
+                comment="Magento invoice source id"/>
+        <column xsi:type="timestamp" name="created" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Timestamp created"/>
+        <column xsi:type="timestamp" name="updated" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Timestamp updated"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="ACUMULUS_ENTRY_ENTRY_ID" indexType="btree">
+            <column name="entry_id"/>
+        </index>
+        <constraint xsi:type="unique" referenceId="ACUMULUS_ENTRY_SOURCE_TYPE_SOURCE_ID">
+            <column name="source_type"/>
+            <column name="source_id"/>
+        </constraint>
+    </table>
 </schema>

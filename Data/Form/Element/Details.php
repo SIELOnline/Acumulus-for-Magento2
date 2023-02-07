@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Data\Form\Element;
 
-use Magento\Framework\Data\Form;
 use Magento\Framework\Data\Form\Element\CollectionFactory;
 use Magento\Framework\Data\Form\Element\Factory;
 use Magento\Framework\Data\Form\Element\Fieldset;
@@ -47,12 +48,10 @@ class Details extends Fieldset
     public function getElementHtml()
     {
         $open = !empty($this->_data['open']) ? ' open' : '';
-        $html = parent::getElementHtml();
-        $html = str_replace(
+        return str_replace(
             ['<fieldset', '</fieldset>', '<legend', '</legend>'],
             ["<details$open", '</details>', '<summary', '</summary>'],
-            $html
+            parent::getElementHtml()
         );
-        return $html;
     }
 }

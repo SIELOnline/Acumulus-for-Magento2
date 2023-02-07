@@ -1,9 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Setup\Patch\Data;
 
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Siel\Acumulus\Magento\Helpers\Registry;
+use Siel\AcumulusMa2\Helper\Data;
 
 /**
  * Class Acumulus641Patch ensures that the configVersion value gets an initial
@@ -49,7 +53,7 @@ class Acumulus641Patch implements DataPatchInterface
         $this->moduleDataSetup->getConnection()->startSetup();
 
         /** @var \Siel\AcumulusMa2\Helper\Data $helper */
-        $helper = Registry::getInstance()->get('Siel\AcumulusMa2\Helper\Data');
+        $helper = Registry::getInstance()->get(Data::class);
         $helper->getAcumulusContainer()->getConfigUpgrade()->upgrade('');
 
         $this->moduleDataSetup->getConnection()->endSetup();

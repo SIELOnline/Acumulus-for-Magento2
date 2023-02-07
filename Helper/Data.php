@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -18,7 +21,7 @@ class Data extends AbstractHelper
      * - translator
      * - acumulusConfig
      */
-    private function init()
+    private function init(): void
     {
         if (static::$acumulusContainer === null) {
             static::$acumulusContainer = new Container('Magento', Registry::getInstance()->getLocale());

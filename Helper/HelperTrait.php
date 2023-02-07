@@ -1,8 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Helper;
 
 use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Helpers\Form;
+
+use function strlen;
 
 /**
  * Trait for accessing the Acumulus helper (form (type), container, translations)
@@ -12,6 +17,16 @@ trait HelperTrait
     private Data $helper;
     private string $formType = '';
     private ?Form $acumulusForm = null;
+
+    /**
+     * @param \Siel\AcumulusMa2\Helper\Data $helper
+     *
+     * @return void
+     */
+    public function setHelper(Data $helper): void
+    {
+        $this->helper = $helper;
+    }
 
     /**
      * Returns the Acumulus container.
@@ -63,7 +78,7 @@ trait HelperTrait
      * - Forms may end with a nondescript 'Form' or the last part may end with.
      *   'Form'.
      */
-    protected function setFormType()
+    protected function setFormType(): void
     {
         $classType = 'class';
         $class = static::class;

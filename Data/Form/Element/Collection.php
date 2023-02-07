@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Data\Form\Element;
 
 use Magento\Framework\Data\Form\Element\AbstractElement;
@@ -48,7 +50,7 @@ class Collection extends AbstractElement
     /**
      * Principal override: this performs the changes.
      */
-    public function getElementHtml()
+    public function getElementHtml(): string
     {
         $html = '';
 
@@ -66,8 +68,10 @@ class Collection extends AbstractElement
      *
      * This override prevents wrappers and labels being rendered.
      *
-     * @noinspection PhpUndefinedMethodInspection*/
-    protected function _elementsToHtml($elements)
+     * @noinspection PhpUndefinedMethodInspection  magic getters and setters for
+     *   before and afterElementHtml, noSpan, label, and text.
+     */
+    protected function _elementsToHtml($elements): string
     {
         $html = '';
 

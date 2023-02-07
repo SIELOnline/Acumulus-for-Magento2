@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Model;
 
 use Magento\Framework\Model\AbstractModel;
@@ -25,9 +28,13 @@ class Entry extends AbstractModel
      * Initialize Acumulus Entry Model
      *
      * @return void
+     *
+     * @noinspection MagicMethodsValidityInspection _construct is the Magento way to
+     *   have your own constructor.
      */
-    protected function _construct()
+    protected function _construct(): void
     {
-        $this->_init('Siel\AcumulusMa2\Model\ResourceModel\Entry');
+        /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+        $this->_init(\Siel\AcumulusMa2\Model\ResourceModel\Entry::class);
     }
 }

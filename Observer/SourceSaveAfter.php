@@ -3,6 +3,8 @@
  * @noinspection PhpMultipleClassDeclarationsInspection
  */
 
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Observer;
 
 use RuntimeException;
@@ -39,7 +41,7 @@ class SourceSaveAfter implements ObserverInterface
      *
      * @throws \Throwable
      */
-    public function execute(EventObserver $observer)
+    public function execute(EventObserver $observer): void
     {
         $event = $observer->getEvent();
         try {

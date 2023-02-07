@@ -1,7 +1,6 @@
 <?php
-/**
- * @noinspection PhpMultipleClassDeclarationsInspection
- */
+
+declare(strict_types=1);
 
 namespace Siel\AcumulusMa2\Controller\Adminhtml;
 
@@ -10,6 +9,7 @@ use Magento\Framework\View\LayoutFactory as ViewLayoutFactory;
 use Magento\Framework\View\Result\PageFactory;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
+use Siel\AcumulusMa2\Block\Adminhtml\Plugin\Rate;
 use Siel\AcumulusMa2\Helper\Data;
 use Throwable;
 
@@ -65,7 +65,7 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
                 if (time() >= $value) {
                     $html = $this->layoutFactory
                         ->create()
-                        ->createBlock('Siel\AcumulusMa2\Block\Adminhtml\Plugin\Rate')
+                        ->createBlock(Rate::class)
                         ->toHtml();
                     $this->messageManager->addComplexNoticeMessage('rate_plugin', ['message' => $html]);
                 }
