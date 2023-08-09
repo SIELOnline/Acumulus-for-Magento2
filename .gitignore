@@ -7,5 +7,6 @@ interdiff.txt
 # releases
 *.zip
 
-# PHPStorm
+# PHPStorm, PHPUnit
 .idea/*
+.phpunit.result.cache
