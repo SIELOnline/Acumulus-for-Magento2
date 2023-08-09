@@ -101,7 +101,7 @@ trait HelperTrait
         }
         if (end($classParts) === 'Index' || end($classParts) === 'Form') {
             array_pop($classParts);
-        } elseif (substr(end($classParts), -strlen('Form')) === 'Form') {
+        } elseif (str_ends_with(end($classParts), 'Form')) {
             $classParts[] = substr(array_pop($classParts), 0, -strlen('Form'));
         }
 

@@ -76,7 +76,7 @@ class Status extends AbstractAcumulus
                     $crashReporter = $this->getAcumulusContainer()->getCrashReporter();
                     $message = $crashReporter->logAndMail($e);
                     $acumulusForm->createAndAddMessage($message, Severity::Exception);
-                } catch (Throwable $inner) {
+                } catch (Throwable) {
                     // We do not know if we have informed the user per mail or
                     // screen, so assume not, and rethrow the original exception.
                     throw $e;

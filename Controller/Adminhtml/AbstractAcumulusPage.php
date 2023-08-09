@@ -6,6 +6,7 @@ namespace Siel\AcumulusMa2\Controller\Adminhtml;
 
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\LayoutFactory as ViewLayoutFactory;
+use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Siel\Acumulus\Helpers\Message;
 use Siel\Acumulus\Helpers\Severity;
@@ -50,7 +51,7 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
      *
      * @throws \Throwable
      */
-    public function execute()
+    public function execute(): Page
     {
         // The execute method of our controller is the highest level from where
         // our code executes: e.g. all code in Block is executed when this
@@ -93,7 +94,7 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
                         $this->messageManager->addErrorMessage($message->format(Message::Format_PlainWithSeverity));
                         break;
                     case Severity::Exception:
-                        /** @noinspection PhpParamsInspection  Will be an \Exception, will not be null. */
+                        /** @noinspection PhpParamsInspection Will be an \Exception, will not be null. */
                         $this->messageManager->addExceptionMessage($message->getException());
                         break;
                     default:
@@ -109,7 +110,7 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
                 $crashReporter = $this->getAcumulusContainer()->getCrashReporter();
                 $message = $crashReporter->logAndMail($e);
                 $this->messageManager->addErrorMessage($message);
-            } catch (Throwable $inner) {
+            } catch (Throwable) {
                 // We do not know if we have informed the user per mail or
                 // screen, so assume not, and rethrow the original exception.
                 throw $e;

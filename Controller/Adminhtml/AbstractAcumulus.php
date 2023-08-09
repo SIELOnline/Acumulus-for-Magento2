@@ -1,10 +1,15 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Siel\AcumulusMa2\Controller\Adminhtml;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Siel\AcumulusMa2\Helper\Data;
 use Siel\AcumulusMa2\Helper\HelperTrait;
+
+use function is_bool;
 
 /**
  * Base Acumulus config controller.
@@ -33,6 +38,7 @@ abstract class AbstractAcumulus extends Action
      * Checks if a user has permissions to visit the related pages.
      *
      * @return bool
+     * @noinspection PhpMissingParentCallCommonInspection  Base implementation not needed
      */
     protected function _isAllowed(): bool
     {
@@ -46,6 +52,6 @@ abstract class AbstractAcumulus extends Action
             'rate' => true,
         ];
         $resource = $resource[$this->getFormType()];
-        return is_bool($resource) ? $resource : $this->_authorization->isAllowed('Siel_Acumulus::' . $resource);
+        return is_bool($resource) ? $resource : $this->_authorization->isAllowed("Siel_Acumulus::$resource");
     }
 }
