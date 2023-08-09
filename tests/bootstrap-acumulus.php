@@ -28,9 +28,15 @@ use Magento\TestFramework\Workaround\Override\Fixture\Resolver;
 use Monolog\Logger;
 
 $magentoRoot = '/var/www/html';
-$magentoTestBaseDir = $magentoRoot . '/dev/tests/integration';
-$testFrameworkDir = $magentoTestBaseDir . '/framework';
-$testBaseDir = "$magentoRoot/vendor/siel/acumulus-ma2/tests";
+$testBaseDir = $magentoRoot . '/dev/tests/integration';
+$testFrameworkDir = $testBaseDir . '/framework';
+$acumulusTestDir = "$magentoRoot/vendor/siel/acumulus-ma2/tests";
+
+// This is more to prevent incorrect PhpUndefinedConstantInspection warnings.
+// It should exist.
+//if (!defined('TESTS_INSTALL_CONFIG_FILE')) {
+//    define('TESTS_INSTALL_CONFIG_FILE', 'etc/install-config-mysql.php');
+//}
 
 require_once $magentoRoot . '/app/bootstrap.php';
 require_once $testFrameworkDir . '/autoload.php';
@@ -41,12 +47,14 @@ if (!defined('TESTS_TEMP_DIR')) {
     define('TESTS_TEMP_DIR', $testBaseDir . '/tmp');
 }
 
-//if (!defined('INTEGRATION_TESTS_DIR')) {
-//    define('INTEGRATION_TESTS_DIR', $testBaseDir);
-//}
-
 try {
     setCustomErrorHandler();
+
+    /* Link our 'install-config-mysql.php' file to the one in "$testBasedir/etc". */
+//    if (file_exists($testBaseDir . '/' . TESTS_INSTALL_CONFIG_FILE)) {
+//        unlink($testBaseDir . '/' . TESTS_INSTALL_CONFIG_FILE);
+//    }
+//    copy($acumulusTestDir . '/' . TESTS_INSTALL_CONFIG_FILE, $testBaseDir . '/' . TESTS_INSTALL_CONFIG_FILE);
 
     /* Bootstrap the application */
     $settings = new Settings($testBaseDir, get_defined_constants());
@@ -72,13 +80,17 @@ try {
     if (!file_exists($installConfigFile)) {
         $installConfigFile .= '.dist';
     }
-
     $globalConfigFile = $settings->getAsConfigFile('TESTS_GLOBAL_CONFIG_FILE');
     if (!file_exists($globalConfigFile)) {
         $globalConfigFile .= '.dist';
     }
-    $sandboxUniqueId = hash('sha256', sha1_file($installConfigFile));
-    $installDir = TESTS_TEMP_DIR . "/sandbox-{$settings->get('TESTS_PARALLEL_THREAD', 0)}-$sandboxUniqueId";
+
+//    $sandboxUniqueId = hash('sha256', sha1_file($installConfigFile));
+//    $sandboxUniqueId = '9a102a70d192ee6ae981129e30b995b4a5372c1950bc06d736a0295683a028ec';
+//    $installDir = TESTS_TEMP_DIR . "/sandbox-{$settings->get('TESTS_PARALLEL_THREAD', 0)}-$sandboxUniqueId";
+
+    $installDir = TESTS_TEMP_DIR . "/sandbox-acumulus";
+
     $application = new Application(
         $shell,
         $installDir,
@@ -94,25 +106,19 @@ try {
     $bootstrap = new \Magento\TestFramework\Bootstrap(
         $settings,
         new Environment(),
-        new DocBlock("$magentoTestBaseDir/testsuite"),
+        new DocBlock("$testBaseDir/testsuite"),
         new \Magento\TestFramework\Bootstrap\Profiler(new Standard()),
         $shell,
         $application,
         new MemoryFactory($shell)
     );
     $bootstrap->runBootstrap();
-//    if ($settings->getAsBoolean('TESTS_CLEANUP')) {
-//        $application->cleanup();
-//    }
-//    if (!$application->isInstalled()) {
-//        $application->install($settings->getAsBoolean('TESTS_CLEANUP'));
-//    }
     $application->initialize();
     eTime('Initialized');
 
     Bootstrap::setInstance(new Bootstrap($bootstrap));
 
-    eTime('Create ObjectManager');
+    eTime('Create Objects');
     $dirSearch = Bootstrap::getObjectManager()->create(DirSearch::class);
     $themePackageList = Bootstrap::getObjectManager()->create(ThemePackageList::class);
     Files::setInstance(
@@ -134,7 +140,7 @@ try {
         new Magento\TestFramework\Fixture\DataFixtureStorage()
     );
     /* Unset declared global variables to release the PHPUnit from maintaining their values between tests */
-    unset($magentoRoot, $testFrameworkDir, $magentoTestBaseDir, $testBaseDir, $settings, $shell, $application, $bootstrap, $overrideConfig);
+    unset($magentoRoot, $testBaseDir, $testFrameworkDir, $settings, $shell, $application, $bootstrap, $overrideConfig);
     eTime('Finished');
 } catch (Exception $e) {
     echo $e . PHP_EOL;

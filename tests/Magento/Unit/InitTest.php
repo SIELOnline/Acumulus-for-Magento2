@@ -1,5 +1,6 @@
 <?php
 /**
+ * @noinspection PhpMultipleClassDeclarationsInspection
  * @noinspection PhpStaticAsDynamicMethodCallInspection
  */
 
@@ -9,6 +10,7 @@ namespace Siel\Acumulus\Tests\Magento\Unit;
 
 use Magento\TestFramework\TestCase\AbstractController;
 use Siel\Acumulus\Helpers\Container;
+use Siel\Acumulus\Invoice\Source;
 use Siel\AcumulusMa2\Helper\Data;
 
 /**
@@ -41,5 +43,8 @@ class InitTest extends AbstractController
         $environmentInfo = $container->getEnvironment()->get();
         $this->assertMatchesRegularExpression('|\d+\.\d+\.\d+|', $environmentInfo['shopVersion']);
 
+        /** @var \Siel\Acumulus\Magento\Invoice\Source $source */
+        $source = $container->createSource(Source::Order, 6);
+        $this->assertSame('Erwin', $source->getSource()->getCustomerFirstname());
     }
-}
+};

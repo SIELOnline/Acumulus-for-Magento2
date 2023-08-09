@@ -1,27 +1,21 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
+
+declare(strict_types=1);
 
 return [
     'db-host' => 'localhost',
-    'db-user' => 'root',
+    'db-user' => 'acumulus_user',
     'db-password' => 'rader1',
-    'db-name' => 'acumulusmagento24',
+    'db-name' => 'acumulus-magento24-test',
     'db-prefix' => '',
     'backend-frontname' => 'backend',
     'search-engine' => 'opensearch',
     'opensearch-host' => 'host.docker.internal',
     'opensearch-port' => 9200,
     'admin-user' => 'burorader',
-    'admin-password' => 'BNn8Cbw^MGp-',
+    'admin-password' => 'rader123',
     'admin-email' => 'erwin@burorader.com',
     'admin-firstname' => 'Erwin',
     'admin-lastname' => 'Derksen',
-//    'amqp-host' => 'localhost',
-//    'amqp-port' => '5672',
-//    'amqp-user' => 'guest',
-//    'amqp-password' => 'guest',
     'consumers-wait-for-messages' => '0',
 ];
