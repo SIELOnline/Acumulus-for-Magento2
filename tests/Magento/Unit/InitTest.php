@@ -47,4 +47,4 @@ class InitTest extends AbstractController
         $source = $container->createSource(Source::Order, 6);
         $this->assertSame('Erwin', $source->getSource()->getCustomerFirstname());
     }
-};
+}

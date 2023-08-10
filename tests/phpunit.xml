@@ -4,7 +4,7 @@
          colors="true"
          columns="max"
          beStrictAboutTestsThatDoNotTestAnything="false"
-         bootstrap="/var/www/html/vendor/siel/acumulus-ma2/tests/bootstrap-acumulus.php"
+         bootstrap="/var/www/html/vendor/siel/acumulus-ma2/tests/acumulus-bootstrap.php"
          stderr="true"
 >
     <testsuites>
@@ -31,7 +31,6 @@
         <!-- Local XML configuration file ('.dist' extension will be added, if the specified file doesn't exist) -->
         <const name="TESTS_GLOBAL_CONFIG_FILE" value="etc/config-global.php"/>
         <!-- Semicolon-separated 'glob' patterns, that match global XML configuration files -->
-<!--        <const name="TESTS_GLOBAL_CONFIG_DIR" value="../../../app/etc"/>-->
         <const name="TESTS_GLOBAL_CONFIG_DIR" value="/var/www/html/app/etc"/>
         <!-- Whether to clean up the application before running tests or not -->
         <const name="TESTS_CLEANUP" value="disabled"/>
@@ -39,7 +38,7 @@
         <!--<const name="TESTS_MEM_USAGE_LIMIT" value="1024M"/>-->
         <const name="TESTS_MEM_LEAK_LIMIT" value=""/>
         <!-- Whether to output all CLI commands executed by the bootstrap and tests -->
-        <const name="TESTS_EXTRA_VERBOSE_LOG" value="1"/>
+        <const name="TESTS_EXTRA_VERBOSE_LOG" value=""/>
         <!-- Magento mode for tests execution. Possible values are "default", "developer" and "production". -->
         <const name="TESTS_MAGENTO_MODE" value="developer"/>
         <!-- Minimum error log level to listen for. Possible values: -1 ignore all errors, and level constants form http://tools.ietf.org/html/rfc5424 standard -->
@@ -47,18 +46,18 @@
         <const name="USE_OVERRIDE_CONFIG" value="enabled"/>
     </php>
     <!-- Test listeners -->
-    <listeners>
-        <!-- Run after AllureAdapter to allow it to initialize properly -->
-        <listener class="Magento\TestFramework\Event\PhpUnit"/>
-        <listener class="Magento\TestFramework\ErrorLog\Listener"/>
-    </listeners>
-    <extensions>
-        <extension class="Qameta\Allure\PHPUnit\AllureExtension">
-            <!-- Optional arguments block; omit it if you want to use default values -->
-            <arguments>
-                <!-- Path to config file (default is config/allure.config.php) -->
-                <string>allure/allure.config.php</string>
-            </arguments>
-        </extension>
-    </extensions>
+<!--    <listeners>-->
+<!--        &lt;!&ndash; Run after AllureAdapter to allow it to initialize properly &ndash;&gt;-->
+<!--        <listener class="Magento\TestFramework\Event\PhpUnit"/>-->
+<!--        <listener class="Magento\TestFramework\ErrorLog\Listener"/>-->
+<!--    </listeners>-->
+<!--    <extensions>-->
+<!--        <extension class="Qameta\Allure\PHPUnit\AllureExtension">-->
+<!--            &lt;!&ndash; Optional arguments block; omit it if you want to use default values &ndash;&gt;-->
+<!--            <arguments>-->
+<!--                &lt;!&ndash; Path to config file (default is config/allure.config.php) &ndash;&gt;-->
+<!--                <string>allure/allure.config.php</string>-->
+<!--            </arguments>-->
+<!--        </extension>-->
+<!--    </extensions>-->
 </phpunit>

@@ -22,7 +22,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Siel\\Acumulus\\Tests\\Magento\\": "tests/Magento/",
+            "Siel\\Acumulus\\Tests\\Magento\\": "tests/Magento/"
         }
     }
 }

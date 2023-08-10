@@ -6,7 +6,7 @@ return [
     'db-host' => 'localhost',
     'db-user' => 'acumulus_user',
     'db-password' => 'rader1',
-    'db-name' => 'acumulus-magento24-test',
+    'db-name' => 'acumulus-magento24',
     'db-prefix' => '',
     'backend-frontname' => 'backend',
     'search-engine' => 'opensearch',
