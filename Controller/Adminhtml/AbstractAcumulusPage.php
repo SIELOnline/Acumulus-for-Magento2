@@ -110,7 +110,8 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
                 $crashReporter = $this->getAcumulusContainer()->getCrashReporter();
                 $message = $crashReporter->logAndMail($e);
                 $this->messageManager->addErrorMessage($message);
-            } catch (Throwable) {
+            } /** @noinspection PhpLanguageLevelInspection */
+            catch (Throwable) {
                 // We do not know if we have informed the user per mail or
                 // screen, so assume not, and rethrow the original exception.
                 throw $e;

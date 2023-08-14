@@ -1,33 +1,20 @@
 <?php
 /**
  * @noinspection PhpMultipleClassDeclarationsInspection
- * @noinspection PhpStaticAsDynamicMethodCallInspection
  */
 
 declare(strict_types=1);
 
 namespace Siel\Acumulus\Tests\Magento\Unit;
 
-use Magento\TestFramework\TestCase\AbstractController;
-use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Invoice\Source;
-use Siel\AcumulusMa2\Helper\Data;
+use Siel\Acumulus\Tests\Magento\TestCase;
 
 /**
- * Tests that WooCommerce and Acumulus have been initialized.
+ * Tests that Magento and Acumulus have been initialized.
  */
-class InitTest extends AbstractController
+class InitTest extends TestCase
 {
-    private function getHelper(): Data
-    {
-        return $this->_objectManager->get(Data::class);
-    }
-
-    protected function getContainer(): Container
-    {
-        return $this->getHelper()->getAcumulusContainer();
-    }
-
     /**
      * A single test to see if the test framework (including the plugins) has been
      * initialized correctly:
@@ -38,7 +25,7 @@ class InitTest extends AbstractController
     public function testInit(): void
     {
         // 1.
-        $container = $this->getContainer();
+        $container = self::getAcumulusContainer();
         // 2.
         $environmentInfo = $container->getEnvironment()->get();
         $this->assertMatchesRegularExpression('|\d+\.\d+\.\d+|', $environmentInfo['shopVersion']);

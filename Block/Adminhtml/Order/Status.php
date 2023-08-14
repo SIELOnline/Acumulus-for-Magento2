@@ -102,6 +102,8 @@ class Status extends AbstractBlock implements TabInterface
     }
     /**
      * @throws \Throwable
+     *
+     * @noinspection PhpMissingParentCallCommonInspection  Empty base implementation.
      */
     protected function _toHtml(): string
     {
