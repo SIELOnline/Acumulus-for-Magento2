@@ -110,6 +110,8 @@ trait HelperTrait
             case 'Register':
             case 'Activate':
             case 'Config':
+            case 'Settings':
+            case 'Mappings':
             case 'Batch':
                 $this->formType = strtolower($class);
                 break;

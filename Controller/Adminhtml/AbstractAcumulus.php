@@ -45,6 +45,8 @@ abstract class AbstractAcumulus extends Action
         $resource = [
             'register' => 'config',
             'activate' => 'config',
+            'settings' => 'config',
+            'mappings' => 'config',
             'config' => 'config',
             'advanced' => 'config',
             'batch' => 'batch',

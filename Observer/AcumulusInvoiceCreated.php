@@ -19,8 +19,7 @@ use Siel\AcumulusMa2\Helper\Data;
 
 use function array_key_exists;
 
-/** @noinspection PhpUnused
- *
+/**
  * Siel Acumulus invoice created observer reacts on our own "invoice create"
  * event to add support for specific modules that we do not want in our base
  * code.
@@ -30,6 +29,8 @@ use function array_key_exists;
  * - Sisow
  * - Magecomp Payment Fee
  * - Fooman Surcharge
+ *
+ * @noinspection PhpUnused
  */
 class AcumulusInvoiceCreated implements ObserverInterface
 {

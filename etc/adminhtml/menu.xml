@@ -7,7 +7,7 @@
         <add id="Siel_Acumulus::acumulus_config" title="Acumulus Config" module="Siel_AcumulusMa2" sortOrder="901"
              parent="Magento_Backend::other_settings" action="acumulus/config" resource="Siel_Acumulus::config"/>
         <add id="Siel_Acumulus::acumulus_mappings" title="Acumulus Mappings" module="Siel_AcumulusMa2" sortOrder="905"
-             parent="Magento_Backend::other_settings" action="acumulus/settings/mappings" resource="Siel_Acumulus::config"/>
+             parent="Magento_Backend::other_settings" action="acumulus/mappings" resource="Siel_Acumulus::config"/>
         <add id="Siel_Acumulus::acumulus_advanced_config" title="Acumulus Advanced Config" module="Siel_AcumulusMa2" sortOrder="906"
              parent="Magento_Backend::other_settings" action="acumulus/config/advanced" resource="Siel_Acumulus::config"/>
         <add id="Siel_Acumulus::acumulus_batch" title="Acumulus Batch verzending" module="Siel_AcumulusMa2" sortOrder="910"
