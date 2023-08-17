@@ -3,7 +3,6 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
          colors="true"
          columns="max"
-         beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="/var/www/html/vendor/siel/acumulus-ma2/tests/acumulus-bootstrap.php"
          stderr="true"
 >
@@ -45,19 +44,4 @@
         <const name="TESTS_ERROR_LOG_LISTENER_LEVEL" value="-1"/>
         <const name="USE_OVERRIDE_CONFIG" value="enabled"/>
     </php>
-    <!-- Test listeners -->
-<!--    <listeners>-->
-<!--        &lt;!&ndash; Run after AllureAdapter to allow it to initialize properly &ndash;&gt;-->
-<!--        <listener class="Magento\TestFramework\Event\PhpUnit"/>-->
-<!--        <listener class="Magento\TestFramework\ErrorLog\Listener"/>-->
-<!--    </listeners>-->
-<!--    <extensions>-->
-<!--        <extension class="Qameta\Allure\PHPUnit\AllureExtension">-->
-<!--            &lt;!&ndash; Optional arguments block; omit it if you want to use default values &ndash;&gt;-->
-<!--            <arguments>-->
-<!--                &lt;!&ndash; Path to config file (default is config/allure.config.php) &ndash;&gt;-->
-<!--                <string>allure/allure.config.php</string>-->
-<!--            </arguments>-->
-<!--        </extension>-->
-<!--    </extensions>-->
 </phpunit>

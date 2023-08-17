@@ -10,3 +10,6 @@ interdiff.txt
 # PHPStorm, PHPUnit
 .idea/*
 .phpunit.result.cache
+
+# but not the *.latest.json files
+/tests/Magento/Data/*.latest.json
