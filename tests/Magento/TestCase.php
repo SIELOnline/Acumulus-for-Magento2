@@ -9,7 +9,7 @@ namespace Siel\Acumulus\Tests\Magento;
 
 use Magento\TestFramework\Helper\Bootstrap;
 use Siel\Acumulus\Helpers\Container;
-use Siel\Acumulus\Invoice\Translations;
+use Siel\Acumulus\Tests\AcumulusTestUtils;
 use Siel\AcumulusMa2\Helper\Data;
 
 /**
@@ -17,22 +17,15 @@ use Siel\AcumulusMa2\Helper\Data;
  */
 class TestCase extends \PHPUnit\Framework\TestCase
 {
-    private static function getHelper(): Data
+    use AcumulusTestUtils;
+
+    private function getHelper(): Data
     {
         return Bootstrap::getObjectManager()->get(Data::class);
     }
 
-    protected static function getAcumulusContainer(): Container
+    protected function getAcumulusContainer(): Container
     {
-        return self::getHelper()->getAcumulusContainer();
-    }
-
-    /**
-     * @beforeClass
-     *   Adds translations that are not added by default when the Translator is created.
-     */
-    public static function addTranslations(): void
-    {
-        self::getAcumulusContainer()->getTranslator()->add(new Translations());
+        return $this->getHelper()->getAcumulusContainer();
     }
 }
