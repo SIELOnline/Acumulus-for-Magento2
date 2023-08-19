@@ -17,6 +17,11 @@
   display: none;
 }
 
+.note {
+  margin-top: 0.9rem;
+  padding-top: 0.7rem;
+}
+
 .admin__fieldset legend {
   margin-top: 1em;
 }
