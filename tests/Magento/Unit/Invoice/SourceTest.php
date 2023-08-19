@@ -33,7 +33,6 @@ class SourceTest extends TestCase
         int $sourceId
     ): void
     {
-        self::addTranslations();
         $source = self::getAcumulusContainer()->createSource($sourceType, $sourceId);
         $label = self::getAcumulusContainer()->getTranslator()->get($sourceType);
         $this->assertSame($sourceType, $source->getType());

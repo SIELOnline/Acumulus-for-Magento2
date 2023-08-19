@@ -9,14 +9,10 @@ declare(strict_types=1);
 namespace Siel\Acumulus\Tests\Magento\Integration;
 
 use Siel\Acumulus\Fld;
-use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Invoice\Source;
-use Siel\Acumulus\Tests\AcumulusTestUtils;
 use Siel\Acumulus\Tests\Magento\Data\TestData;
 
 use Siel\Acumulus\Tests\Magento\TestCase;
-
-use function in_array;
 
 /**
  * InvoiceCreateTest tests the process of creating an {@see Invoice}.
@@ -28,6 +24,7 @@ class InvoiceCreateTest extends TestCase
         return [
             'FR consument' => [Source::Order, 6],
             'FR consument refund' => [Source::CreditNote, 2],
+            'FR bedrijf' => [Source::Order, 8],
         ];
     }
 
@@ -40,9 +37,9 @@ class InvoiceCreateTest extends TestCase
      */
     public function testCreate(string $type, int $id, array $excludeFields = []): void
     {
-        $invoiceSource = $this->getAcumulusContainer()->createSource($type, $id);
-        $invoiceAddResult = $this->getAcumulusContainer()->createInvoiceAddResult('SendInvoiceTest::testCreateAndCompleteInvoice()');
-        $invoice = $this->getAcumulusContainer()->getInvoiceCreate()->create($invoiceSource, $invoiceAddResult);
+        $invoiceSource = self::getAcumulusContainer()->createSource($type, $id);
+        $invoiceAddResult = self::getAcumulusContainer()->createInvoiceAddResult('SendInvoiceTest::testCreateAndCompleteInvoice()');
+        $invoice = self::getAcumulusContainer()->getInvoiceCreate()->create($invoiceSource, $invoiceAddResult);
         $result = $invoice->toArray();
         $testData = new TestData();
         // Get order from Order{id}.json.

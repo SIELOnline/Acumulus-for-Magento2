@@ -19,13 +19,13 @@ class TestCase extends \PHPUnit\Framework\TestCase
 {
     use AcumulusTestUtils;
 
-    private function getHelper(): Data
+    protected static function getAcumulusHelper(): Data
     {
         return Bootstrap::getObjectManager()->get(Data::class);
     }
 
-    protected function getAcumulusContainer(): Container
+    protected static function getAcumulusContainer(): Container
     {
-        return $this->getHelper()->getAcumulusContainer();
+        return self::getAcumulusHelper()->getAcumulusContainer();
     }
 }

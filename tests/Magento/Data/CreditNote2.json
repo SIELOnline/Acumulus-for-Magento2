@@ -30,9 +30,9 @@
             "issueDate": "2022-12-01",
             "costCenter": 48663,
             "accountNumber": 70582,
-            "paymentStatus": 1,
+            "paymentStatus": 2,
             "description": "Creditnota CM000000002 - bestelling 000000003",
-            "template": 39851,
+            "template": 52884,
             "line": [
                 {
                     "itemNumber": "WS12-M-Purple",
