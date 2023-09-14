@@ -42,6 +42,6 @@ class TestData
     {
         $append = $isNew ? '' : '.latest';
         $filename = __DIR__ . "/$type$id$append.json";
-        file_put_contents($filename, json_encode($data, Log::JsonFlags));
+        file_put_contents($filename, json_encode($data, Log::JsonFlagsKeepType));
     }
 }
