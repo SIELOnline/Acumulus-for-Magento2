@@ -121,7 +121,9 @@ try {
     /* Unset declared global variables to release the PHPUnit from maintaining their values between tests */
     unset($magentoRoot, $testBaseDir, $testFrameworkDir, $settings, $shell, $application, $bootstrap, $overrideConfig);
 } catch (Exception $e) {
+    //phpcs:ignore Magento2.Security.LanguageConstruct
     echo $e . PHP_EOL;
+    // phpcs:ignore Magento2.Security.LanguageConstruct.ExitUsage
     exit(1);
 }
 
