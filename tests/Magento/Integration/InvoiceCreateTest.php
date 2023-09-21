@@ -27,6 +27,8 @@ class InvoiceCreateTest extends TestCase
             'FR bedrijf' => [Source::Order, 8],
             'NL consument, winkelwagenkorting' => [Source::Order, 9],
             'NL consument refund, winkelwagenkorting' => [Source::CreditNote, 4],
+            'FR consument, NL levering, % cataloguskorting en € winkelwagenkorting' => [Source::Order, 10],
+            'refund FR consument, NL levering, % cataloguskorting en € winkelwagenkorting' => [Source::CreditNote, 7],
         ];
     }
 
