@@ -16,6 +16,8 @@ use Throwable;
 
 /**
  * Siel Acumulus source (order, credit-memo, invoice) save after  observer.
+ *
+ * @noinspection PhpUnused  Observers are instantiated by the event handler
  */
 class SourceSaveAfter implements ObserverInterface
 {

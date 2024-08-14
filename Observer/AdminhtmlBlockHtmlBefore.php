@@ -15,7 +15,7 @@ use Siel\AcumulusMa2\Helper\Data;
  *
  * Thanks to https://magento.stackexchange.com/a/236547/38943.
  *
- * @noinspection PhpUnused
+ * @noinspection PhpUnused  Observers are instantiated by the event handler
  */
 class AdminhtmlBlockHtmlBefore implements ObserverInterface
 {
@@ -33,13 +33,9 @@ class AdminhtmlBlockHtmlBefore implements ObserverInterface
 
         if ($block instanceof MenuBlock) {
             $menuModel = $block->getMenuModel();
-            $usesNewCode = $this->helper->getAcumulusContainer()->getShopCapabilities()->usesNewCode();
-            if ($usesNewCode) {
-                $menuModel->remove('Siel_Acumulus::acumulus_config');
-                $menuModel->remove('Siel_Acumulus::acumulus_advanced_config');
-            } else {
-                $menuModel->remove('Siel_Acumulus::acumulus_settings');
-                $menuModel->remove('Siel_Acumulus::acumulus_mappings');
+            $message = $this->helper->getAcumulusContainer()->getCheckAccount()->doCheck();
+            if (empty($message)) {
+                $menuModel->remove('Siel_Acumulus::acumulus_register');
             }
         }
     }

@@ -47,8 +47,6 @@ abstract class AbstractAcumulus extends Action
             'activate' => 'config',
             'settings' => 'config',
             'mappings' => 'config',
-            'config' => 'config',
-            'advanced' => 'config',
             'batch' => 'batch',
             'invoice' => 'batch',
             'rate' => true,

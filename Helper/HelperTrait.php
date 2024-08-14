@@ -109,14 +109,10 @@ trait HelperTrait
         switch ($class) {
             case 'Register':
             case 'Activate':
-            case 'Config':
             case 'Settings':
             case 'Mappings':
             case 'Batch':
                 $this->formType = strtolower($class);
-                break;
-            case 'Config\Advanced':
-                $this->formType = 'advanced';
                 break;
             case 'Order\Status':
                 $this->formType = 'invoice';
