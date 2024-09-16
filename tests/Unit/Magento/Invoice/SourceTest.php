@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siel\Acumulus\Tests\Magento\Unit\Invoice;
+namespace Siel\Acumulus\Tests\Unit\Magento\Invoice;
 
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Creditmemo;
@@ -57,7 +57,7 @@ class SourceTest extends TestCase
     {
         return [
             [Source::Order, 6, '000000005', 1, '2022-12-01', 'complete', 'banktransfer', Api::PaymentStatus_Paid, null, 'FR'],
-            [Source::CreditNote, 3, 'CM000000003', -1, '2022-12-01', Creditmemo::STATE_REFUNDED, 'banktransfer', Api::PaymentStatus_Due, '2022-12-01', 'FR'],
+            [Source::CreditNote, 3, 'CM000000003', -1, '2022-12-01', Creditmemo::STATE_REFUNDED, 'banktransfer', Api::PaymentStatus_Paid, '2022-12-01', 'FR'],
         ];
     }
 
@@ -65,8 +65,6 @@ class SourceTest extends TestCase
      * Tests getter methods from Source.
      *
      * @dataProvider getSourceGettersDataProvider
-     *
-     * @param string|int $status
      */
     public function testSourceGetters(
         string $sourceType,
@@ -74,7 +72,7 @@ class SourceTest extends TestCase
         ?string $reference,
         int $sign,
         ?string $date,
-        $status,
+        int|string $status,
         ?string $paymentMethod,
         ?int $paymentStatus,
         ?string $paymentDate,

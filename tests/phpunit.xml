@@ -7,14 +7,11 @@
          stderr="true"
 >
     <testsuites>
-        <testsuite name="all">
-            <directory>Magento</directory>
-        </testsuite>
         <testsuite name="unit">
-            <directory>Magento/Unit</directory>
+            <directory>unit/Magento</directory>
         </testsuite>
         <testsuite name="integration">
-            <directory>Magento/Integration</directory>
+            <directory>Integration/Magento</directory>
         </testsuite>
     </testsuites>
     <!-- PHP INI settings and constants definition -->

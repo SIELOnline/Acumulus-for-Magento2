@@ -12,4 +12,4 @@ interdiff.txt
 .phpunit.result.cache
 
 # but not the *.latest.json files
-/tests/Magento/Data/*.latest.json
+/tests/Integration/Magento/Data/*.latest.json

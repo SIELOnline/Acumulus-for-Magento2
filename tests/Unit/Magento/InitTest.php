@@ -5,7 +5,7 @@
 
 declare(strict_types=1);
 
-namespace Siel\Acumulus\Tests\Magento\Unit;
+namespace Siel\Acumulus\Tests\Unit\Magento;
 
 use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Tests\Magento\TestCase;
