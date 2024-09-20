@@ -16,6 +16,11 @@ use Siel\Acumulus\Tests\Magento\TestCase;
  */
 class InvoiceCreateTest extends TestCase
 {
+    /**
+     * @todo:
+     *   - define a test refund with a manual line.
+     *   - can we define tests for the supported modules (see observer AcumulusInvoiceCollectAfter)
+     */
     public function InvoiceDataProvider(): array
     {
         $dataPath = __DIR__ . '/Data';

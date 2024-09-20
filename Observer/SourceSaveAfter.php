@@ -78,7 +78,7 @@ class SourceSaveAfter implements ObserverInterface
                 // We do not know if we are on the admin side, so we should not
                 // try to display the message returned by logAndMail().
                 $crashReporter->logAndMail($e);
-            } catch (Throwable $inner) {
+            } catch (Throwable) {
                 // We do not know if we have informed the user per mail or
                 // screen, so assume not, and rethrow the original exception.
                 throw $e;

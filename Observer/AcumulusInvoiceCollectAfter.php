@@ -10,17 +10,21 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Model\Calculation;
+use Siel\Acumulus\Data\DataType;
+use Siel\Acumulus\Data\Invoice;
+use Siel\Acumulus\Data\Line;
+use Siel\Acumulus\Data\LineType;
+use Siel\Acumulus\Data\VatRateSource;
 use Siel\Acumulus\Helpers\Number;
-use Siel\Acumulus\Invoice\Creator;
 use Siel\Acumulus\Invoice\Source;
+use Siel\Acumulus\Magento\Collectors\LineCollector;
 use Siel\Acumulus\Meta;
-use Siel\Acumulus\Tag;
 use Siel\AcumulusMa2\Helper\Data;
 
 use function array_key_exists;
 
 /**
- * Siel Acumulus invoice created observer reacts on our own "invoice create"
+ * Siel Acumulus invoice collect after observer reacts on our own "invoice collect after"
  * event to add support for specific modules that we do not want in our base
  * code.
  *
@@ -32,19 +36,12 @@ use function array_key_exists;
  *
  * @noinspection PhpUnused  Observers are instantiated by the event handler
  */
-class AcumulusInvoiceCreated implements ObserverInterface
+class AcumulusInvoiceCollectAfter implements ObserverInterface
 {
     protected ScopeConfigInterface $scopeConfig;
     protected Calculation $taxCalculation;
     private Data $helper;
 
-    /**
-     * SalesOrderSaveAfter constructor.
-     *
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Tax\Model\Calculation $taxCalculation
-     * @param \Siel\AcumulusMa2\Helper\Data $helper
-     */
     public function __construct(ScopeConfigInterface $scopeConfig, Calculation $taxCalculation, Data $helper)
     {
         $this->scopeConfig = $scopeConfig;
@@ -55,35 +52,28 @@ class AcumulusInvoiceCreated implements ObserverInterface
     /**
      * Processes the event triggered before an invoice will be sent to Acumulus.
      *
-     * The EventObserver contains the following data properties:
-     * array|null invoice
-     *   The invoice in Acumulus format as will be sent to Acumulus or null if
-     *   another observer already decided that the invoice should not be sent to
-     *   Acumulus.
-     * \Siel\Acumulus\Invoice\Source invoiceSource
+     * The EventObserver contains the data properties as specified by
+     * {@see \Siel\Acumulus\Magento\Helpers\Event::triggerInvoiceCollectAfter()}, being:
+     * {@see \Siel\Acumulus\Data\Invoice} invoice
+     *   The invoice in Acumulus format after being "collected", but before being
+     *   "completed".
+     * {@see \Siel\Acumulus\Invoice\Source} invoiceSource
      *   Wrapper around the original Magento order or refund for which the
      *   invoice has been created.
-     * \Siel\Acumulus\Invoice\Result localResult
+     * {@see \Siel\Acumulus\Invoice\Result} localResult
      *   Any local error or warning messages that were created locally.
-     *
-     * @param \Magento\Framework\Event\Observer $observer
-     *
-     * @return void
      */
     public function execute(Observer $observer): void
     {
-        /** @var array $invoice */
+        /** @var \Siel\Acumulus\Data\Invoice $invoice */
         $invoice = $observer->getDataByKey('invoice');
         /** @var \Siel\Acumulus\Invoice\Source $invoiceSource */
-        $invoiceSource = $observer->getDataByKey('source');
+        $invoiceSource = $observer->getDataByKey('invoiceSource');
 
         $this->supportPaycheckout($invoice, $invoiceSource);
         $this->supportSisow($invoice, $invoiceSource);
         $this->supportMagecompPaymentfee($invoice, $invoiceSource);
         $this->supportFoomanSurchargePayment($invoice, $invoiceSource);
-
-        // Pass changes back to Acumulus.
-        $observer->setData('invoice', $invoice);
     }
 
     /**
@@ -97,35 +87,26 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * tables.
      *
      * @see https://www.paycheckout.com/magento-payment-provider
-     *
-     * @param array $invoice
-     * @param \Siel\Acumulus\Invoice\Source $invoiceSource
      */
-    protected function supportPaycheckout(array &$invoice, Source $invoiceSource): void
+    protected function supportPaycheckout(Invoice $invoice, Source $invoiceSource): void
     {
-        $basePayCheckoutSurchargeAmount = $invoiceSource->getSource()->getBasePaycheckoutSurchargeAmount();
+        $basePayCheckoutSurchargeAmount = $invoiceSource->getShopObject()->getBasePaycheckoutSurchargeAmount();
         if (!empty($basePayCheckoutSurchargeAmount) && !Number::isZero($basePayCheckoutSurchargeAmount)) {
             $sign = $invoiceSource->getSign();
-            $paymentEx = $sign * $invoiceSource->getSource()->getBasePaycheckoutSurchargeAmount();
-            $paymentVat = $sign * $invoiceSource->getSource()->getBasePaycheckoutSurchargeTaxAmount();
+            $paymentEx = $sign * $invoiceSource->getShopObject()->getBasePaycheckoutSurchargeAmount();
+            $paymentVat = $sign * $invoiceSource->getShopObject()->getBasePaycheckoutSurchargeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
-            $line = [
-                Tag::Product => $this->helper->t('payment_costs'),
-                Tag::Quantity => 1,
-                Tag::UnitPrice => $paymentEx,
-                Meta::UnitPriceInc => $paymentInc,
-            ];
-            $line += Creator::getVatRangeTags($paymentVat, $paymentEx);
-            $line += [
-                Meta::FieldsCalculated => [Meta::UnitPriceInc],
-                Meta::LineType => Creator::LineType_PaymentFee,
-            ];
-            $invoice['customer']['invoice']['line'][] = $line;
 
-            // Add these amounts to the invoice totals.
-            // @see \Siel\Acumulus\Magento\Invoice\Source\getAvailableTotals()
-            $invoice['customer']['invoice'][Meta::InvoiceAmountInc] += $paymentInc;
-            $invoice['customer']['invoice'][Meta::InvoiceVatAmount] += $paymentVat;
+            $line = $this->createLine();
+            $line->product = $this->helper->t('payment_costs');
+            $line->quantity = 1;
+            $line->unitPrice = $paymentEx;
+            $line->metadataSet(Meta::UnitPriceInc, $paymentInc);
+            LineCollector::addVatRangeTags($line, $paymentVat, $paymentEx);
+            $line->metadataAdd(Meta::FieldsCalculated, Meta::UnitPriceInc);
+
+            $invoice->addLine($line);
+            $this->addToInvoiceTotals($invoice, $paymentInc, $paymentVat);
         }
     }
 
@@ -143,15 +124,12 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * - There's no payment object on credit memos, so we can't support that.
      *
      * @see https://www.sisow.nl/implementatie-plugin
-     *
-     * @param array $invoice
-     * @param \Siel\Acumulus\Invoice\Source $invoiceSource
      */
-    protected function supportSisow(array &$invoice, Source $invoiceSource): void
+    protected function supportSisow(Invoice $invoice, Source $invoiceSource): void
     {
         if ($invoiceSource->getType() === Source::Order) {
             /** @var \Magento\Sales\Model\Order $order */
-            $order = $invoiceSource->getSource();
+            $order = $invoiceSource->getShopObject();
             $payment = $order->getPayment();
             $additionalInfo = $payment->getAdditionalInformation();
             if (array_key_exists('sisow', $additionalInfo) && !Number::isZero($additionalInfo['sisow'])) {
@@ -173,25 +151,21 @@ class AcumulusInvoiceCreated implements ObserverInterface
                 $request->setProductClassId($taxClass);
                 $paymentVatRate = $this->taxCalculation->getRate($request);
                 $paymentVat = $paymentEx * ($paymentVatRate / 100.0);
-
                 $paymentInc = $paymentEx + $paymentVat;
-                $line = [
-                    Tag::Product => $this->helper->t('payment_costs'),
-                    Tag::Quantity => 1,
-                    Tag::UnitPrice => $paymentEx,
-                    Meta::UnitPriceInc => $paymentInc,
-                    Tag::VatRate => $paymentVatRate,
-                    Meta::VatRateSource => Creator::VatRateSource_Exact,
-                    Meta::VatAmount => $paymentVat,
-                    Meta::FieldsCalculated => [Meta::UnitPriceInc, Meta::VatAmount],
-                    Meta::LineType => Creator::LineType_PaymentFee,
-                ];
-                $invoice['customer']['invoice']['line'][] = $line;
 
-                // Add these amounts to the invoice totals.
-                // @see \Siel\Acumulus\Magento\Invoice\Creator\getInvoiceTotals()
-                $invoice['customer']['invoice'][Meta::InvoiceAmountInc] += $paymentInc;
-                $invoice['customer']['invoice'][Meta::InvoiceVatAmount] += $paymentVat;
+                $line = $this->createLine();
+                $line->product = $this->helper->t('payment_costs');
+                $line->quantity = 1;
+                $line->unitPrice = $paymentEx;
+                $line->metadataSet(Meta::UnitPriceInc, $paymentInc);
+                $line->vatRate = $paymentVatRate;
+                $line->metadataSet(Meta::VatRateSource, VatRateSource::Exact);
+                $line->metadataSet(Meta::VatAmount, $paymentVat);
+                $line->metadataAdd(Meta::FieldsCalculated, Meta::UnitPriceInc);
+                $line->metadataAdd(Meta::FieldsCalculated, Meta::VatAmount);
+
+                $invoice->addLine($line);
+                $this->addToInvoiceTotals($invoice, $paymentInc, $paymentVat);
             }
         }
     }
@@ -211,21 +185,18 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * totals are not necessary. TBC!
      *
      * @see https://magecomp.com/magento-2-payment-fee.html
-     *
-     * @param array $invoice
-     * @param \Siel\Acumulus\Invoice\Source $invoiceSource
      */
-    protected function supportMagecompPaymentfee(array &$invoice, Source $invoiceSource): void
+    protected function supportMagecompPaymentfee(Invoice $invoice, Source $invoiceSource): void
     {
-        $baseMcPaymentFeeAmount = $invoiceSource->getSource()->getBaseMcPaymentfeeAmount();
+        $baseMcPaymentFeeAmount = $invoiceSource->getShopObject()->getBaseMcPaymentfeeAmount();
         if (!empty($baseMcPaymentFeeAmount) && !Number::isZero($baseMcPaymentFeeAmount)) {
             $sign = $invoiceSource->getSign();
-            $paymentEx = $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeAmount();
-            $paymentVat = $sign * $invoiceSource->getSource()->getBaseMcPaymentfeeTaxAmount();
+            $paymentEx = $sign * $invoiceSource->getShopObject()->getBaseMcPaymentfeeAmount();
+            $paymentVat = $sign * $invoiceSource->getShopObject()->getBaseMcPaymentfeeTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
-            $description = $invoiceSource->getSource()->getBaseMcPaymentfeeDescription();
-            $invoice['customer']['invoice']['line'][] =
-                $this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description);
+            $description = $invoiceSource->getShopObject()->getBaseMcPaymentfeeDescription();
+
+            $invoice->addLine($this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description));
         }
     }
 
@@ -239,11 +210,8 @@ class AcumulusInvoiceCreated implements ObserverInterface
      * Fooman\Totals\Model\ResourceModel\OrderTotal resource model.
      *
      * @see https://store.fooman.co.nz/magento-extension-payment-surcharge-m2.html
-     *
-     * @param array $invoice
-     * @param \Siel\Acumulus\Invoice\Source $invoiceSource
      */
-    protected function supportFoomanSurchargePayment(array &$invoice, Source $invoiceSource): void
+    protected function supportFoomanSurchargePayment(Invoice $invoice, Source $invoiceSource): void
     {
         // Is the module enabled?
         if (!class_exists('Fooman\Totals\Model\OrderTotal')) {
@@ -271,40 +239,41 @@ class AcumulusInvoiceCreated implements ObserverInterface
             $paymentVat = $sign * $invoiceTotal->getBaseTaxAmount();
             $paymentInc = $paymentEx + $paymentVat;
             $description = $invoiceTotal->getLabel();
-            $invoice['customer']['invoice']['line'][] =
-                $this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description);
+
+            $invoice->addLine($this->getPaymentFeeLine($paymentEx, $paymentInc, $paymentVat, $description));
         }
     }
 
     /**
      * Creates a payment fee line with the given details.
-     *
-     * @param float $paymentEx
-     * @param float $paymentInc
-     * @param float $paymentVat
-     * @param string $description
-     *
-     * @return array
      */
-    protected function getPaymentFeeLine(
-        float $paymentEx,
-        float $paymentInc,
-        float $paymentVat,
-        string $description
-    ): array
+    protected function getPaymentFeeLine(float $paymentEx, float $paymentInc, float $paymentVat, string $description): Line
     {
-        $line = [
-            Tag::Product => $description ?: $this->helper->t('payment_costs'),
-            Tag::Quantity => 1,
-            Tag::UnitPrice => $paymentEx,
-            Meta::UnitPriceInc => $paymentInc,
-        ];
-        $line += Creator::getVatRangeTags($paymentVat, $paymentEx);
-        $line += [
-            Meta::FieldsCalculated => [Meta::UnitPriceInc],
-            Meta::LineType => Creator::LineType_PaymentFee,
-        ];
+        $line = $this->createLine();
+        $line->product = $description ?: $this->helper->t('payment_costs');
+        $line->quantity = 1;
+        $line->unitPrice = $paymentEx;
+        $line->metadataSet(Meta::UnitPriceInc, $paymentInc);
+        LineCollector::addVatRangeTags($line, $paymentVat, $paymentEx);
+        $line->metadataAdd(Meta::FieldsCalculated, Meta::UnitPriceInc);
 
         return $line;
+    }
+
+    private function createLine(): Line
+    {
+        /** @var Line $line */
+        $line = $this->helper->getAcumulusContainer()->createAcumulusObject(DataType::Line);
+        $line->metadataSet(Meta::SubType, LineType::PaymentFee);
+        return $line;
+    }
+
+    /**
+     * Adds the amounts to the {@see \Siel\Acumulus\Magento\Invoice\Source::getTotals() invoice totals}.
+     */
+    private function addToInvoiceTotals(Invoice $invoice, float|int $paymentInc, float|int $paymentVat): void
+    {
+        $invoice->metadataSet(Meta::InvoiceAmountInc, $invoice->metadataGet(Meta::InvoiceAmountInc) + $paymentInc);
+        $invoice->metadataSet(Meta::InvoiceVatAmount, $invoice->metadataGet(Meta::InvoiceAmountInc) + $paymentVat);
     }
 }
