@@ -37,7 +37,7 @@ class Details extends Fieldset
     /**
      * Override to prevent a <div> around our <details>.
      */
-    public function getDefaultHtml()
+    public function getDefaultHtml(): string
     {
         return $this->getElementHtml();
     }
@@ -45,7 +45,7 @@ class Details extends Fieldset
     /**
      * Principal override: this performs the changes.
      */
-    public function getElementHtml()
+    public function getElementHtml(): string
     {
         $open = !empty($this->_data['open']) ? ' open' : '';
         return str_replace(

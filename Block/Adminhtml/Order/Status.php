@@ -138,7 +138,7 @@ class Status extends AbstractBlock implements TabInterface
                         $crashReporter = $this->getAcumulusContainer()->getCrashReporter();
                         $message = $crashReporter->logAndMail($e);
                         $acumulusForm->createAndAddMessage($message, Severity::Exception);
-                    } catch (Throwable $inner) {
+                    } catch (Throwable) {
                         // We do not know if we have informed the user per mail or
                         // screen, so assume not, and rethrow the original exception.
                         throw $e;
@@ -188,26 +188,13 @@ class Status extends AbstractBlock implements TabInterface
      */
     private function severityToNoticeClass(int $severity): string
     {
-        switch ($severity) {
-            case Severity::Success:
-                $class = 'success';
-                break;
-            case Severity::Info:
-            case Severity::Notice:
-                $class = 'info';
-                break;
-            case Severity::Warning:
-                $class = 'warning';
-                break;
-            case Severity::Error:
-            case Severity::Exception:
-                $class = 'error';
-                break;
-            default:
-                $class = '';
-                break;
-        }
-        return $class;
+        return match ($severity) {
+            Severity::Success => 'success',
+            Severity::Info, Severity::Notice => 'info',
+            Severity::Warning => 'warning',
+            Severity::Error, Severity::Exception => 'error',
+            default => '',
+        };
     }
 
     /**

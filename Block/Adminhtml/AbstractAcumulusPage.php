@@ -81,9 +81,11 @@ abstract class AbstractAcumulusPage extends Generic
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @return $this
      */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): static
     {
         // Ensure translations are loaded.
         $acumulusForm = $this->getAcumulusForm();

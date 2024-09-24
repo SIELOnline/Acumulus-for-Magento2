@@ -12,8 +12,8 @@ use Magento\Framework\Escaper;
 /**
  * Collection form element for our forms.
  *
- * This class is a simple override of Magento's
- * {@see ]Magento\Framework\Data\Form\Element\AbstractElement}. It allows to
+ * This class is a simple override of
+ * {@see \Magento\Framework\Data\Form\Element\AbstractElement}. It allows to
  * render a set of "subfields" without their labels, descriptions and form
  * element wrapper tags.
  */

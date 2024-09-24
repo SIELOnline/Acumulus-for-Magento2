@@ -48,7 +48,7 @@ class Acumulus641Patch implements DataPatchInterface
     /**
      * @inheritDoc
      */
-    public function apply()
+    public function apply(): static
     {
         $this->moduleDataSetup->getConnection()->startSetup();
 
