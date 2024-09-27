@@ -13,6 +13,9 @@
         <testsuite name="integration">
             <directory>Integration/Magento</directory>
         </testsuite>
+        <testsuite name="config">
+            <directory>Integration/Magento/Config</directory>
+        </testsuite>
     </testsuites>
     <!-- PHP INI settings and constants definition -->
     <php>
