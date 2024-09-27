@@ -32,6 +32,6 @@ class InitTest extends TestCase
 
         /** @var \Siel\Acumulus\Magento\Invoice\Source $source */
         $source = $container->createSource(Source::Order, 6);
-        $this->assertSame('Erwin', $source->getSource()->getCustomerFirstname());
+        $this->assertSame('Erwin', $source->getShopObject()->getCustomerFirstname());
     }
 }

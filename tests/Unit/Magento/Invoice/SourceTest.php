@@ -41,12 +41,12 @@ class SourceTest extends TestCase
         $this->assertSame(ucfirst($label), $source->getTypeLabel(MB_CASE_TITLE));
         $this->assertSame($sourceId, $source->getId());
         if ($sourceType === Source::Order) {
-            $this->assertInstanceOf(Order::class, $source->getSource());
+            $this->assertInstanceOf(Order::class, $source->getShopObject());
             $this->assertSame($source, $source->isOrder());
             $this->assertSame($source, $source->getOrder());
             $this->assertNull($source->isCreditNote());
         } else {
-            $this->assertInstanceOf(Creditmemo::class, $source->getSource());
+            $this->assertInstanceOf(Creditmemo::class, $source->getShopObject());
             $this->assertSame($source, $source->isCreditNote());
             $this->assertSame(Source::Order, $source->getOrder()->getType());
             $this->assertNull($source->isOrder());
