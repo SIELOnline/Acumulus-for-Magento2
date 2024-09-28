@@ -17,9 +17,9 @@ use Siel\Acumulus\Tests\Magento\TestCase;
 class InvoiceCreateTest extends TestCase
 {
     /**
-     * @todo:
-     *   - define a test refund with a manual line.
-     *   - can we define tests for the supported modules (see observer AcumulusInvoiceCollectAfter)
+     * @todo: define a test refund with a manual line.
+     * @todo: can we define tests for the supported modules (see observer AcumulusInvoiceCollectAfter)
+     * @todo: add a margin scheme invoice.
      */
     public function InvoiceDataProvider(): array
     {
