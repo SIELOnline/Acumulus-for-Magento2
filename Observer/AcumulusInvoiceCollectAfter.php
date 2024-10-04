@@ -101,8 +101,10 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
             $line->product = $this->helper->t('payment_costs');
             $line->quantity = 1;
             $line->unitPrice = $paymentEx;
+            $line->metadataSet(Meta::VatAmount, $paymentVat);
+            $line->metadataSet(Meta::PrecisionUnitPrice, 0.01);
+            $line->metadataSet(Meta::PrecisionVatAmount, 0.01);
             $line->metadataSet(Meta::UnitPriceInc, $paymentInc);
-            LineCollector::addVatRangeTags($line, $paymentVat, $paymentEx);
             $line->metadataAdd(Meta::FieldsCalculated, Meta::UnitPriceInc);
 
             $invoice->addLine($line);
@@ -253,8 +255,10 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
         $line->product = $description ?: $this->helper->t('payment_costs');
         $line->quantity = 1;
         $line->unitPrice = $paymentEx;
+        $line->metadataSet(Meta::VatAmount, $paymentVat);
+        $line->metadataSet(Meta::PrecisionUnitPrice, 0.01);
+        $line->metadataSet(Meta::PrecisionVatAmount, 0.01);
         $line->metadataSet(Meta::UnitPriceInc, $paymentInc);
-        LineCollector::addVatRangeTags($line, $paymentVat, $paymentEx);
         $line->metadataAdd(Meta::FieldsCalculated, Meta::UnitPriceInc);
 
         return $line;
