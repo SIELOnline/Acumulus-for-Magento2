@@ -33,8 +33,8 @@ class AdminhtmlBlockHtmlBefore implements ObserverInterface
 
         if ($block instanceof MenuBlock) {
             $menuModel = $block->getMenuModel();
-            $message = $this->helper->getAcumulusContainer()->getCheckAccount()->doCheck();
-            if (empty($message)) {
+            $accountStatus = $this->helper->getAcumulusContainer()->getCheckAccount()->getAccountStatus();
+            if ($accountStatus === true) {
                 $menuModel->remove('Siel_Acumulus::acumulus_register');
             }
         }
