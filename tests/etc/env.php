@@ -31,7 +31,7 @@ return [
         'table_prefix' => '',
         'connection' => [
             'default' => [
-                'host' => 'host.docker.internal',
+                'host' => 'host.docker.internal:3307',
                 'dbname' => 'acumulus-magento24',
                 'username' => 'acumulus_user',
                 'password' => 'rader1',

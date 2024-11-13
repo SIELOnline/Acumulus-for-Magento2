@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'db-host' => 'localhost',
+    'db-host' => 'host.docker.internal:3307',
     'db-user' => 'acumulus_user',
     'db-password' => 'rader1',
     'db-name' => 'acumulus-magento24',

@@ -8,19 +8,17 @@
 >
     <testsuites>
         <testsuite name="unit">
-            <directory>unit/Magento</directory>
+            <directory>Unit/Magento</directory>
         </testsuite>
         <testsuite name="integration">
             <directory>Integration/Magento</directory>
-        </testsuite>
-        <testsuite name="config">
-            <directory>Integration/Magento/Config</directory>
         </testsuite>
     </testsuites>
     <!-- PHP INI settings and constants definition -->
     <php>
         <includePath>.</includePath>
         <includePath>testsuite</includePath>
+        <ini name="memory_limit" value="512M"/>
         <ini name="date.timezone" value="Europe/Amsterdam"/>
         <ini name="xdebug.max_nesting_level" value="200"/>
         <!-- Local XML configuration file ('.dist' extension will be added, if the specified file doesn't exist) -->

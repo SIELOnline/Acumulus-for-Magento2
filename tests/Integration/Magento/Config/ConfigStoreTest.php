@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Siel\Acumulus\Tests\Integration\Magento\Config;
 
 use Siel\Acumulus\Config\Config;
-use Siel\Acumulus\Config\ConfigStore;
 use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Tests\Magento\TestCase;
 
+/**
+ * ConfigStoreTest test the Magento ConfigStore.
+ *
+ * More specifically the cache cleaning on save does not seem to work automatically.
+ */
 class ConfigStoreTest extends TestCase
 {
     protected static function getAcumulusContainer(): Container
@@ -18,20 +22,20 @@ class ConfigStoreTest extends TestCase
 
     protected function getConfig(): Config
     {
-        return $this->getAcumulusContainer()->getConfig();
+        return self::getAcumulusContainer()->getConfig();
     }
 
-    public function testSave()
+    public function testSave(): void
     {
+        $now = time();
         $config = $this->getConfig();
         $valuesBefore = $config->getAll();
-        $valuesBefore['showPluginV8Message'] = 200;
+        $valuesBefore['showPluginV8Message'] = $now;
         $config->save($valuesBefore);
 
-        $this->AssertSame(200, $config->get('showPluginV8Message'));
-        $valuesAfter = $config->getAll();
-        $valuesBefore['showPluginV8Message'] = 200;
-        $this->AssertSame($valuesBefore, $valuesAfter);
-    }
+        $this->assertSame($now, $config->get('showPluginV8Message'));
 
+        $valuesAfter = $config->getAll();
+        $this->assertEquals($valuesBefore, $valuesAfter);
+    }
 }

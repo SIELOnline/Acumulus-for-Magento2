@@ -33,7 +33,7 @@ $testBaseDir = "$magentoRoot/dev/tests/integration";
 $testFrameworkDir = "$testBaseDir/framework";
 $acumulusTestDir = "$magentoRoot/vendor/siel/acumulus-ma2/tests";
 
-// This is more to prevent incorrect PhpUndefinedConstantInspection warnings.
+// This is more to prevent incorrect PhpUndefinedConstantInspection warnings by PhpStorm.
 // It should exist.
 if (!defined('TESTS_INSTALL_CONFIG_FILE')) {
     define('TESTS_INSTALL_CONFIG_FILE', 'etc/install-config-mysql.php');
