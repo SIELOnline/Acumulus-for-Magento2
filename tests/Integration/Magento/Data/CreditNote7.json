@@ -101,7 +101,7 @@
                     "meta-vatrate-min": 19.731800766284,
                     "meta-vatrate-max": 20.269403463759,
                     "meta-vat-rate-source": "completor-range",
-                    "meta-vatrate-range-matches": "[{'vatRate':20.0,'vattype':6}]",
+                    "meta-vatrate-range-matches": "[{'vatrate':20.0,'vattype':6}]",
                     "meta-recalculate-old-price": -5.0,
                     "meta-did-recalculate": true,
                     "meta-line-discount-amountinc": -0.0,
