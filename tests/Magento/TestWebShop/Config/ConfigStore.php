@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Siel\AcumulusMa2\tests\Magento\TestWebShop\Config;
 
 /**
- * ConfigStore does foo.
+ * ConfigStore changes the configKey so that test config data will not overwrite real data.
  */
 class ConfigStore extends \Siel\Acumulus\Magento\Config\ConfigStore
 {
-    protected string $configKey = 'acumulus-test';
+    public function __construct()
+    {
+        $this->configKey = 'acumulus-test';
+    }
 }

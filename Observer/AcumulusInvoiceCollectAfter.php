@@ -17,7 +17,6 @@ use Siel\Acumulus\Data\LineType;
 use Siel\Acumulus\Data\VatRateSource;
 use Siel\Acumulus\Helpers\Number;
 use Siel\Acumulus\Invoice\Source;
-use Siel\Acumulus\Magento\Collectors\LineCollector;
 use Siel\Acumulus\Meta;
 use Siel\AcumulusMa2\Helper\Data;
 

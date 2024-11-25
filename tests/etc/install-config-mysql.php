@@ -1,6 +1,5 @@
 <?php
-
-declare(strict_types=1);
+/** @noinspection PhpMissingStrictTypesDeclarationInspection */
 
 return [
     'db-host' => 'host.docker.internal:3307',

@@ -1,4 +1,6 @@
 <?php
+/** @noinspection PhpMissingStrictTypesDeclarationInspection */
+
 return [
     'backend' => [
         'frontName' => 'admin'

@@ -27,7 +27,7 @@ class InitTest extends TestCase
         // 1.
         $container = self::getAcumulusContainer();
         // 2.
-        $environmentInfo = $container->getEnvironment()->get();
+        $environmentInfo = $container->getEnvironment()->toArray();
         $this->assertMatchesRegularExpression('|\d+\.\d+\.\d+|', $environmentInfo['shopVersion']);
 
         /** @var \Siel\Acumulus\Magento\Invoice\Source $source */
