@@ -1,7 +1,6 @@
 <?php
 /**
  * @noinspection PhpIllegalPsrClassPathInspection
- * @noinspection UntrustedInclusionInspection
  */
 
 declare(strict_types=1);
@@ -41,16 +40,16 @@ function getRootPath(): string
 require_once getRootPath() . '/vendor/autoload.php';
 
 /**
- * CopyLatest copies {type}{id}.latest.json test data to {type}{id}.json.
+ * UpdateTestSources updates {type}{id}.json test data based on regexp search and replace.
  */
-class CopyLatest
+class UpdateTestSources
 {
     use AcumulusTestUtils;
 
     public function execute(): void
     {
-        $this->copyLatestTestSources();
+        $this->updateTestSources();
     }
 }
 
-(new CopyLatest())->execute();
+(new UpdateTestSources())->execute();
