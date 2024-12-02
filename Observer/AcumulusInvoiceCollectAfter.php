@@ -53,14 +53,12 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
      *
      * The EventObserver contains the data properties as specified by
      * {@see \Siel\Acumulus\Magento\Helpers\Event::triggerInvoiceCollectAfter()}, being:
-     * {@see \Siel\Acumulus\Data\Invoice} invoice
-     *   The invoice in Acumulus format after being "collected", but before being
-     *   "completed".
-     * {@see \Siel\Acumulus\Invoice\Source} invoiceSource
-     *   Wrapper around the original Magento order or refund for which the
-     *   invoice has been created.
-     * {@see \Siel\Acumulus\Invoice\Result} localResult
-     *   Any local error or warning messages that were created locally.
+     * - {@see \Siel\Acumulus\Data\Invoice} 'invoice': the invoice in Acumulus format
+     *   after being "collected", but before being "completed".
+     * - {@see \Siel\Acumulus\Invoice\Source} 'invoiceSource': Wrapper around the original
+     *   Magento order or refund for which the invoice has been created.
+     * - {@see \Siel\Acumulus\Invoice\Result} 'localResult': Any local error or warning
+     *   messages that were created locally.
      */
     public function execute(Observer $observer): void
     {
@@ -78,12 +76,11 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
     /**
      * Adds support for the paycheckout module.
      *
-     * The paycheckout module allows to add a payment fee to an order. If it
-     * does so, the amount is stored in the columns:
-     * - base_paycheckout_surcharge_amount
-     * - base_paycheckout_surcharge_tax_amount
-     * which the module has added to the sales_order and sales_creditmemo
-     * tables.
+     * The paycheckout module allows to add a payment fee to an order. If it does so, the
+     * amount is stored in the columns:
+     * - 'base_paycheckout_surcharge_amount'
+     * - 'base_paycheckout_surcharge_tax_amount'
+     * which the module has added to the sales_order and sales_creditmemo tables.
      *
      * @see https://www.paycheckout.com/magento-payment-provider
      */
@@ -114,14 +111,13 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
     /**
      * Adds support for the sisow module.
      *
-     * The sisow module allows to define a payment fee per payment method. If a
-     * fee has been defined and applied to an order it is stored in the Payment
-     * object.
+     * The sisow module allows to define a payment fee per payment method. If a fee has
+     * been defined and applied to an order it is stored in the Payment object.
      *
      * Unfortunately:
-     * - No tax info is stored with that, so we retrieve the current tax rate
-     *   and hope it was the same at the time the order for which an invoice is
-     *   now being created was ordered.
+     * - No tax info is stored with that, so we retrieve the current tax rate and hope it
+     *   was the same at the time the order for which an invoice is now being created was
+     *   ordered.
      * - There's no payment object on credit memos, so we can't support that.
      *
      * @see https://www.sisow.nl/implementatie-plugin
@@ -137,12 +133,10 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
                 $paymentEx = (float) $additionalInfo['sisow'];
 
                 // Get vat.
-                // @todo: $order->getCustomerClassId() can that be set?
-                /** @noinspection PhpUndefinedMethodInspection */
                 $request = $this->taxCalculation->getRateRequest(
                     $order->getShippingAddress(),
                     $order->getBillingAddress(),
-                    $order->getCustomerClassId(),
+                    null,
                     null,
                     $order->getCustomerId()
                 );
