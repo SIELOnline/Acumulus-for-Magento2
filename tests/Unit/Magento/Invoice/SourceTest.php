@@ -33,12 +33,12 @@ class SourceTest extends TestCase
         int $sourceId
     ): void
     {
-        $source = self::getAcumulusContainer()->createSource($sourceType, $sourceId);
-        $label = self::getAcumulusContainer()->getTranslator()->get($sourceType);
+        $source = self::getContainer()->createSource($sourceType, $sourceId);
+        $label = self::getContainer()->getTranslator()->get($sourceType);
         $this->assertSame($sourceType, $source->getType());
-        $this->assertSame(strtolower($label), $source->getTypeLabel(MB_CASE_LOWER));
-        $this->assertSame(strtoupper($label), $source->getTypeLabel(MB_CASE_UPPER));
-        $this->assertSame(ucfirst($label), $source->getTypeLabel(MB_CASE_TITLE));
+        $this->assertSame(strtolower($label), $source->getLabel(MB_CASE_LOWER));
+        $this->assertSame(strtoupper($label), $source->getLabel(MB_CASE_UPPER));
+        $this->assertSame(ucfirst($label), $source->getLabel(MB_CASE_TITLE));
         $this->assertSame($sourceId, $source->getId());
         if ($sourceType === Source::Order) {
             $this->assertInstanceOf(Order::class, $source->getShopObject());
@@ -79,7 +79,7 @@ class SourceTest extends TestCase
         string $countryCode
     ): void
     {
-        $source = self::getAcumulusContainer()->createSource($sourceType, $sourceId);
+        $source = self::getContainer()->createSource($sourceType, $sourceId);
         $this->assertSame($reference, $source->getInvoiceReference());
         $this->assertEquals($sign, $source->getSign());
         $this->assertSame($date, $source->getDate());
@@ -106,7 +106,7 @@ class SourceTest extends TestCase
      */
     public function testSourceCreditNote(string $sourceType, int $sourceId, int $count, ?int $id): void
     {
-        $source = self::getAcumulusContainer()->createSource($sourceType, $sourceId);
+        $source = self::getContainer()->createSource($sourceType, $sourceId);
         $creditNotes = $source->getCreditNotes();
         if ($sourceType === Source::CreditNote) {
             $this->assertSame($source->getType(), $creditNotes[0]->getType());
@@ -139,7 +139,7 @@ class SourceTest extends TestCase
      */
     public function testSourceInvoice(string $sourceType, int $sourceId, ?int $id, ?string $reference, ?string $date): void
     {
-        $source = self::getAcumulusContainer()->createSource($sourceType, $sourceId);
+        $source = self::getContainer()->createSource($sourceType, $sourceId);
         $this->assertSame($id, $source->getInvoiceId());
         $this->assertSame($reference, $source->getInvoiceReference());
         $this->assertSame($date, $source->getInvoiceDate());

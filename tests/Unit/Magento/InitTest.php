@@ -25,7 +25,7 @@ class InitTest extends TestCase
     public function testInit(): void
     {
         // 1.
-        $container = self::getAcumulusContainer();
+        $container = self::getContainer();
         // 2.
         $environmentInfo = $container->getEnvironment()->toArray();
         $this->assertMatchesRegularExpression('|\d+\.\d+\.\d+|', $environmentInfo['shopVersion']);

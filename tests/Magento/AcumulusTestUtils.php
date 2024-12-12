@@ -21,14 +21,14 @@ trait AcumulusTestUtils
         copyLatestTestSources as protected parentCopyLatestTestSources;
     }
 
-    protected static function getAcumulusHelper(): ?Data
+    protected static function getHelper(): ?Data
     {
         return Bootstrap::getObjectManager()?->get(Data::class);
     }
 
-    protected static function getAcumulusContainer(): Container
+    protected static function createContainer(): Container
     {
-        return self::getAcumulusHelper()?->getAcumulusContainer() ?? new Container('Magento', 'nl');
+        return new Container('Magento\TestWebShop', 'nl');
     }
 
     protected function getTestsPath(): string

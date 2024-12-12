@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siel\Acumulus\Tests\Integration\Magento\Config;
 
 use Siel\Acumulus\Config\Config;
-use Siel\Acumulus\Helpers\Container;
 use Siel\Acumulus\Tests\Magento\TestCase;
 
 /**
@@ -15,14 +14,9 @@ use Siel\Acumulus\Tests\Magento\TestCase;
  */
 class ConfigStoreTest extends TestCase
 {
-    protected static function getAcumulusContainer(): Container
-    {
-        return new Container('Magento\TestWebShop');
-    }
-
     protected function getConfig(): Config
     {
-        return self::getAcumulusContainer()->getConfig();
+        return self::getContainer()->getConfig();
     }
 
     public function testSave(): void

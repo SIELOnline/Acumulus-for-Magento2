@@ -7,6 +7,10 @@
          stderr="true"
 >
     <testsuites>
+        <testsuite name="all">
+            <directory>Unit/Magento</directory>
+            <directory>Integration/Magento</directory>
+        </testsuite>
         <testsuite name="unit">
             <directory>Unit/Magento</directory>
         </testsuite>
