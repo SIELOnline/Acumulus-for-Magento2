@@ -18,9 +18,9 @@ class InitTest extends TestCase
     /**
      * A single test to see if the test framework (including the plugins) has been
      * initialized correctly:
-     * 1 We have access to the Container.
-     * 2 Magento has been initialized.
-     * 3 We can retrieve an Order
+     * 1: We have access to the Container.
+     * 2: Magento has been initialized.
+     * 3: We can retrieve an Order.
      */
     public function testInit(): void
     {

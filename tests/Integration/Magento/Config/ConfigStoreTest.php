@@ -10,7 +10,7 @@ use Siel\Acumulus\Tests\Magento\TestCase;
 /**
  * ConfigStoreTest test the Magento ConfigStore.
  *
- * More specifically the cache cleaning on save does not seem to work automatically.
+ * More specifically, the cache cleaning on save does not seem to work automatically.
  */
 class ConfigStoreTest extends TestCase
 {

@@ -1,10 +1,14 @@
 <?xml version="1.0"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/sebastianbergmann/phpunit/refs/tags/10.5.47/phpunit.xsd"
          colors="true"
          columns="max"
          bootstrap="/var/www/html/vendor/siel/acumulus-ma2/tests/acumulus-bootstrap.php"
          stderr="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnTestsThatTriggerNotices="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnPhpunitDeprecations="true"
 >
     <testsuites>
         <testsuite name="all">
@@ -27,7 +31,7 @@
         <ini name="xdebug.max_nesting_level" value="200"/>
         <!-- Local XML configuration file ('.dist' extension will be added, if the specified file doesn't exist) -->
         <const name="TESTS_INSTALL_CONFIG_FILE" value="etc/install-config-mysql.php"/>
-        <!-- Local XML post installation configuration file ('.dist' extension will be added, if the specified file doesn't exist) -->
+        <!-- Local XML post installation and configuration file ('.dist' extension will be added, if the specified file doesn't exist) -->
         <const name="TESTS_POST_INSTALL_SETUP_COMMAND_CONFIG_FILE" value="etc/post-install-setup-command-config.php"/>
         <!-- Local XML configuration file ('.dist' extension will be added, if the specified file doesn't exist) -->
         <const name="TESTS_GLOBAL_CONFIG_FILE" value="etc/config-global.php"/>

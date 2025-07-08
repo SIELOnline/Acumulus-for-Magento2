@@ -9,6 +9,7 @@
         "telephone2": "0123456789",
         "email": "fietserwin@gmail.com",
         "overwriteifexists": 1,
+        "disableduplicates": 0,
         "fullname": "Erwin Derksen",
         "address1": "422 Chemin de la Riaille",
         "postalcode": "26110",

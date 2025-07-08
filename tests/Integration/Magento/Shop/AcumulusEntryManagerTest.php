@@ -22,7 +22,7 @@ class AcumulusEntryManagerTest extends TestCase
     private const testSourceType = Source::Order;
     private const testSourceId = 2;
     private const testEntryId = 1; // Acumulus entry ids are auto incrementing and will never equal this anymore.
-    private const testToken = 'TESTTOKEN0123456789TESTTOKENtest';
+    private const testToken = 'TESTTOKEN01234567898765TESTTOKEN';
 
     private function getAcumulusEntryManager(): AcumulusEntryManager
     {

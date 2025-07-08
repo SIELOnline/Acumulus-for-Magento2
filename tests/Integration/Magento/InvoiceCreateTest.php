@@ -21,17 +21,16 @@ class InvoiceCreateTest extends TestCase
      * @todo: can we define tests for the supported modules (see observer AcumulusInvoiceCollectAfter)
      * @todo: add a margin scheme invoice.
      */
-    public function InvoiceDataProvider(): array
+    public static function InvoiceDataProvider(): array
     {
-        $dataPath = __DIR__ . '/Data';
         return [
-            'FR consument' => [$dataPath, Source::Order, 6],
-            'FR consument refund' => [$dataPath, Source::CreditNote, 2],
-            'FR bedrijf' => [$dataPath, Source::Order, 8],
-            'NL consument, winkelwagenkorting' => [$dataPath, Source::Order, 9],
-            'NL consument refund, winkelwagenkorting' => [$dataPath, Source::CreditNote, 4],
-            'FR consument, NL levering, % cataloguskorting en € winkelwagenkorting' => [$dataPath, Source::Order, 10],
-            'refund FR consument, NL levering, % cataloguskorting en € winkelwagenkorting' => [$dataPath, Source::CreditNote, 7],
+            'FR consument' => [Source::Order, 6],
+            'FR consument refund' => [Source::CreditNote, 2],
+            'FR bedrijf' => [Source::Order, 8],
+            'NL consument, winkelwagenkorting' => [Source::Order, 9],
+            'NL consument refund, winkelwagenkorting' => [Source::CreditNote, 4],
+            'FR consument, NL levering, % cataloguskorting en € winkelwagenkorting' => [Source::Order, 10],
+            'refund FR consument, NL levering, % cataloguskorting en € winkelwagenkorting' => [Source::CreditNote, 7],
         ];
     }
 
@@ -42,8 +41,8 @@ class InvoiceCreateTest extends TestCase
      * @dataProvider InvoiceDataProvider
      * @throws \JsonException
      */
-    public function testCreate(string $dataPath, string $type, int $id, array $excludeFields = []): void
+    public function testCreate(string $type, int $id, array $excludeFields = []): void
     {
-        $this->_testCreate($dataPath, $type, $id, $excludeFields);
+        $this->_testCreate($type, $id, $excludeFields);
     }
 }

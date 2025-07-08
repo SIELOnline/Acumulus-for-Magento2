@@ -15,7 +15,7 @@ use Siel\Acumulus\Tests\Magento\TestCase;
  */
 class SourceTest extends TestCase
 {
-    public function getSourceBasicDataProvider(): array
+    public static  function getSourceBasicDataProvider(): array
     {
         return [
             [Source::Order, 6],
@@ -53,7 +53,7 @@ class SourceTest extends TestCase
         }
     }
 
-    public function getSourceGettersDataProvider(): array
+    public static function getSourceGettersDataProvider(): array
     {
         return [
             [Source::Order, 6, '000000005', 1, '2022-12-01', 'complete', 'banktransfer', Api::PaymentStatus_Paid, null, 'FR'],
@@ -90,7 +90,7 @@ class SourceTest extends TestCase
         $this->assertSame($countryCode, $source->getCountryCode());
     }
 
-    public function getCreditNoteDataProvider(): array
+    public static function getCreditNoteDataProvider(): array
     {
         return [
           [Source::Order, 4, 1, 3],
@@ -123,7 +123,7 @@ class SourceTest extends TestCase
         $this->assertNull($source->getCreditNote($count));
     }
 
-    public function getInvoiceDataProvider(): array
+    public static function getInvoiceDataProvider(): array
     {
         return [
           [Source::Order, 6, 5, '000000005', '2023-02-07'],

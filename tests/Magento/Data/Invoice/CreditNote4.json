@@ -9,6 +9,7 @@
         "telephone2": "0123456789",
         "email": "fietserwin@gmail.com",
         "overwriteifexists": 1,
+        "disableduplicates": 0,
         "fullname": "Erwin Derksen",
         "address1": "Avilaweg 4",
         "postalcode": "6585 KK",

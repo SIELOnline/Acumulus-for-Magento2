@@ -9,6 +9,7 @@
         "telephone2": "+31 6 12345678",
         "email": "erwin@reve-provencal.com",
         "overwriteifexists": 1,
+        "disableduplicates": 0,
         "companyname1": "Le Rêve Provençal",
         "fullname": "Buro RaDer",
         "address1": "422 Chemin de la Riaille",
