@@ -7,7 +7,7 @@ namespace Siel\AcumulusMa2\Controller\Adminhtml\Mappings;
 use Siel\AcumulusMa2\Controller\Adminhtml\AbstractAcumulusPage;
 
 /**
- * Acumulus mappings controller.
+ * "Acumulus mappings" controller.
  */
 class Index extends AbstractAcumulusPage
 {

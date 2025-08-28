@@ -12,6 +12,8 @@ use Siel\Acumulus\Tests\Magento\TestCase;
 
 /**
  * SourceTest tests the Magento Source class.
+ *
+ * @todo: Change annotations to attributes once PHPUnit 10 is used.
  */
 class SourceTest extends TestCase
 {

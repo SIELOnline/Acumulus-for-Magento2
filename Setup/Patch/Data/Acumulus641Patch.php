@@ -14,7 +14,7 @@ use Siel\AcumulusMa2\Helper\Data;
  * value. After that, upgrading config values will be done automatically in the
  * Config class itself.
  *
- * Patches, like this one, get executed on install, so also on installation the
+ * Patches, like this one, get executed on installation, so also on installation the
  * configVersion will be set.
  */
 class Acumulus641Patch implements DataPatchInterface

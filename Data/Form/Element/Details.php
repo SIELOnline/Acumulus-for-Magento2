@@ -10,7 +10,7 @@ use Magento\Framework\Data\Form\Element\Fieldset;
 use Magento\Framework\Escaper;
 
 /**
- * Details form element for Acumulus forms in Magento.
+ * Details form-element for Acumulus forms in Magento.
  *
  * This class is a simple override of Magento's
  * {@see \Magento\Framework\Data\Form\Element\Fieldset} element. It just

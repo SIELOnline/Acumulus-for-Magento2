@@ -38,7 +38,8 @@ abstract class AbstractAcumulus extends Action
      * Checks if a user has permissions to visit the related pages.
      *
      * @return bool
-     * @noinspection PhpMissingParentCallCommonInspection  Base implementation not needed
+     *
+     * @noinspection PhpMissingParentCallCommonInspection The base implementation is not needed
      */
     protected function _isAllowed(): bool
     {

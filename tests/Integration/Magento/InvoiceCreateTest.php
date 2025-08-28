@@ -13,6 +13,8 @@ use Siel\Acumulus\Tests\Magento\TestCase;
 
 /**
  * InvoiceCreateTest tests the process of creating an {@see Invoice}.
+ *
+ * @todo: Change annotations to attributes once PHPUnit 10 is used.
  */
 class InvoiceCreateTest extends TestCase
 {

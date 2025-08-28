@@ -76,7 +76,7 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
     /**
      * Adds support for the paycheckout module.
      *
-     * The paycheckout module allows to add a payment fee to an order. If it does so, the
+     * The paycheckout module allows adding a payment fee to an order. If it does so, the
      * amount is stored in the columns:
      * - 'base_paycheckout_surcharge_amount'
      * - 'base_paycheckout_surcharge_tax_amount'
@@ -111,7 +111,7 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
     /**
      * Adds support for the sisow module.
      *
-     * The sisow module allows to define a payment fee per payment method. If a fee has
+     * The sisow module allows defining a payment fee per payment method. If a fee has
      * been defined and applied to an order it is stored in the Payment object.
      *
      * Unfortunately:
@@ -168,15 +168,15 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
     /**
      * Adds support for the magecomp paymentfee module.
      *
-     * The magecomp paymentfee module allows to add a payment fee to an order.
+     * The magecomp paymentfee module allows adding a payment fee to an order.
      * If it does so, details are stored in columns/eav attributes:
      * - base_mc_paymentfee_amount
      * - base_mc_paymentfee_tax_amount
      * - mc_paymentfee_description
      * The module adds these to orders AND credit-memos.
      *
-     * Looking at their code it seems that they do add their fee and tax to the
-     * totals, so code as in paycheckout and sisow support to change our invoice
+     * Looking at their code, it seems that they do add their fee and tax to the
+     * totals. So, code as in paycheckout and sisow support to change our invoice
      * totals are not necessary. TBC!
      *
      * @see https://magecomp.com/magento-2-payment-fee.html
@@ -198,9 +198,8 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
     /**
      * Adds support for the Fooman surcharge payment module.
      *
-     * The Fooman surcharge payment module allows to add a payment fee to an
-     * order and (a refund of it to) a credit memo.
-     * If it does so, details are stored in the table
+     * The Fooman surcharge payment module allows adding a payment fee to an order and (a
+     * refund of it to) a credit memo. If it does so, details are stored in the table
      * fooman_totals_quote_address, accessed via the
      * Fooman\Totals\Model\ResourceModel\OrderTotal resource model.
      *

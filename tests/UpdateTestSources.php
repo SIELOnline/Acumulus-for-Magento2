@@ -18,9 +18,9 @@ function getRootPath(): string
     // Set the admin path, unaware that our plugin may be symlinked.
     $rootPath = dirname(__DIR__, 4);
 
-    // if our component is symlinked, we need to redefine $rootPath. Try to find it by
+    // If our component is symlinked we need to redefine $rootPath. Try to find it by
     // looking at the --bootstrap option as passed to phpunit or at the script name passed
-    // to PHP CLI
+    // to PHP CLI.
     global $argv;
     if (is_array($argv)) {
         $i = array_search('--bootstrap', $argv, true);

@@ -15,6 +15,8 @@ use Siel\Acumulus\Tests\Magento\TestCase;
 
 /**
  * AcumulusEntryTest tests the CRUD actions on the acumulus entries storage in Joomla.
+ *
+ * @todo: Change annotations to attributes once PHPUnit 10 is used.
  */
 class AcumulusEntryManagerTest extends TestCase
 {
@@ -98,8 +100,8 @@ class AcumulusEntryManagerTest extends TestCase
         self::assertSame(Source::Order, $entry->getSourceType());
         self::assertSame(static::testSourceId, $entry->getSourceId());
         self::assertNull($entry->getConceptId());
-        self::assertSame($entry->getEntryId(), static::testEntryId);
-        self::assertSame($entry->getToken(), static::testToken);
+        self::assertSame(static::testEntryId, $entry->getEntryId());
+        self::assertSame(static::testToken, $entry->getToken());
         $diff = $this->getDiffInSeconds($entry->getCreated(), $created);
         self::assertSame(0, $diff);
         $diff = $this->getDiffInSeconds($entry->getUpdated(), $updated);

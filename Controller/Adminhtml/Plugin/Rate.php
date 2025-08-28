@@ -13,7 +13,7 @@ use Siel\AcumulusMa2\Helper\Data;
 use Siel\AcumulusMa2\Block\Adminhtml\Plugin\Rate as RateBlock;
 
 /**
- * Acumulus plugin/rate controller.
+ * "Acumulus plugin/rate" controller.
  */
 class Rate extends AbstractAcumulus
 {

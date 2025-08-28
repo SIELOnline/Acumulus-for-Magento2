@@ -15,9 +15,8 @@ use function sprintf;
  * Collection form element for our forms.
  *
  * This class is a simple override of
- * {@see \Magento\Framework\Data\Form\Element\AbstractElement}. It allows to
- * render a set of "subfields" without their labels, descriptions and form
- * element wrapper tags.
+ * {@see \Magento\Framework\Data\Form\Element\AbstractElement}. It allows rendering a set
+ * of "subfields" without their labels, descriptions and form element wrapper tags.
  */
 class Collection extends AbstractElement
 {

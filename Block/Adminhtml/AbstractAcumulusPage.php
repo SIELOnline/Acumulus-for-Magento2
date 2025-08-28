@@ -3,6 +3,7 @@
  * @noinspection PhpDeprecationInspection
  *    \Magento\Backend\Block\Widget\Form\Generic has been deprecated in favour
  *    of UI component implementation.
+ * @todo: switch to UI component implementation.
  */
 
 declare(strict_types=1);

@@ -58,7 +58,7 @@ abstract class AbstractAcumulusPage extends AbstractAcumulus
         // method is active, i.e. is on the execution stack. As the rate plugin
         // is only shown on our own pages, all that code is also only executed
         // while this method is on the execution stack.
-        // So this method is a good place for our high level exception catching.
+        // So this method is a good place for our high-level exception catching.
         try {
             // Notice about rating our plugin.
             if ($this->getFormType() !== 'register') {

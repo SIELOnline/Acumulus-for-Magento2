@@ -18,7 +18,7 @@ use Siel\AcumulusMa2\Helper\HelperTrait;
 use Throwable;
 
 /**
- * Block for rendering the Acumulus invoice status overview.
+ * Block for rendering the "Acumulus invoice status" overview.
  */
 class Status extends AbstractBlock implements TabInterface
 {
@@ -202,14 +202,14 @@ class Status extends AbstractBlock implements TabInterface
      *
      * @param string $message
      * @param string $type
-     *   The type of notice, used to construct css classes to distinguish the
-     *   different types of messages. error, warning, info, etc.
+     *   The type of notice, used to construct CSS classes to distinguish the
+     *   different types of messages: 'error', 'warning', 'info', etc.
      * @param string $id
      *   An optional id to use for the outer tag.
      * @param string $class
-     *   Optional css classes to add.
+     *   Optional CSS classes to add.
      * @param bool $isHtml
-     *   Indicates whether $message is html or plain text. plain text will be
+     *   Indicates whether $message is HTML or plain text. Plain text will be
      *   embedded in a <p>.
      *
      * @return string

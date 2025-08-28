@@ -15,7 +15,7 @@ use Siel\AcumulusMa2\Helper\Data;
 use Throwable;
 
 /**
- * Acumulus order/status controller.
+ * "Acumulus order/status" controller.
  */
 class Status extends AbstractAcumulus
 {
