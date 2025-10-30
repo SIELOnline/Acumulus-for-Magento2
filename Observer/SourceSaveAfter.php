@@ -1,7 +1,4 @@
 <?php
-/**
- * @noinspection PhpMultipleClassDeclarationsInspection
- */
 
 declare(strict_types=1);
 
@@ -15,7 +12,7 @@ use Siel\AcumulusMa2\Helper\Data;
 use Throwable;
 
 /**
- * Siel Acumulus source (order, credit-memo, invoice) save after  observer.
+ * Siel Acumulus source (order, credit-memo, invoice) save after observer.
  *
  * @noinspection PhpUnused  Observers are instantiated by the event handler
  */
@@ -37,10 +34,6 @@ class SourceSaveAfter implements ObserverInterface
      * Forwards the Magento save order/credit-memo/invoice event to the Acumulus
      * Invoice Manager.
      *
-     * @param EventObserver $observer
-     *
-     * @return void
-     *
      * @throws \Throwable
      */
     public function execute(EventObserver $observer): void
@@ -51,21 +44,18 @@ class SourceSaveAfter implements ObserverInterface
                 case 'sales_order_save_after':
                     $method = 'sourceStatusChange';
                     $invoiceSourceType = Source::Order;
-                    /** @noinspection PhpUndefinedMethodInspection */
-                    $invoiceSourceOrId = $event->getOrder();
+                    $invoiceSourceOrId = $event->getData('order');
                     break;
                 case 'sales_order_invoice_save_after':
                     $method = 'invoiceCreate';
                     $invoiceSourceType = Source::Order;
-                    /** @noinspection PhpUndefinedMethodInspection */
-                    $invoice = $event->getInvoice();
-                    $invoiceSourceOrId = $invoice->getOrderId();
+                    $invoice = $event->getData('invoice');
+                    $invoiceSourceOrId = $invoice->getData('order_id');
                     break;
                 case 'sales_order_creditmemo_save_after':
                     $method = 'sourceStatusChange';
                     $invoiceSourceType = Source::CreditNote;
-                    /** @noinspection PhpUndefinedMethodInspection */
-                    $invoiceSourceOrId = $event->getCreditmemo();
+                    $invoiceSourceOrId = $event->getData('creditmemo');
                     break;
                 default:
                     throw new RuntimeException('We do not handle event ' . $event->getName());

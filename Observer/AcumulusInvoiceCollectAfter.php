@@ -175,9 +175,9 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
      * - mc_paymentfee_description
      * The module adds these to orders AND credit-memos.
      *
-     * Looking at their code, it seems that they do add their fee and tax to the
-     * totals. So, code as in paycheckout and sisow support to change our invoice
-     * totals are not necessary. TBC!
+     * Looking at their code, it seems that they do add their fee and tax to the totals.
+     * So, code as in paycheckout and sisow support to change our invoice totals are not
+     * necessary. TBC!
      *
      * @see https://magecomp.com/magento-2-payment-fee.html
      */
@@ -265,7 +265,8 @@ class AcumulusInvoiceCollectAfter implements ObserverInterface
     }
 
     /**
-     * Adds the amounts to the {@see \Siel\Acumulus\Magento\Invoice\Source::getTotals() invoice totals}.
+     * Adds the amounts to the
+     * {@see \Siel\Acumulus\Magento\Invoice\Source::getTotals() invoice totals}.
      */
     private function addToInvoiceTotals(Invoice $invoice, float|int $paymentInc, float|int $paymentVat): void
     {
