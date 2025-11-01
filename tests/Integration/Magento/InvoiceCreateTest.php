@@ -11,6 +11,8 @@ namespace Siel\Acumulus\Tests\Integration\Magento;
 use Siel\Acumulus\Invoice\Source;
 use Siel\Acumulus\Tests\Magento\TestCase;
 
+use function dirname;
+
 /**
  * InvoiceCreateTest tests the process of creating an {@see Invoice}.
  *
