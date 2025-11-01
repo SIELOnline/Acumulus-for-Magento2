@@ -18,20 +18,7 @@ class MailerTest extends TestCase
 {
     public function testMailer(): void
     {
-        $classParts = explode('\\', get_class($this));
-        // Extract parts between 'Integration' and 'Mail'.
-        array_pop($classParts);
-        $shopName = '';
-        while (($shopNamePart = array_pop($classParts)) !== 'Integration') {
-            $shopName = $shopNamePart . '\\' . $shopName;
-        }
-        $subject = "___$shopName test mail___";
-        $bodyText = 'Text test message';
-        $bodyHtml = '<p>HTML Test message</p>';
-        $mailer = self::getContainer()->getMailer();
-        $result = $mailer->sendAdminMail($subject, $bodyText, $bodyHtml);
-        $this->assertTrue($result, 'Sending mail failed');
-        $this->assertMailServerReceivedMail($subject, $bodyText, $bodyHtml);
+        $this->_testMailer();
     }
 
     protected function assertMailContentsMatches(string $emlFile, string $bodyText, string $bodyHtml): void
@@ -39,5 +26,13 @@ class MailerTest extends TestCase
         // Switch the eml file path to Magento mount.
         $emlFile = str_replace('C:\ProgramData\Changemaker Studios\Papercut SMTP\Incoming\\', '/home/erwin/Papercut-SMTP/', $emlFile);
         parent::assertMailContentsMatches($emlFile, $bodyText, $bodyHtml);
+    }
+
+    /**
+     * This override returns the path to the mount in the Docker container.
+     */
+    protected function getPapercutFolder(): string
+    {
+        return '/home/erwin/Papercut-SMTP';
     }
 }
