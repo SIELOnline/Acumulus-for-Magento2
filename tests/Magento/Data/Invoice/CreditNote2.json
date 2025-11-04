@@ -72,7 +72,7 @@
                     "meta-vatamount-precision": 0.02,
                     "unitpriceinc": -6.05,
                     "meta-recalculate-price": "unitprice",
-                    "meta-fields-calculated": "['meta-line-discount-amountinc']",
+                    "meta-fields-calculated": "['vatamount','meta-line-discount-amountinc']",
                     "meta-vatclass-id": 2,
                     "meta-vatclass-name": "Standard rate",
                     "meta-line-discount-vatamount": -2.2204460492503e-16,
