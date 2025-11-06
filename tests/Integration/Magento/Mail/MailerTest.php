@@ -18,20 +18,13 @@ class MailerTest extends TestCase
 {
     public function testMailer(): void
     {
-        $this->_testMailer();
-    }
-
-    protected function assertMailContentsMatches(string $emlFile, string $bodyText, string $bodyHtml): void
-    {
-        // Switch the eml file path to Magento mount.
-        $emlFile = str_replace('C:\ProgramData\Changemaker Studios\Papercut SMTP\Incoming\\', '/home/erwin/Papercut-SMTP/', $emlFile);
-        parent::assertMailContentsMatches($emlFile, $bodyText, $bodyHtml);
+        $this->_testMailer(hasTextPart: false);
     }
 
     /**
      * This override returns the path to the mount in the Docker container.
      */
-    protected function getPapercutFolder(): string
+    protected static function getPapercutFolder(): string
     {
         return '/home/erwin/Papercut-SMTP';
     }
