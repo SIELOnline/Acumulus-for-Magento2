@@ -139,9 +139,9 @@ class Status extends AbstractBlock implements TabInterface
                         $message = $crashReporter->logAndMail($e);
                         $acumulusForm->createAndAddMessage($message, Severity::Exception);
                     } catch (Throwable) {
-                        // We do not know if we have informed the user per mail or
-                        // screen, so assume not, and rethrow the original exception.
-                        throw $e;
+                        // Unfortunately, we do not know if we have informed the user per log,
+                        // mail, or screen. Let's hope we did, so we did not just hide possibly
+                        // important error messages.
                     }
                 }
                 $output .= $this->showNotices($acumulusForm);
