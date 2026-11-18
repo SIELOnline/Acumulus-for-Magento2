@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Siel\Acumulus\Tests\Unit\Magento\Invoice;
 
+use DateTimeImmutable;
+use DateTimeInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Creditmemo;
 use Siel\Acumulus\Api;
@@ -17,7 +19,7 @@ use Siel\Acumulus\Tests\Magento\TestCase;
  */
 class SourceTest extends TestCase
 {
-    public static  function getSourceBasicDataProvider(): array
+    public static function getSourceBasicDataProvider(): array
     {
         return [
             [Source::Order, 6],
@@ -33,8 +35,7 @@ class SourceTest extends TestCase
     public function testSourceBasic(
         string $sourceType,
         int $sourceId
-    ): void
-    {
+    ): void {
         $source = self::getContainer()->createSource($sourceType, $sourceId);
         $label = self::getContainer()->getTranslator()->get($sourceType);
         $this->assertSame($sourceType, $source->getType());
@@ -58,8 +59,30 @@ class SourceTest extends TestCase
     public static function getSourceGettersDataProvider(): array
     {
         return [
-            [Source::Order, 6, '000000005', 1, '2022-12-01', 'complete', 'banktransfer', Api::PaymentStatus_Paid, null, 'FR'],
-            [Source::CreditNote, 3, 'CM000000003', -1, '2022-12-01', Creditmemo::STATE_REFUNDED, 'banktransfer', Api::PaymentStatus_Paid, '2022-12-01', 'FR'],
+            [
+                Source::Order,
+                6,
+                '000000005',
+                1,
+                (new DateTimeImmutable('2022-12-01'))->setTime(0, 0, 0),
+                'complete',
+                'banktransfer',
+                Api::PaymentStatus_Paid,
+                null,
+                'FR',
+            ],
+            [
+                Source::CreditNote,
+                3,
+                'CM000000003',
+                -1,
+                (new DateTimeImmutable('2022-12-01'))->setTime(0, 0, 0),
+                Creditmemo::STATE_REFUNDED,
+                'banktransfer',
+                Api::PaymentStatus_Paid,
+                (new DateTimeImmutable('2022-12-01'))->setTime(0, 0, 0),
+                'FR',
+            ],
         ];
     }
 
@@ -73,31 +96,30 @@ class SourceTest extends TestCase
         int $sourceId,
         ?string $reference,
         int $sign,
-        ?string $date,
+        ?DateTimeInterface $date,
         int|string $status,
         ?string $paymentMethod,
         ?int $paymentStatus,
-        ?string $paymentDate,
+        ?DateTimeInterface $paymentDate,
         string $countryCode
-    ): void
-    {
+    ): void {
         $source = self::getContainer()->createSource($sourceType, $sourceId);
         $this->assertSame($reference, $source->getInvoiceReference());
         $this->assertEquals($sign, $source->getSign());
-        $this->assertSame($date, $source->getDate());
+        $this->assertEquals($date, $source->getDate());
         $this->assertSame($status, $source->getStatus());
         $this->assertSame($paymentMethod, $source->getPaymentMethod());
         $this->assertSame($paymentStatus, $source->getPaymentStatus());
-        $this->assertSame($paymentDate, $source->getPaymentDate());
+        $this->assertEquals($paymentDate, $source->getPaymentDate());
         $this->assertSame($countryCode, $source->getCountryCode());
     }
 
     public static function getCreditNoteDataProvider(): array
     {
         return [
-          [Source::Order, 4, 1, 3],
-          [Source::Order, 6, 0, null],
-          [Source::CreditNote, 3, 1, 3],
+            [Source::Order, 4, 1, 3],
+            [Source::Order, 6, 0, null],
+            [Source::CreditNote, 3, 1, 3],
         ];
     }
 
@@ -128,9 +150,9 @@ class SourceTest extends TestCase
     public static function getInvoiceDataProvider(): array
     {
         return [
-          [Source::Order, 6, 5, '000000005', '2023-02-07'],
-          [Source::Order, 5, null, null, null],
-          [Source::CreditNote, 3, 3, 'CM000000003', '2022-12-01'],
+            [Source::Order, 6, 5, '000000005', (new DateTimeImmutable('2022-12-01'))->setTime(0, 0, 0)],
+            [Source::Order, 5, null, null, null],
+            [Source::CreditNote, 3, 3, 'CM000000003', (new DateTimeImmutable('2022-12-01'))->setTime(0, 0, 0)],
         ];
     }
 
@@ -139,11 +161,11 @@ class SourceTest extends TestCase
      *
      * @dataProvider getInvoiceDataProvider
      */
-    public function testSourceInvoice(string $sourceType, int $sourceId, ?int $id, ?string $reference, ?string $date): void
+    public function testSourceInvoice(string $sourceType, int $sourceId, ?int $id, ?string $reference, ?DateTimeInterface $date): void
     {
         $source = self::getContainer()->createSource($sourceType, $sourceId);
         $this->assertSame($id, $source->getInvoiceId());
         $this->assertSame($reference, $source->getInvoiceReference());
-        $this->assertSame($date, $source->getInvoiceDate());
+        $this->assertEquals($date, $source->getInvoiceDate());
     }
 }

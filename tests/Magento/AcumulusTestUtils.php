@@ -28,16 +28,6 @@ trait AcumulusTestUtils
         return dirname(__FILE__, 2);
     }
 
-    /**
-     * Returns the file path with the server path replaced by the path as it is
-     * linked/mounted in this test setup.
-     */
-    protected static function getEmlFileLink(string $emlFile): string
-    {
-        return str_replace('C:\ProgramData\Changemaker Studios\Papercut SMTP\Incoming\\', '/home/erwin/Papercut-SMTP/', $emlFile);
-    }
-
-
     protected static function getHelper(): ?Data
     {
         return Bootstrap::getObjectManager()?->get(Data::class);

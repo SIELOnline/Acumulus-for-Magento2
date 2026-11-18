@@ -21,11 +21,27 @@ class MailerTest extends TestCase
         $this->_testMailer(hasTextPart: false);
     }
 
+    /** Overrides of the {@see \Siel\Acumulus\Tests\Utils\Mail} trait. */
     /**
-     * This override returns the path to the mount in the Docker container.
+     * Returns the file path with the server path replaced by the path as it is
+     * linked/mounted in this test setup.
      */
-    protected static function getPapercutFolder(): string
+    protected static function getEmlFileLink(string $emlFile): string
     {
-        return '/home/erwin/Papercut-SMTP';
+        return str_replace(
+            ['C:\ProgramData\Changemaker Studios\Papercut SMTP\Incoming\\', 'C:\Users\erwin\AppData\Roaming\Changemaker Studios\Papercut SMTP\\'],
+            ['/home/erwin/Papercut-SMTP-ProgramData/', '/home/erwin/Papercut-SMTP-AppData/'],
+            $emlFile
+        );
+    }
+
+    protected static function getPapercutFolderUI(): string
+    {
+        return '/home/erwin/Papercut-SMTP-AppData';
+    }
+
+    protected static function getPapercutFolderService(): string
+    {
+        return '/home/erwin/Papercut-SMTP-ProgramData';
     }
 }

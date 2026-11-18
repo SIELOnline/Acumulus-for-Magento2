@@ -24,10 +24,10 @@ class ConfigStoreTest extends TestCase
         $now = time();
         $config = $this->getConfig();
         $valuesBefore = $config->getAll();
-        $valuesBefore['showPluginV8Message'] = $now;
+        $valuesBefore['showRatePluginMessage'] = $now;
         $config->save($valuesBefore);
 
-        $this->assertSame($now, $config->get('showPluginV8Message'));
+        $this->assertSame($now, $config->get('showRatePluginMessage'));
 
         $valuesAfter = $config->getAll();
         $this->assertEquals($valuesBefore, $valuesAfter);

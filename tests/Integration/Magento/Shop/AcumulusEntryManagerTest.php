@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siel\Acumulus\Tests\Integration\Magento\Shop;
 
-use DateTime;
+use DateTimeImmutable;
 use DateTimeZone;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Siel\Acumulus\Invoice\Source;
@@ -60,8 +60,7 @@ class AcumulusEntryManagerTest extends TestCase
     public function testCreate(Source $source): Source
     {
         $acumulusEntryManager = $this->getAcumulusEntryManager();
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $now = new DateTime('now', new DateTimeZone($this->getShopTimeZone()));
+        $now = new DateTimeImmutable('now', new DateTimeZone($this->getShopTimeZone()));
         self::assertTrue($acumulusEntryManager->save($source, AcumulusEntry::conceptIdUnknown, null));
 
         $entry = $acumulusEntryManager->getByInvoiceSource($source);
