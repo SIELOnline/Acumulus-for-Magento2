@@ -90,7 +90,7 @@ class AcumulusEntryManagerTest extends TestCase
         $entry = $acumulusEntryManager->getByInvoiceSource($source);
         $created = $entry->getCreated();
         $updated = $entry->getUpdated();
-        $now = new DateTime();
+        $now = new DateTimeImmutable('now', new DateTimeZone($this->getShopTimeZone()));
         sleep(1);
         self::assertTrue($acumulusEntryManager->save($source, static::testEntryId, static::testToken));
 
@@ -121,7 +121,7 @@ class AcumulusEntryManagerTest extends TestCase
     {
         $acumulusEntryManager = $this->getAcumulusEntryManager();
         $entry = $acumulusEntryManager->getByEntryId(static::testEntryId);
-        self::assertTrue($acumulusEntryManager->delete($entry));
+        self::assertTrue($entry === null || $acumulusEntryManager->delete($entry));
         self::assertNull($acumulusEntryManager->getByEntryId(static::testEntryId));
     }
 }

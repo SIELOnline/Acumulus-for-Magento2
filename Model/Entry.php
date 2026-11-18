@@ -31,6 +31,8 @@ class Entry extends AbstractModel
      *
      * @noinspection MagicMethodsValidityInspection _construct is the Magento way to
      *   have your own constructor.
+     *
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _construct(): void
     {
