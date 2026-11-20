@@ -17,14 +17,14 @@ use function dirname;
  * InvoiceCreateTest tests the process of creating an {@see Invoice}.
  *
  * @todo: Change annotations to attributes once PHPUnit 10 is used.
+ * @todo: add tests:
+ *   - with a manual line.
+ *   - with a discounted shipping: order and (partial) refund.
+ *   - with a margin scheme invoice.
+ *   - for the supported modules (see observer AcumulusInvoiceCollectAfter).
  */
 class InvoiceCreateTest extends TestCase
 {
-    /**
-     * @todo: define a test refund with a manual line.
-     * @todo: can we define tests for the supported modules (see observer AcumulusInvoiceCollectAfter)
-     * @todo: add a margin scheme invoice.
-     */
     public static function InvoiceDataProvider(): array
     {
         return [
