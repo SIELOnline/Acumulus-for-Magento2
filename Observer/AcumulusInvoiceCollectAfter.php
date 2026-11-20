@@ -33,7 +33,7 @@ use function array_key_exists;
  * - Magecomp Payment Fee
  * - Fooman Surcharge
  *
- * @noinspection PhpUnused  Observers are instantiated by the event handler
+ * @noinspection PhpUnused Observers are instantiated by the event handler
  */
 class AcumulusInvoiceCollectAfter implements ObserverInterface
 {

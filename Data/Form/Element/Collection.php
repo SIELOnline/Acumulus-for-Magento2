@@ -69,7 +69,7 @@ class Collection extends AbstractElement
      *
      * This override prevents wrappers and labels being rendered.
      *
-     * @noinspection PhpUndefinedMethodInspection  magic getters and setters for
+     * @noinspection PhpUndefinedMethodInspection magic getters and setters for
      *   before and afterElementHtml, noSpan, label, and text.
      */
     protected function _elementsToHtml($elements): string

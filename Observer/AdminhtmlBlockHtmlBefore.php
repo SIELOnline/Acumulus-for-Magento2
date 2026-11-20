@@ -15,7 +15,7 @@ use Siel\AcumulusMa2\Helper\Data;
  *
  * Thanks to https://magento.stackexchange.com/a/236547/38943.
  *
- * @noinspection PhpUnused  Observers are instantiated by the event handler
+ * @noinspection PhpUnused Observers are instantiated by the event handler
  */
 class AdminhtmlBlockHtmlBefore implements ObserverInterface
 {
@@ -28,7 +28,7 @@ class AdminhtmlBlockHtmlBefore implements ObserverInterface
 
     public function execute(Observer $observer): void
     {
-        /** @noinspection PhpUndefinedMethodInspection  handled by magic __call */
+        /** @noinspection PhpUndefinedMethodInspection handled by magic __call */
         $block = $observer->getBlock();
 
         if ($block instanceof MenuBlock) {
